@@ -1,6 +1,6 @@
 
 # Ignore .asd files from HH2 export
-Data/*/*.dat
+/Data/*/*.asd
 
 ## R FILES TO IGNORE ##
 # History files
@@ -21,6 +21,7 @@ Data/*/*.dat
 
 # RStudio files
 .Rproj.user/
+*.Rproj
 
 # produced vignettes
 vignettes/*.html

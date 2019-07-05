@@ -17,16 +17,28 @@ hh2 <- read.delim("./Data/20190705_135521/20190705_processed.dat",
   rename(file= V1, nm= V3, value= V4) %>% 
   as_tibble()
 
-meta <- read_tsv("./Data/20190705_135521/20190705_metadata.txt")
+meta <- read_tsv("./Data/20190705_135521/20190705_metadata.txt") %>% 
+  mutate(file_start_num= as.numeric(file_start),
+         file_end_num= as.numeric(file_end))
+
+fill_df <- data.frame(file_start_num= full_seq(meta$file_start_num, 1))
+
+meta_fill <- left_join(fill_df, meta, by= "file_start_num") %>% 
+  fill(basename, type, time, integration, fov, notes) %>% 
+  rename(file_num= file_start_num) %>% 
+  as_tibble()
+meta_fill
 
 
+
+meta_fill
 hh2.filt <- hh2 %>% 
   filter(nm == 665 | nm == 681 | nm == 709) %>% 
   mutate(file_num= str_replace_all(file, "[^0-9]", ""))
 hh2.filt
 
 
-
+apply(meta, 1, function(x) rep(meta$file_start_num[x], meta$file_end_num[x], 1))
 
 
 

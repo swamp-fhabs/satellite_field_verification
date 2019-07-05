@@ -1,6 +1,6 @@
 
 # Ignore .asd files from HH2 export
-Data/*.dat
+Data/*/*.dat
 
 ## R FILES TO IGNORE ##
 # History files

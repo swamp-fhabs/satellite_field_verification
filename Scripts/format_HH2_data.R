@@ -51,9 +51,12 @@ hh2 <- read.delim("./Data/20190705_135521/20190705_processed.dat",
 
 
 
-## FILTER WAVELENGHTS FOR CI: 665, 681, AND 709
-hh2.filt <- hh2 %>% 
-  filter(nm == 665 | nm == 681 | nm == 709)
+## FILTER WAVELENGTHS TO MATCH OLCI BANDS: 620, 665, 681, AND 709
+source("Scripts/olci_bands.R")
+hh2.filt <- extract_olci_bands(hh2)
+
+#hh2.filt2 <- hh2 %>% 
+#  filter(nm == 665 | nm == 681 | nm == 709)
 
 ## MERGE HH2 WITH METADATA
 # hh2.meta <- left_join(hh2.filt, meta_fill, by= "file") %>% 

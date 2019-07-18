@@ -2,7 +2,7 @@
 library(tidyverse)
 
 ## LIST SAMPLE FOLDERS
-sample_folders <- list.files("Data", pattern= "Calaveras*", full.names = TRUE)
+sample_folders <- list.files("Data/Calaveras_radiometer_data_2018", pattern= "Calaveras*", full.names = TRUE)
 
 
 ## LOOP OVER ALL THE SAMPLE FOLDERS TO EXTRACT TIMING DATA
@@ -28,13 +28,13 @@ time_list <- map(sample_folders, function(folder){
   type <- str_replace(hg_data, "_.*$", "")
   
   ## COMBINE INTO AN OUTPUT DATA FRAME
-  hg_timings <- tibble(sample= str_replace(folder, "Data/", ""),
+  hg_timings <- tibble(sample= str_replace(folder, "Data/Calaveras_radiometer_data_2018/", ""),
                        type, 
                        time_stamp) %>% 
     arrange(time_stamp)
   return(hg_timings)
 })
 
-write_tsv(do.call(rbind, time_list), path= "Data/hypergun_Calaveras_timestamps.tsv")
+write_tsv(do.call(rbind, time_list), path= "Data/Calaveras_hypergun_timestamps.tsv")
 
 

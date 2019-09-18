@@ -1,0 +1,31 @@
+pixel	spec_rep	type	type_rep	notes	spec_file	spectra_id	unique_id
+P1S2	2	plate	1	na	Spec00141.asd.txt	P1S2_2	P1S2_2_PL1
+P1S2	2	plate	1	na	Spec00142.asd.txt	P1S2_2	P1S2_2_PL1
+P1S2	2	plate	1	na	Spec00143.asd.txt	P1S2_2	P1S2_2_PL1
+P1S2	2	plate	1	na	Spec00144.asd.txt	P1S2_2	P1S2_2_PL1
+P1S2	2	plate	1	na	Spec00145.asd.txt	P1S2_2	P1S2_2_PL1
+P1S2	2	plate	1	na	Spec00146.asd.txt	P1S2_2	P1S2_2_PL1
+P1S2	2	plate	1	na	Spec00147.asd.txt	P1S2_2	P1S2_2_PL1
+P1S2	2	plate	1	na	Spec00148.asd.txt	P1S2_2	P1S2_2_PL1
+P1S2	2	plate	1	na	Spec00149.asd.txt	P1S2_2	P1S2_2_PL1
+P1S2	2	plate	1	na	Spec00150.asd.txt	P1S2_2	P1S2_2_PL1
+P1S2	2	sky	1	Data sheet says SK, not WA	Spec00151.asd.txt	P1S2_2	P1S2_2_SK1
+P1S2	2	sky	1	Data sheet says SK, not WA	Spec00152.asd.txt	P1S2_2	P1S2_2_SK1
+P1S2	2	sky	1	Data sheet says SK, not WA	Spec00153.asd.txt	P1S2_2	P1S2_2_SK1
+P1S2	2	sky	1	Data sheet says SK, not WA	Spec00154.asd.txt	P1S2_2	P1S2_2_SK1
+P1S2	2	sky	1	Data sheet says SK, not WA	Spec00155.asd.txt	P1S2_2	P1S2_2_SK1
+P1S2	2	sky	1	Data sheet says SK, not WA	Spec00156.asd.txt	P1S2_2	P1S2_2_SK1
+P1S2	2	sky	1	Data sheet says SK, not WA	Spec00157.asd.txt	P1S2_2	P1S2_2_SK1
+P1S2	2	sky	1	Data sheet says SK, not WA	Spec00158.asd.txt	P1S2_2	P1S2_2_SK1
+P1S2	2	sky	1	Data sheet says SK, not WA	Spec00159.asd.txt	P1S2_2	P1S2_2_SK1
+P1S2	2	sky	1	Data sheet says SK, not WA	Spec00160.asd.txt	P1S2_2	P1S2_2_SK1
+P1S2	2	water	1	Check to make sure these SK and WA are correct	Spec00161.asd.txt	P1S2_2	P1S2_2_WA1
+P1S2	2	water	1	Check to make sure these SK and WA are correct	Spec00162.asd.txt	P1S2_2	P1S2_2_WA1
+P1S2	2	water	1	Check to make sure these SK and WA are correct	Spec00163.asd.txt	P1S2_2	P1S2_2_WA1
+P1S2	2	water	1	Check to make sure these SK and WA are correct	Spec00164.asd.txt	P1S2_2	P1S2_2_WA1
+P1S2	2	water	1	Check to make sure these SK and WA are correct	Spec00165.asd.txt	P1S2_2	P1S2_2_WA1
+P1S2	2	water	1	Check to make sure these SK and WA are correct	Spec00166.asd.txt	P1S2_2	P1S2_2_WA1
+P1S2	2	water	1	Check to make sure these SK and WA are correct	Spec00167.asd.txt	P1S2_2	P1S2_2_WA1
+P1S2	2	water	1	Check to make sure these SK and WA are correct	Spec00168.asd.txt	P1S2_2	P1S2_2_WA1
+P1S2	2	water	1	Check to make sure these SK and WA are correct	Spec00169.asd.txt	P1S2_2	P1S2_2_WA1
+P1S2	2	water	1	Check to make sure these SK and WA are correct	Spec00170.asd.txt	P1S2_2	P1S2_2_WA1

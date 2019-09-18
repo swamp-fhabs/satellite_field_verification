@@ -1,0 +1,43 @@
+date	waterbody	pixel	site	pix_site	time	lat	long	context
+12-Aug-19	San Pablo Reservoir	P1	S1	P1S1	10:48	37.93301	-122.24886	start site
+12-Aug-19	San Pablo Reservoir	P1	S2	P1S2	11:20	37.93395	-122.24944	start site
+12-Aug-19	San Pablo Reservoir	P1	S3	P1S3	11:44	37.93353	-122.25034	start site
+12-Aug-19	San Pablo Reservoir	P2	S1	P2S1	12:40	37.92879	-122.24569	start site
+12-Aug-19	San Pablo Reservoir	P2	S2	P2S2	13:04	37.92838	-122.24530	start site
+12-Aug-19	San Pablo Reservoir	P2	S3	P2S3	13:24	37.92761	-122.24441	start site
+12-Aug-19	San Pablo Reservoir	P3	S1	P3S1	14:02	37.93599	-122.25276	start site
+12-Aug-19	San Pablo Reservoir	P3	S2	P3S2	14:23	37.93659	-122.25378	start site
+12-Aug-19	San Pablo Reservoir	P3	S3	P3S3	14:56	37.93493	-122.25191	start site
+12-Aug-19	San Pablo Reservoir	P1	S1	P1S1	10:56	37.93275	-122.24852	finish site
+12-Aug-19	San Pablo Reservoir	P1	S2	P1S2	11:27	37.93395	-122.24937	finish site
+12-Aug-19	San Pablo Reservoir	P1	S3	P1S3	11:49	37.93351	-122.25034	finish site
+12-Aug-19	San Pablo Reservoir	P3	S2	P3S2	14:07	37.93627	-122.25304	finish site
+12-Aug-19	San Pablo Reservoir	P3	S3	P3S3	14:31	37.93478	-122.25168	finish site
+12-Aug-19	San Pablo Reservoir	P1	S1	P1S1	10:51	37.93276	-122.24850	radiometer
+12-Aug-19	San Pablo Reservoir	P1	S1	P1S1	10:56	37.93276	-122.24850	radiometer
+12-Aug-19	San Pablo Reservoir	P1	S1	P1S1	10:58	37.93275	-122.24852	radiometer
+12-Aug-19	San Pablo Reservoir	P1	S2	P1S2	11:15	37.93393	-122.24941	radiometer
+12-Aug-19	San Pablo Reservoir	P1	S2	P1S2	11:23	37.93395	-122.24939	radiometer
+12-Aug-19	San Pablo Reservoir	P1	S2	P1S2	11:30	37.93395	-122.24937	radiometer
+12-Aug-19	San Pablo Reservoir	P1	S3	P1S3	11:43	37.93349	-122.25034	radiometer
+12-Aug-19	San Pablo Reservoir	P1	S3	P1S3	11:50	37.93351	-122.25034	radiometer
+12-Aug-19	San Pablo Reservoir	P2	S1	P2S1	12:33	37.92879	-122.24565	radiometer
+12-Aug-19	San Pablo Reservoir	P2	S1	P2S1	12:38	37.92884	-122.24562	radiometer
+12-Aug-19	San Pablo Reservoir	P2	S1	P2S1	12:47	37.92884	-122.24559	radiometer
+12-Aug-19	San Pablo Reservoir	P2	S2	P2S2	13:02	37.92838	-122.24530	radiometer
+12-Aug-19	San Pablo Reservoir	P2	S2	P2S2	13:06	37.92829	-122.24529	radiometer
+12-Aug-19	San Pablo Reservoir	P2	S2	P2S2	13:13	37.92836	-122.24527	radiometer
+12-Aug-19	San Pablo Reservoir	P2	S3	P2S3	13:22	37.92761	-122.24441	radiometer
+12-Aug-19	San Pablo Reservoir	P2	S3	P2S3	13:26	37.92802	-122.24384	radiometer
+12-Aug-19	San Pablo Reservoir	P2	S3	P2S3	13:35	37.92859	-122.24409	radiometer
+12-Aug-19	San Pablo Reservoir	P2	S3	P2S3	13:46	37.92874	-122.24471	radiometer
+12-Aug-19	San Pablo Reservoir	P2	S3	P2S3	13:49	37.92874	-122.24464	radiometer
+12-Aug-19	San Pablo Reservoir	P3	S1	P3S1	14:00	37.93599	-122.25276	radiometer
+12-Aug-19	San Pablo Reservoir	P3	S1	P3S1	14:05	37.93611	-122.25266	radiometer
+12-Aug-19	San Pablo Reservoir	P3	S1	P3S1	14:13	37.93640	-122.25209	radiometer
+12-Aug-19	San Pablo Reservoir	P3	S2	P3S2	14:21	37.93659	-122.25378	radiometer
+12-Aug-19	San Pablo Reservoir	P3	S2	P3S2	14:27	37.93723	-122.25259	radiometer
+12-Aug-19	San Pablo Reservoir	P3	S2	P3S2	14:37	37.93618	-122.25338	radiometer
+12-Aug-19	San Pablo Reservoir	P3	S2	P3S2	14:39	37.93627	-122.25304	radiometer
+12-Aug-19	San Pablo Reservoir	P3	S3	P3S3	14:46	37.93493	-122.25191	radiometer
+12-Aug-19	San Pablo Reservoir	P3	S3	P3S3	14:51	37.93481	-122.25175	radiometer

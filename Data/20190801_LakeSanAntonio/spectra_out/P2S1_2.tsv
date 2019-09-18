@@ -1,0 +1,41 @@
+pixel	spec_rep	type	type_rep	notes	spec_file	spectra_id	unique_id
+P2S1	2	plate	1	na	Spec00321.asd.txt	P2S1_2	P2S1_2_PL1
+P2S1	2	plate	1	na	Spec00322.asd.txt	P2S1_2	P2S1_2_PL1
+P2S1	2	plate	1	na	Spec00323.asd.txt	P2S1_2	P2S1_2_PL1
+P2S1	2	plate	1	na	Spec00324.asd.txt	P2S1_2	P2S1_2_PL1
+P2S1	2	plate	1	na	Spec00325.asd.txt	P2S1_2	P2S1_2_PL1
+P2S1	2	plate	1	na	Spec00326.asd.txt	P2S1_2	P2S1_2_PL1
+P2S1	2	plate	1	na	Spec00327.asd.txt	P2S1_2	P2S1_2_PL1
+P2S1	2	plate	1	na	Spec00328.asd.txt	P2S1_2	P2S1_2_PL1
+P2S1	2	plate	1	na	Spec00329.asd.txt	P2S1_2	P2S1_2_PL1
+P2S1	2	plate	1	na	Spec00330.asd.txt	P2S1_2	P2S1_2_PL1
+P2S1	2	water	1	na	Spec00331.asd.txt	P2S1_2	P2S1_2_WA1
+P2S1	2	water	1	na	Spec00332.asd.txt	P2S1_2	P2S1_2_WA1
+P2S1	2	water	1	na	Spec00333.asd.txt	P2S1_2	P2S1_2_WA1
+P2S1	2	water	1	na	Spec00334.asd.txt	P2S1_2	P2S1_2_WA1
+P2S1	2	water	1	na	Spec00335.asd.txt	P2S1_2	P2S1_2_WA1
+P2S1	2	water	1	na	Spec00336.asd.txt	P2S1_2	P2S1_2_WA1
+P2S1	2	water	1	na	Spec00337.asd.txt	P2S1_2	P2S1_2_WA1
+P2S1	2	water	1	na	Spec00338.asd.txt	P2S1_2	P2S1_2_WA1
+P2S1	2	water	1	na	Spec00339.asd.txt	P2S1_2	P2S1_2_WA1
+P2S1	2	water	1	na	Spec00340.asd.txt	P2S1_2	P2S1_2_WA1
+P2S1	2	sky	1	saturation alert	Spec00341.asd.txt	P2S1_2	P2S1_2_SK1
+P2S1	2	sky	1	saturation alert	Spec00342.asd.txt	P2S1_2	P2S1_2_SK1
+P2S1	2	sky	1	saturation alert	Spec00343.asd.txt	P2S1_2	P2S1_2_SK1
+P2S1	2	sky	1	saturation alert	Spec00344.asd.txt	P2S1_2	P2S1_2_SK1
+P2S1	2	sky	1	saturation alert	Spec00345.asd.txt	P2S1_2	P2S1_2_SK1
+P2S1	2	sky	1	saturation alert	Spec00346.asd.txt	P2S1_2	P2S1_2_SK1
+P2S1	2	sky	1	saturation alert	Spec00347.asd.txt	P2S1_2	P2S1_2_SK1
+P2S1	2	sky	1	saturation alert	Spec00348.asd.txt	P2S1_2	P2S1_2_SK1
+P2S1	2	sky	1	saturation alert	Spec00349.asd.txt	P2S1_2	P2S1_2_SK1
+P2S1	2	sky	1	saturation alert	Spec00350.asd.txt	P2S1_2	P2S1_2_SK1
+P2S1	2	sky	2	na	Spec00351.asd.txt	P2S1_2	P2S1_2_SK2
+P2S1	2	sky	2	na	Spec00352.asd.txt	P2S1_2	P2S1_2_SK2
+P2S1	2	sky	2	na	Spec00353.asd.txt	P2S1_2	P2S1_2_SK2
+P2S1	2	sky	2	na	Spec00354.asd.txt	P2S1_2	P2S1_2_SK2
+P2S1	2	sky	2	na	Spec00355.asd.txt	P2S1_2	P2S1_2_SK2
+P2S1	2	sky	2	na	Spec00356.asd.txt	P2S1_2	P2S1_2_SK2
+P2S1	2	sky	2	na	Spec00357.asd.txt	P2S1_2	P2S1_2_SK2
+P2S1	2	sky	2	na	Spec00358.asd.txt	P2S1_2	P2S1_2_SK2
+P2S1	2	sky	2	na	Spec00359.asd.txt	P2S1_2	P2S1_2_SK2
+P2S1	2	sky	2	na	Spec00360.asd.txt	P2S1_2	P2S1_2_SK2

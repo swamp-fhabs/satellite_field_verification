@@ -1,0 +1,26 @@
+date	waterbody	pixel	site	pix_site	time	lat	long	context
+1-Aug-19	Lake San Antonio	P1	S2	P1S2	11:18	35.85625	-120.9737	radiometer
+1-Aug-19	Lake San Antonio	P1	S2	P1S2	11:31	35.85631	-120.97379	radiometer
+1-Aug-19	Lake San Antonio	P1	S3	P1S3	11:40	35.85736	-120.97278	radiometer
+1-Aug-19	Lake San Antonio	P1	S3	P1S3	11:47	35.85726	-120.97293	radiometer
+1-Aug-19	Lake San Antonio	P1	S3	P1S3	11:54	35.85736	-120.97292	radiometer
+1-Aug-19	Lake San Antonio	P2	S1	P2S1	12:24	35.83337	-120.953	radiometer
+1-Aug-19	Lake San Antonio	P2	S1	P2S1	12:28	35.83333	-120.953	radiometer
+1-Aug-19	Lake San Antonio	P2	S1	P2S1	12:39	35.83335	-120.95301	radiometer
+1-Aug-19	Lake San Antonio	P2	S2	P2S2	12:51	35.83372	-120.95246	radiometer
+1-Aug-19	Lake San Antonio	P2	S2	P2S2	12:56	35.83372	-120.95246	radiometer
+1-Aug-19	Lake San Antonio	P2	S2	P2S2	13:00	35.83357	-120.95237	radiometer
+1-Aug-19	Lake San Antonio	P2	S3	P2S3	13:18	35.83395	-120.95349	radiometer
+1-Aug-19	Lake San Antonio	P3	S1	P3S1	13:42	35.84664	-120.95968	radiometer
+1-Aug-19	Lake San Antonio	P3	S1	P3S1	13:47	35.84661	-120.95971	radiometer
+1-Aug-19	Lake San Antonio	P3	S2	P3S2	13:54	35.84706	-120.96041	radiometer
+1-Aug-19	Lake San Antonio	P3	S3	P3S3	14:18	35.84622	-120.95979	radiometer
+1-Aug-19	Lake San Antonio	P1	S1	P1S1	10:27	35.85672	-120.97341	start site
+1-Aug-19	Lake San Antonio	P1	S2	P1S2	11:17	35.85629	-120.97363	start site
+1-Aug-19	Lake San Antonio	P1	S3	P1S3	11:39	35.85738	-120.97282	start site
+1-Aug-19	Lake San Antonio	P2	S1	P2S1	12:20	35.83334	-120.95298	start site
+1-Aug-19	Lake San Antonio	P2	S2	P2S2	12:49	35.83358	-120.95229	start site
+1-Aug-19	Lake San Antonio	P2	S3	P2S3	13:11	35.83391	-120.95346	start site
+1-Aug-19	Lake San Antonio	P3	S1	P3S1	13:33	35.84666	-120.95964	start site
+1-Aug-19	Lake San Antonio	P3	S2	P3S2	13:56	35.84705	-120.96039	start site
+1-Aug-19	Lake San Antonio	P3	S3	P3S3	14:14	35.84622	-120.95975	start site

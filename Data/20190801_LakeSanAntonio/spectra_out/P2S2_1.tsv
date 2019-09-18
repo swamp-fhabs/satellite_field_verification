@@ -1,0 +1,41 @@
+pixel	spec_rep	type	type_rep	notes	spec_file	spectra_id	unique_id
+P2S2	1	plate	1	saturation alert	Spec00391.asd.txt	P2S2_1	P2S2_1_PL1
+P2S2	1	plate	1	saturation alert	Spec00392.asd.txt	P2S2_1	P2S2_1_PL1
+P2S2	1	plate	1	saturation alert	Spec00393.asd.txt	P2S2_1	P2S2_1_PL1
+P2S2	1	plate	1	saturation alert	Spec00394.asd.txt	P2S2_1	P2S2_1_PL1
+P2S2	1	plate	1	saturation alert	Spec00395.asd.txt	P2S2_1	P2S2_1_PL1
+P2S2	1	plate	1	saturation alert	Spec00396.asd.txt	P2S2_1	P2S2_1_PL1
+P2S2	1	plate	1	saturation alert	Spec00397.asd.txt	P2S2_1	P2S2_1_PL1
+P2S2	1	plate	1	saturation alert	Spec00398.asd.txt	P2S2_1	P2S2_1_PL1
+P2S2	1	plate	1	saturation alert	Spec00399.asd.txt	P2S2_1	P2S2_1_PL1
+P2S2	1	plate	1	saturation alert	Spec00400.asd.txt	P2S2_1	P2S2_1_PL1
+P2S2	1	plate	2	na	Spec00401.asd.txt	P2S2_1	P2S2_1_PL2
+P2S2	1	plate	2	na	Spec00402.asd.txt	P2S2_1	P2S2_1_PL2
+P2S2	1	plate	2	na	Spec00403.asd.txt	P2S2_1	P2S2_1_PL2
+P2S2	1	plate	2	na	Spec00404.asd.txt	P2S2_1	P2S2_1_PL2
+P2S2	1	plate	2	na	Spec00405.asd.txt	P2S2_1	P2S2_1_PL2
+P2S2	1	plate	2	na	Spec00406.asd.txt	P2S2_1	P2S2_1_PL2
+P2S2	1	plate	2	na	Spec00407.asd.txt	P2S2_1	P2S2_1_PL2
+P2S2	1	plate	2	na	Spec00408.asd.txt	P2S2_1	P2S2_1_PL2
+P2S2	1	plate	2	na	Spec00409.asd.txt	P2S2_1	P2S2_1_PL2
+P2S2	1	plate	2	na	Spec00410.asd.txt	P2S2_1	P2S2_1_PL2
+P2S2	1	water	1	na	Spec00411.asd.txt	P2S2_1	P2S2_1_WA1
+P2S2	1	water	1	na	Spec00412.asd.txt	P2S2_1	P2S2_1_WA1
+P2S2	1	water	1	na	Spec00413.asd.txt	P2S2_1	P2S2_1_WA1
+P2S2	1	water	1	na	Spec00414.asd.txt	P2S2_1	P2S2_1_WA1
+P2S2	1	water	1	na	Spec00415.asd.txt	P2S2_1	P2S2_1_WA1
+P2S2	1	water	1	na	Spec00416.asd.txt	P2S2_1	P2S2_1_WA1
+P2S2	1	water	1	na	Spec00417.asd.txt	P2S2_1	P2S2_1_WA1
+P2S2	1	water	1	na	Spec00418.asd.txt	P2S2_1	P2S2_1_WA1
+P2S2	1	water	1	na	Spec00419.asd.txt	P2S2_1	P2S2_1_WA1
+P2S2	1	water	1	na	Spec00420.asd.txt	P2S2_1	P2S2_1_WA1
+P2S2	1	sky	1	na	Spec00421.asd.txt	P2S2_1	P2S2_1_SK1
+P2S2	1	sky	1	na	Spec00422.asd.txt	P2S2_1	P2S2_1_SK1
+P2S2	1	sky	1	na	Spec00423.asd.txt	P2S2_1	P2S2_1_SK1
+P2S2	1	sky	1	na	Spec00424.asd.txt	P2S2_1	P2S2_1_SK1
+P2S2	1	sky	1	na	Spec00425.asd.txt	P2S2_1	P2S2_1_SK1
+P2S2	1	sky	1	na	Spec00426.asd.txt	P2S2_1	P2S2_1_SK1
+P2S2	1	sky	1	na	Spec00427.asd.txt	P2S2_1	P2S2_1_SK1
+P2S2	1	sky	1	na	Spec00428.asd.txt	P2S2_1	P2S2_1_SK1
+P2S2	1	sky	1	na	Spec00429.asd.txt	P2S2_1	P2S2_1_SK1
+P2S2	1	sky	1	na	Spec00430.asd.txt	P2S2_1	P2S2_1_SK1

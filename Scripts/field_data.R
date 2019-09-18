@@ -27,6 +27,7 @@ ggplot(data= fd, aes(x= chla_ugL, y= turb_ntu)) +
   geom_point(aes(color= waterbody)) +
   theme_bw()
 
+
 ## TEMP
 ggplot(data= fd, aes(x= waterbody, y= temp_C)) +
   geom_boxplot() +

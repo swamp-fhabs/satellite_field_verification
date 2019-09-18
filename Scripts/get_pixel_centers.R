@@ -11,7 +11,7 @@ ggplot(data= pix) +
   geom_point(aes(x= Lon, y= Lat), size= 1)
 
 
-lakes <- readOGR(dsn= "/Users/kbg/Google Drive/Maps/GIS_files/CA_Lakes", layer= "CA_Lakes")
+lakes <- readOGR(dsn= "../LakeMaps/CA_Lakes", layer= "CA_Lakes")
 lakes.reproj <- spTransform(lakes, CRS("+proj=longlat +datum=WGS84")) # reproject to match ggmap
 lakes.reproj <- lakes.reproj[!is.na(lakes.reproj$NAME), ]
 lakes.data <- lakes.reproj@data %>% 

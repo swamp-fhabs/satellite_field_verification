@@ -1,7 +1,6 @@
 
 # Ignore .asd files from HH2 export
-*.asd
-*.asd.txt
+Data/**/*.asd
 desktop.ini
 
 # Image files

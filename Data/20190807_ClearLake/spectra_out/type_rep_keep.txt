@@ -1,0 +1,4 @@
+spectra_id	type	keep_type_rep
+P1S1_1	sky	2
+P2S1_3	sky	2
+P3S2_3	plate	1

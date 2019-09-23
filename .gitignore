@@ -1,6 +1,10 @@
 
 # Ignore .asd files from HH2 export
 Data/**/*.asd
+Data/**/*.raw
+Data/**/*.ini
+Data/**/*.ref
+Data/**/Wireless.bat
 desktop.ini
 
 # Image files

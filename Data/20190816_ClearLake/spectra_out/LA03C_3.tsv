@@ -1,0 +1,21 @@
+pixel	spec_rep	type	type_rep	notes	spec_file	spectra_id	unique_id
+LA03C	3	plate	1	na	Spec00301.asd.txt	LA03C_3	LA03C_3_PL1
+LA03C	3	plate	1	na	Spec00302.asd.txt	LA03C_3	LA03C_3_PL1
+LA03C	3	plate	1	na	Spec00303.asd.txt	LA03C_3	LA03C_3_PL1
+LA03C	3	plate	1	na	Spec00304.asd.txt	LA03C_3	LA03C_3_PL1
+LA03C	3	plate	1	na	Spec00305.asd.txt	LA03C_3	LA03C_3_PL1
+LA03C	3	plate	1	na	Spec00306.asd.txt	LA03C_3	LA03C_3_PL1
+LA03C	3	plate	1	na	Spec00307.asd.txt	LA03C_3	LA03C_3_PL1
+LA03C	3	plate	1	na	Spec00308.asd.txt	LA03C_3	LA03C_3_PL1
+LA03C	3	plate	1	na	Spec00309.asd.txt	LA03C_3	LA03C_3_PL1
+LA03C	3	plate	1	na	Spec00310.asd.txt	LA03C_3	LA03C_3_PL1
+LA03C	3	water	1	forgot to do sky for rep #3	Spec00311.asd.txt	LA03C_3	LA03C_3_WA1
+LA03C	3	water	1	forgot to do sky for rep #3	Spec00312.asd.txt	LA03C_3	LA03C_3_WA1
+LA03C	3	water	1	forgot to do sky for rep #3	Spec00313.asd.txt	LA03C_3	LA03C_3_WA1
+LA03C	3	water	1	forgot to do sky for rep #3	Spec00314.asd.txt	LA03C_3	LA03C_3_WA1
+LA03C	3	water	1	forgot to do sky for rep #3	Spec00315.asd.txt	LA03C_3	LA03C_3_WA1
+LA03C	3	water	1	forgot to do sky for rep #3	Spec00316.asd.txt	LA03C_3	LA03C_3_WA1
+LA03C	3	water	1	forgot to do sky for rep #3	Spec00317.asd.txt	LA03C_3	LA03C_3_WA1
+LA03C	3	water	1	forgot to do sky for rep #3	Spec00318.asd.txt	LA03C_3	LA03C_3_WA1
+LA03C	3	water	1	forgot to do sky for rep #3	Spec00319.asd.txt	LA03C_3	LA03C_3_WA1
+LA03C	3	water	1	forgot to do sky for rep #3	Spec00320.asd.txt	LA03C_3	LA03C_3_WA1

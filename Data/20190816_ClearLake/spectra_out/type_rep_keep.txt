@@ -1,0 +1,7 @@
+spectra_id	type	keep_type_rep
+CL03C_2	plate	2
+CL03C_3	plate	2
+LA03D_1	water	2
+OA04D_3	plate	2
+OA04C_1	sky	2
+OA04C_3	water	1

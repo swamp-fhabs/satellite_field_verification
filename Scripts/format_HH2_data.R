@@ -1,5 +1,7 @@
 
 
+## SEPTEMBER-2019: OLD SCRIPT REPLACED BY radiometer_noaa_format.R
+## KEEPING FOR A BIT IN CASE I NEED TO REFER TO ANY OF THESE FUNCTIONS
 
 #### LIBRARIES
 library(tidyverse)

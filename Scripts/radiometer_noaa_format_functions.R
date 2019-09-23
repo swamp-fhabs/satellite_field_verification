@@ -90,7 +90,7 @@ make_spectra_plots <- function(spectra_path, ascii_path){
   for(file in spectra_files){
     
     ## Read in Data frame
-    spec.rep.df <- read_tsv(file.path(spectra_path, file))
+    spec.rep.df <- suppressMessages(read_tsv(file.path(spectra_path, file)))
     spec.files <-  spec.rep.df$spec_file
     
     # Read in the files to a list
@@ -221,9 +221,9 @@ copy_ascii_files <- function(base_dir, samp_dir, ascii_dir, out_dir){
   require(tidyverse)
   
   # Read file and extract the ascii file names
-  ascii_files <- read_delim(file.path(base_dir, samp_dir, str_c(samp_dir, ".txt")), 
+  ascii_files <- suppressMessages(read_delim(file.path(base_dir, samp_dir, str_c(samp_dir, ".txt")), 
                             delim= " ", 
-                            col_names= FALSE) %>% 
+                            col_names= FALSE)) %>% 
     select(X3) %>% 
     pull()
   

@@ -5,13 +5,14 @@
 
 ## Load functions
 source("Scripts/radiometer_noaa_format_functions.R")
+library(tidyverse)
 
-## WATERBODY: Lake San Antonio
-## SAMPLING DATE: 01-Aug-2019
+## WATERBODY: Clear Lake
+## SAMPLING DATE: 16-Aug-2019
 
 ## Specify pathways
-base_dir <- "Data/20190801_LakeSanAntonio"
-metadata_file <- file.path(base_dir, "radiometer_LakeSanAntonio_20190801.txt")
+base_dir <- "Data/20190816_ClearLake"
+metadata_file <- file.path(base_dir, "radiometer_ClearLake_20190816.txt")
 spectra_out_dir <- file.path(base_dir, "spectra_out")
 ascii_dir <- file.path(base_dir, "ascii_export")
 noaa_out_dir <- file.path(base_dir, "noaa_files")
@@ -53,7 +54,7 @@ make_spectra_plots(spectra_path= spectra_out_dir,
 
 # Path to file for type_reps to keep in analyses
 # (should be saved in the spectra_out_dir)
-type_rep_to_keep <- readr::read_tsv(file.path(spectra_out_dir, "type_rep_keep.txt"))
+type_rep_to_keep <- read_tsv(file.path(spectra_out_dir, "type_rep_keep.txt"))
 
 
 # Create text files formated for the NOAA script. 
@@ -97,14 +98,14 @@ exe_file <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite
 # Location of the 10% spectralon calibration file
 cal_file <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite_field_verification_git\\Data\\ASD_processing\\Raphe10%_Spectralon_10AA01-0517-8337.txt"
 # Base path for where all the sample directories are located
-basePath <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite_field_verification_git\\Data\\20190801_LakeSanAntonio\\noaa_files"
+basePath <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite_field_verification_git\\Data\\20190816_ClearLake\\noaa_files"
 
 
 map(noaa_file_dirs, function(x){ write_batch_file(samp_dir = x,
                                            base_path= basePath,
                                            exe_path = exe_file, 
                                            cal_path = cal_file, 
-                                           batch_name = "LakeSantAntonio_20190801_batch.txt", 
+                                           batch_name = "ClearLake_20190816_batch.txt", 
                                            out_dir = noaa_out_dir)
 })
 

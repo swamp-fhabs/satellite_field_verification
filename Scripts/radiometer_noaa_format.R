@@ -5,6 +5,7 @@
 
 ## Load functions
 source("Scripts/radiometer_noaa_format_functions.R")
+library(tidyverse)
 
 ## WATERBODY: ??
 ## SAMPLING DATE: ??
@@ -18,7 +19,7 @@ noaa_out_dir <- file.path(base_dir, "")
 
 
 
-#### PROCESSING WORKFLOW BELOW ####
+#### WRANGLE/TIDY DATA BEFORE CALCULATING REMOTE REFLECTANCE VALUES ####
 
 
 # Function to format metadata from Radiometer Fieldsheets
@@ -45,7 +46,8 @@ make_spectra_plots(spectra_path= spectra_out_dir,
                    ascii_path= ascii_dir)
 
 
-#### GO THROUGH ALL PLOTS AND FILL OUT THE THE TYPE_REP FILE
+#### GO THROUGH ALL PLOTS AND FILL OUT THE THE TYPE_REP FILE ####
+
 # TO DETERMINE WHICH TYPE_REPS WILL BE RETAINED FOR FURTHER ANALYSES
 # SAVE THE FILE IN THE SPECTRA_OUT_DIR
 # ONCE THE TEXT FILE HAS BEEN CREATED, LOAD IT INTO R BELOW
@@ -66,6 +68,49 @@ type_rep_to_keep <- readr::read_tsv(file.path(spectra_out_dir, "type_rep_keep.tx
 noaa_format_export(metadata_df= meta_df, 
                    export_path= noaa_out_dir, 
                    keep_tr= type_rep_to_keep)
+
+
+
+#### WRITE THE BATCH FILE TO RUN THE NOAA PROGRAM TO CALCULATE REMOTE SENSED REFLECTANCE VALUES ####
+
+## Specify pathways
+#base_dir <- "Data/20190801_LakeSanAntonio"
+#noaa_out_dir <- file.path(base_dir, "noaa_files")
+#ascii_dir <- file.path(base_dir, "ascii_export")
+#noaa_file_dirs <- list.dirs(noaa_out_dir, full.names= FALSE)[-1]
+
+
+## Copy files from ascii folder to sample folders (sample_dir)
+# selects the ascii files listed in the sample.txt file
+# and moves them all into a single sample folder
+noaa_file_dirs <- list.dirs(noaa_out_dir, full.names= FALSE)[-1]
+
+## CHECK TO SEE IF YOU ALWAYS NEED THE [-1] above
+
+map(noaa_file_dirs, function(x) copy_ascii_files(samp_dir= x,
+                                                    base_dir= noaa_out_dir,
+                                                    ascii_dir = ascii_dir,
+                                                    out_dir = noaa_out_dir))
+
+
+## Write a batch file to run the NOAA EXE file on all samples
+## These paths need to be written with a backslash for the Windows batch file
+
+# Location of the NOAA program on the hard drive
+exe_file <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite_field_verification_git\\Data\\ASD_processing\\test_asd_group.exe"
+# Location of the 10% spectralon calibration file
+cal_file <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite_field_verification_git\\Data\\ASD_processing\\Raphe10%_Spectralon_10AA01-0517-8337.txt"
+# Base path for where all the sample directories are located
+basePath <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite_field_verification_git\\Data\\20190801_LakeSanAntonio\\noaa_files"
+
+
+map(noaa_file_dirs, function(x){ write_batch_file(samp_dir = x,
+                                           base_path= basePath,
+                                           exe_path = exe_file, 
+                                           cal_path = cal_file, 
+                                           batch_name = "batch_test4.txt", 
+                                           out_dir = basePath)
+})
 
 
 

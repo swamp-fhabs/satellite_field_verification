@@ -66,9 +66,9 @@ export_spectra_files <- function(metadata_df, export_path){
   }
   
   ## Export elements in spectra list as text files
-  map2(spectra_list, names(spectra_list), function(df, nm){
+  map2(spectra_list, names(spectra_list), function(df, fname){
     write_tsv(df, path= str_c(export_path, "/", 
-                              nm, 
+                              fname, 
                               ".tsv"))}
   )
 }
@@ -101,7 +101,7 @@ make_spectra_plots <- function(spectra_path, ascii_path){
     
     
     ## Add filename column to each element in the list
-    flist2 <- map2(flist, names(flist), function(df, nm) mutate(df, spec_file= nm))
+    flist2 <- map2(flist, names(flist), function(df, fname) mutate(df, spec_file= fname))
     
     ## Transform into data frame
     f.df2 <- do.call(rbind, flist2) %>% 
@@ -152,16 +152,26 @@ noaa_format_export <- function(metadata_df, export_path, keep_tr){
     dir.create(export_path)
   }
   
+  #df= spectra_list_noaa[[1]]
+  #fname= names(spectra_list_noaa)[1]
   ## Export elements in spectra list as text files in export_path directory
-  map2(spectra_list_noaa, names(spectra_list_noaa), function(df, nm){
+  map2(spectra_list_noaa, names(spectra_list_noaa), function(df, fname){
+    
+    # Make directory for files
+    if(!dir.exists(file.path(export_path, fname))){
+      dir.create(file.path(export_path, fname))
+    }
     
     # Spectra_id with type_rep == 1 and no replicate measurements
-    if(nm %in% keep_tr$spectra_id == FALSE){
+    if(fname %in% keep_tr$spectra_id == FALSE){
       df %>%
         select(num, type, spec_file) %>%
         write_delim(.,
-                    path= str_c(export_path, "/",
-                                nm,
+                    # path= str_c(export_path, "/",
+                    #            fname, 
+                    #            ".txt"),
+                    path= str_c(export_path, "/", fname, "/",
+                                fname, 
                                 ".txt"),
                     delim= " ",
                     col_names = FALSE)
@@ -169,12 +179,12 @@ noaa_format_export <- function(metadata_df, export_path, keep_tr){
     
     
     # Spectra_id with type_rep > 1 and no replicate measurements
-    if(nm %in% keep_tr$spectra_id == TRUE){
+    if(fname %in% keep_tr$spectra_id == TRUE){
       df.filt <- df
       
       # Filter keep_tr_filt by the Spectra_id
       keep_tr_filt <- keep_tr %>% 
-        filter(spectra_id == nm)
+        filter(spectra_id == fname)
       
       # Loop for multiple types within a spectra_id
       for(typ in keep_tr_filt$type){
@@ -189,8 +199,11 @@ noaa_format_export <- function(metadata_df, export_path, keep_tr){
       df.filt %>% 
         select(num, type, spec_file) %>% 
         write_delim(., 
-                    path= str_c(export_path, "/", 
-                                nm, 
+                   # path= str_c(export_path, "/",
+                    #            fname, 
+                    #            ".txt"),
+                    path= str_c(export_path, "/", fname, "/",
+                                fname, 
                                 ".txt"),
                     delim= " ",
                     col_names = FALSE)
@@ -198,5 +211,56 @@ noaa_format_export <- function(metadata_df, export_path, keep_tr){
   })
   
   
+}
+
+
+
+## Copy files from ascii folder to sample folders (sample_dir)
+## Reads in the files listed in the NOAA formatted .txt file
+copy_ascii_files <- function(base_dir, samp_dir, ascii_dir, out_dir){
+  require(tidyverse)
+  
+  # Read file and extract the ascii file names
+  ascii_files <- read_delim(file.path(base_dir, samp_dir, str_c(samp_dir, ".txt")), 
+                            delim= " ", 
+                            col_names= FALSE) %>% 
+    select(X3) %>% 
+    pull()
+  
+  # Copy ascii files into the sample folder
+  file.copy(from= file.path(ascii_dir, ascii_files), to= file.path(out_dir, samp_dir))
+ 
+  
+  # The file.copy() is rather slow above. I tested an alternate method using system2 below
+  # but it was also slow, so I am keeping file.copy() becaus the code is easier to understand.
+  
+  # file_paths <- gsub("/", "\\", file.path(ascii_dir, ascii_files), fixed= TRUE)
+  # windows_out_dir <- gsub("/", "\\", file.path(out_dir, samp_dir), fixed= TRUE)
+  # map(file_paths,  function(x) system2('xcopy', args= c(x, windows_out_dir)))
+  # 
+}
+
+
+
+
+### Write the NOAA EXE batch file
+## Changes the directory to the location of the ascii files and the .txt file
+## Then it writes the Windows command prompt to run the EXE function for producing remote sense reflectance values
+## Outputs a text file with the command for every sample in the directory
+write_batch_file <- function(samp_dir, base_path, exe_path, cal_path,  batch_name, out_dir){
+  require(tidyverse)
+  
+  ## Change directory to where ascii files are located
+  dir_path <- str_c(base_path, "\\", samp_dir)
+  change_dir <- str_c("cd", dir_path, sep= " ")
+  
+  ## Run the EXE file
+  #command_text <- str_c(exe_path, "--cal", cal_path, "--file", str_c("..\\", samp_file), sep= " ")
+  command_text <- str_c(exe_path, "--cal", cal_path, "--file", str_c(samp_dir, ".txt"), sep= " ")
+  
+  
+  write_lines(change_dir, path= file.path(out_dir, str_c(batch_name)), append= TRUE)
+  write_lines(command_text, path= file.path(out_dir, str_c(batch_name)), append= TRUE)
+  write_lines("", path= file.path(out_dir, str_c(batch_name)), append= TRUE)
 }
 

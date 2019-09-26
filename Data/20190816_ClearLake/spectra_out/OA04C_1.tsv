@@ -1,31 +1,41 @@
 pixel	spec_rep	type	type_rep	notes	spec_file	spectra_id	unique_id
-OA04D	1	plate	1	deg25 FOV	Spec00451.asd.txt	OA04D_1	OA04D_1_PL1
-OA04D	1	plate	1	deg25 FOV	Spec00452.asd.txt	OA04D_1	OA04D_1_PL1
-OA04D	1	plate	1	deg25 FOV	Spec00453.asd.txt	OA04D_1	OA04D_1_PL1
-OA04D	1	plate	1	deg25 FOV	Spec00454.asd.txt	OA04D_1	OA04D_1_PL1
-OA04D	1	plate	1	deg25 FOV	Spec00455.asd.txt	OA04D_1	OA04D_1_PL1
-OA04D	1	plate	1	deg25 FOV	Spec00456.asd.txt	OA04D_1	OA04D_1_PL1
-OA04D	1	plate	1	deg25 FOV	Spec00457.asd.txt	OA04D_1	OA04D_1_PL1
-OA04D	1	plate	1	deg25 FOV	Spec00458.asd.txt	OA04D_1	OA04D_1_PL1
-OA04D	1	plate	1	deg25 FOV	Spec00459.asd.txt	OA04D_1	OA04D_1_PL1
-OA04D	1	plate	1	deg25 FOV	Spec00460.asd.txt	OA04D_1	OA04D_1_PL1
-OA04D	1	water	1	deg25 FOV	Spec00461.asd.txt	OA04D_1	OA04D_1_WA1
-OA04D	1	water	1	deg25 FOV	Spec00462.asd.txt	OA04D_1	OA04D_1_WA1
-OA04D	1	water	1	deg25 FOV	Spec00463.asd.txt	OA04D_1	OA04D_1_WA1
-OA04D	1	water	1	deg25 FOV	Spec00464.asd.txt	OA04D_1	OA04D_1_WA1
-OA04D	1	water	1	deg25 FOV	Spec00465.asd.txt	OA04D_1	OA04D_1_WA1
-OA04D	1	water	1	deg25 FOV	Spec00466.asd.txt	OA04D_1	OA04D_1_WA1
-OA04D	1	water	1	deg25 FOV	Spec00467.asd.txt	OA04D_1	OA04D_1_WA1
-OA04D	1	water	1	deg25 FOV	Spec00468.asd.txt	OA04D_1	OA04D_1_WA1
-OA04D	1	water	1	deg25 FOV	Spec00469.asd.txt	OA04D_1	OA04D_1_WA1
-OA04D	1	water	1	deg25 FOV	Spec00470.asd.txt	OA04D_1	OA04D_1_WA1
-OA04D	1	sky	1	deg25 FOV	Spec00471.asd.txt	OA04D_1	OA04D_1_SK1
-OA04D	1	sky	1	deg25 FOV	Spec00472.asd.txt	OA04D_1	OA04D_1_SK1
-OA04D	1	sky	1	deg25 FOV	Spec00473.asd.txt	OA04D_1	OA04D_1_SK1
-OA04D	1	sky	1	deg25 FOV	Spec00474.asd.txt	OA04D_1	OA04D_1_SK1
-OA04D	1	sky	1	deg25 FOV	Spec00475.asd.txt	OA04D_1	OA04D_1_SK1
-OA04D	1	sky	1	deg25 FOV	Spec00476.asd.txt	OA04D_1	OA04D_1_SK1
-OA04D	1	sky	1	deg25 FOV	Spec00477.asd.txt	OA04D_1	OA04D_1_SK1
-OA04D	1	sky	1	deg25 FOV	Spec00478.asd.txt	OA04D_1	OA04D_1_SK1
-OA04D	1	sky	1	deg25 FOV	Spec00479.asd.txt	OA04D_1	OA04D_1_SK1
-OA04D	1	sky	1	deg25 FOV	Spec00480.asd.txt	OA04D_1	OA04D_1_SK1
+OA04C	1	plate	1	na	Spec00551.asd.txt	OA04C_1	OA04C_1_PL1
+OA04C	1	plate	1	na	Spec00552.asd.txt	OA04C_1	OA04C_1_PL1
+OA04C	1	plate	1	na	Spec00553.asd.txt	OA04C_1	OA04C_1_PL1
+OA04C	1	plate	1	na	Spec00554.asd.txt	OA04C_1	OA04C_1_PL1
+OA04C	1	plate	1	na	Spec00555.asd.txt	OA04C_1	OA04C_1_PL1
+OA04C	1	plate	1	na	Spec00556.asd.txt	OA04C_1	OA04C_1_PL1
+OA04C	1	plate	1	na	Spec00557.asd.txt	OA04C_1	OA04C_1_PL1
+OA04C	1	plate	1	na	Spec00558.asd.txt	OA04C_1	OA04C_1_PL1
+OA04C	1	plate	1	na	Spec00559.asd.txt	OA04C_1	OA04C_1_PL1
+OA04C	1	plate	1	na	Spec00560.asd.txt	OA04C_1	OA04C_1_PL1
+OA04C	1	water	1	na	Spec00561.asd.txt	OA04C_1	OA04C_1_WA1
+OA04C	1	water	1	na	Spec00562.asd.txt	OA04C_1	OA04C_1_WA1
+OA04C	1	water	1	na	Spec00563.asd.txt	OA04C_1	OA04C_1_WA1
+OA04C	1	water	1	na	Spec00564.asd.txt	OA04C_1	OA04C_1_WA1
+OA04C	1	water	1	na	Spec00565.asd.txt	OA04C_1	OA04C_1_WA1
+OA04C	1	water	1	na	Spec00566.asd.txt	OA04C_1	OA04C_1_WA1
+OA04C	1	water	1	na	Spec00567.asd.txt	OA04C_1	OA04C_1_WA1
+OA04C	1	water	1	na	Spec00568.asd.txt	OA04C_1	OA04C_1_WA1
+OA04C	1	water	1	na	Spec00569.asd.txt	OA04C_1	OA04C_1_WA1
+OA04C	1	water	1	na	Spec00570.asd.txt	OA04C_1	OA04C_1_WA1
+OA04C	1	sky	1	na	Spec00571.asd.txt	OA04C_1	OA04C_1_SK1
+OA04C	1	sky	1	na	Spec00572.asd.txt	OA04C_1	OA04C_1_SK1
+OA04C	1	sky	1	na	Spec00573.asd.txt	OA04C_1	OA04C_1_SK1
+OA04C	1	sky	1	na	Spec00574.asd.txt	OA04C_1	OA04C_1_SK1
+OA04C	1	sky	1	na	Spec00575.asd.txt	OA04C_1	OA04C_1_SK1
+OA04C	1	sky	1	na	Spec00576.asd.txt	OA04C_1	OA04C_1_SK1
+OA04C	1	sky	1	na	Spec00577.asd.txt	OA04C_1	OA04C_1_SK1
+OA04C	1	sky	1	na	Spec00578.asd.txt	OA04C_1	OA04C_1_SK1
+OA04C	1	sky	1	na	Spec00579.asd.txt	OA04C_1	OA04C_1_SK1
+OA04C	1	sky	1	na	Spec00580.asd.txt	OA04C_1	OA04C_1_SK1
+OA04C	1	sky	2	na	Spec00581.asd.txt	OA04C_1	OA04C_1_SK2
+OA04C	1	sky	2	na	Spec00582.asd.txt	OA04C_1	OA04C_1_SK2
+OA04C	1	sky	2	na	Spec00583.asd.txt	OA04C_1	OA04C_1_SK2
+OA04C	1	sky	2	na	Spec00584.asd.txt	OA04C_1	OA04C_1_SK2
+OA04C	1	sky	2	na	Spec00585.asd.txt	OA04C_1	OA04C_1_SK2
+OA04C	1	sky	2	na	Spec00586.asd.txt	OA04C_1	OA04C_1_SK2
+OA04C	1	sky	2	na	Spec00587.asd.txt	OA04C_1	OA04C_1_SK2
+OA04C	1	sky	2	na	Spec00588.asd.txt	OA04C_1	OA04C_1_SK2
+OA04C	1	sky	2	na	Spec00589.asd.txt	OA04C_1	OA04C_1_SK2
+OA04C	1	sky	2	na	Spec00590.asd.txt	OA04C_1	OA04C_1_SK2

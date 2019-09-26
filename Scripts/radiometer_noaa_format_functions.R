@@ -58,7 +58,7 @@ export_spectra_files <- function(metadata_df, export_path){
                                             ifelse(type == "WA", "water", "sky"))) %>% 
                 select(-file_num))
   
-  names(spectra_list) <- (unique(metadata_df$spectra_id))
+  names(spectra_list) <- sort(unique(metadata_df$spectra_id))
   
   ## Create folder
   if(!dir.exists(export_path)){
@@ -143,7 +143,7 @@ noaa_format_export <- function(metadata_df, export_path, keep_tr){
               .f= ~ mutate(.x, type= ifelse(type == "PL", "plate",
                                             ifelse(type == "WA", "water", "sky")),
                            num= 0))
-  names(spectra_list_noaa) <- (unique(meta_df$spectra_id))
+  names(spectra_list_noaa) <- sort(unique(meta_df$spectra_id))
   
   
   

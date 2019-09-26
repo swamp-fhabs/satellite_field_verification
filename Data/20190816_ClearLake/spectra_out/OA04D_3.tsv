@@ -1,41 +1,41 @@
 pixel	spec_rep	type	type_rep	notes	spec_file	spectra_id	unique_id
-OA04C	3	plate	1	na	Spec00621.asd.txt	OA04C_3	OA04C_3_PL1
-OA04C	3	plate	1	na	Spec00622.asd.txt	OA04C_3	OA04C_3_PL1
-OA04C	3	plate	1	na	Spec00623.asd.txt	OA04C_3	OA04C_3_PL1
-OA04C	3	plate	1	na	Spec00624.asd.txt	OA04C_3	OA04C_3_PL1
-OA04C	3	plate	1	na	Spec00625.asd.txt	OA04C_3	OA04C_3_PL1
-OA04C	3	plate	1	na	Spec00626.asd.txt	OA04C_3	OA04C_3_PL1
-OA04C	3	plate	1	na	Spec00627.asd.txt	OA04C_3	OA04C_3_PL1
-OA04C	3	plate	1	na	Spec00628.asd.txt	OA04C_3	OA04C_3_PL1
-OA04C	3	plate	1	na	Spec00629.asd.txt	OA04C_3	OA04C_3_PL1
-OA04C	3	plate	1	na	Spec00630.asd.txt	OA04C_3	OA04C_3_PL1
-OA04C	3	water	1	na	Spec00631.asd.txt	OA04C_3	OA04C_3_WA1
-OA04C	3	water	1	na	Spec00632.asd.txt	OA04C_3	OA04C_3_WA1
-OA04C	3	water	1	na	Spec00633.asd.txt	OA04C_3	OA04C_3_WA1
-OA04C	3	water	1	na	Spec00634.asd.txt	OA04C_3	OA04C_3_WA1
-OA04C	3	water	1	na	Spec00635.asd.txt	OA04C_3	OA04C_3_WA1
-OA04C	3	water	1	na	Spec00636.asd.txt	OA04C_3	OA04C_3_WA1
-OA04C	3	water	1	na	Spec00637.asd.txt	OA04C_3	OA04C_3_WA1
-OA04C	3	water	1	na	Spec00638.asd.txt	OA04C_3	OA04C_3_WA1
-OA04C	3	water	1	na	Spec00639.asd.txt	OA04C_3	OA04C_3_WA1
-OA04C	3	water	1	na	Spec00640.asd.txt	OA04C_3	OA04C_3_WA1
-OA04C	3	water	2	na	Spec00641.asd.txt	OA04C_3	OA04C_3_WA2
-OA04C	3	water	2	na	Spec00642.asd.txt	OA04C_3	OA04C_3_WA2
-OA04C	3	water	2	na	Spec00643.asd.txt	OA04C_3	OA04C_3_WA2
-OA04C	3	water	2	na	Spec00644.asd.txt	OA04C_3	OA04C_3_WA2
-OA04C	3	water	2	na	Spec00645.asd.txt	OA04C_3	OA04C_3_WA2
-OA04C	3	water	2	na	Spec00646.asd.txt	OA04C_3	OA04C_3_WA2
-OA04C	3	water	2	na	Spec00647.asd.txt	OA04C_3	OA04C_3_WA2
-OA04C	3	water	2	na	Spec00648.asd.txt	OA04C_3	OA04C_3_WA2
-OA04C	3	water	2	na	Spec00649.asd.txt	OA04C_3	OA04C_3_WA2
-OA04C	3	water	2	na	Spec00650.asd.txt	OA04C_3	OA04C_3_WA2
-OA04C	3	sky	1	na	Spec00651.asd.txt	OA04C_3	OA04C_3_SK1
-OA04C	3	sky	1	na	Spec00652.asd.txt	OA04C_3	OA04C_3_SK1
-OA04C	3	sky	1	na	Spec00653.asd.txt	OA04C_3	OA04C_3_SK1
-OA04C	3	sky	1	na	Spec00654.asd.txt	OA04C_3	OA04C_3_SK1
-OA04C	3	sky	1	na	Spec00655.asd.txt	OA04C_3	OA04C_3_SK1
-OA04C	3	sky	1	na	Spec00656.asd.txt	OA04C_3	OA04C_3_SK1
-OA04C	3	sky	1	na	Spec00657.asd.txt	OA04C_3	OA04C_3_SK1
-OA04C	3	sky	1	na	Spec00658.asd.txt	OA04C_3	OA04C_3_SK1
-OA04C	3	sky	1	na	Spec00659.asd.txt	OA04C_3	OA04C_3_SK1
-OA04C	3	sky	1	na	Spec00660.asd.txt	OA04C_3	OA04C_3_SK1
+OA04D	3	plate	1	deg25 FOV	Spec00511.asd.txt	OA04D_3	OA04D_3_PL1
+OA04D	3	plate	1	deg25 FOV	Spec00512.asd.txt	OA04D_3	OA04D_3_PL1
+OA04D	3	plate	1	deg25 FOV	Spec00513.asd.txt	OA04D_3	OA04D_3_PL1
+OA04D	3	plate	1	deg25 FOV	Spec00514.asd.txt	OA04D_3	OA04D_3_PL1
+OA04D	3	plate	1	deg25 FOV	Spec00515.asd.txt	OA04D_3	OA04D_3_PL1
+OA04D	3	plate	1	deg25 FOV	Spec00516.asd.txt	OA04D_3	OA04D_3_PL1
+OA04D	3	plate	1	deg25 FOV	Spec00517.asd.txt	OA04D_3	OA04D_3_PL1
+OA04D	3	plate	1	deg25 FOV	Spec00518.asd.txt	OA04D_3	OA04D_3_PL1
+OA04D	3	plate	1	deg25 FOV	Spec00519.asd.txt	OA04D_3	OA04D_3_PL1
+OA04D	3	plate	1	deg25 FOV	Spec00520.asd.txt	OA04D_3	OA04D_3_PL1
+OA04D	3	plate	2	deg25 FOV	Spec00521.asd.txt	OA04D_3	OA04D_3_PL2
+OA04D	3	plate	2	deg25 FOV	Spec00522.asd.txt	OA04D_3	OA04D_3_PL2
+OA04D	3	plate	2	deg25 FOV	Spec00523.asd.txt	OA04D_3	OA04D_3_PL2
+OA04D	3	plate	2	deg25 FOV	Spec00524.asd.txt	OA04D_3	OA04D_3_PL2
+OA04D	3	plate	2	deg25 FOV	Spec00525.asd.txt	OA04D_3	OA04D_3_PL2
+OA04D	3	plate	2	deg25 FOV	Spec00526.asd.txt	OA04D_3	OA04D_3_PL2
+OA04D	3	plate	2	deg25 FOV	Spec00527.asd.txt	OA04D_3	OA04D_3_PL2
+OA04D	3	plate	2	deg25 FOV	Spec00528.asd.txt	OA04D_3	OA04D_3_PL2
+OA04D	3	plate	2	deg25 FOV	Spec00529.asd.txt	OA04D_3	OA04D_3_PL2
+OA04D	3	plate	2	deg25 FOV	Spec00530.asd.txt	OA04D_3	OA04D_3_PL2
+OA04D	3	water	1	deg25 FOV	Spec00531.asd.txt	OA04D_3	OA04D_3_WA1
+OA04D	3	water	1	deg25 FOV	Spec00532.asd.txt	OA04D_3	OA04D_3_WA1
+OA04D	3	water	1	deg25 FOV	Spec00533.asd.txt	OA04D_3	OA04D_3_WA1
+OA04D	3	water	1	deg25 FOV	Spec00534.asd.txt	OA04D_3	OA04D_3_WA1
+OA04D	3	water	1	deg25 FOV	Spec00535.asd.txt	OA04D_3	OA04D_3_WA1
+OA04D	3	water	1	deg25 FOV	Spec00536.asd.txt	OA04D_3	OA04D_3_WA1
+OA04D	3	water	1	deg25 FOV	Spec00537.asd.txt	OA04D_3	OA04D_3_WA1
+OA04D	3	water	1	deg25 FOV	Spec00538.asd.txt	OA04D_3	OA04D_3_WA1
+OA04D	3	water	1	deg25 FOV	Spec00539.asd.txt	OA04D_3	OA04D_3_WA1
+OA04D	3	water	1	deg25 FOV	Spec00540.asd.txt	OA04D_3	OA04D_3_WA1
+OA04D	3	sky	1	deg25 FOV	Spec00541.asd.txt	OA04D_3	OA04D_3_SK1
+OA04D	3	sky	1	deg25 FOV	Spec00542.asd.txt	OA04D_3	OA04D_3_SK1
+OA04D	3	sky	1	deg25 FOV	Spec00543.asd.txt	OA04D_3	OA04D_3_SK1
+OA04D	3	sky	1	deg25 FOV	Spec00544.asd.txt	OA04D_3	OA04D_3_SK1
+OA04D	3	sky	1	deg25 FOV	Spec00545.asd.txt	OA04D_3	OA04D_3_SK1
+OA04D	3	sky	1	deg25 FOV	Spec00546.asd.txt	OA04D_3	OA04D_3_SK1
+OA04D	3	sky	1	deg25 FOV	Spec00547.asd.txt	OA04D_3	OA04D_3_SK1
+OA04D	3	sky	1	deg25 FOV	Spec00548.asd.txt	OA04D_3	OA04D_3_SK1
+OA04D	3	sky	1	deg25 FOV	Spec00549.asd.txt	OA04D_3	OA04D_3_SK1
+OA04D	3	sky	1	deg25 FOV	Spec00550.asd.txt	OA04D_3	OA04D_3_SK1

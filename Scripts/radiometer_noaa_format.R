@@ -104,6 +104,13 @@ cal_file <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite
 basePath <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite_field_verification_git\\Data\\20190801_LakeSanAntonio\\noaa_files"
 
 
+## Delete prior version of the batch file
+#if(file.exists(file.path(out_dir, batch_name))){
+#    file.remove(file.path(out_dir, batch_name))
+#  }
+
+
+
 map(noaa_file_dirs, function(x){ write_batch_file(samp_dir = x,
                                            base_path= basePath,
                                            exe_path = exe_file, 

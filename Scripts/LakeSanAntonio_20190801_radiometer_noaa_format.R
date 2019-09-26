@@ -5,6 +5,7 @@
 
 ## Load functions
 source("Scripts/radiometer_noaa_format_functions.R")
+library(tidyverse)
 
 ## WATERBODY: Lake San Antonio
 ## SAMPLING DATE: 01-Aug-2019
@@ -95,9 +96,11 @@ map(noaa_file_dirs, function(x) copy_ascii_files(samp_dir= x,
 # Location of the NOAA program on the hard drive
 exe_file <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite_field_verification_git\\Data\\ASD_processing\\test_asd_group.exe"
 # Location of the 10% spectralon calibration file
-cal_file <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite_field_verification_git\\Data\\ASD_processing\\Raphe10%_Spectralon_10AA01-0517-8337.txt"
+cal_file <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite_field_verification_git\\Data\\ASD_processing\\Raphe10percent_Spectralon_10AA01-0517-8337.txt"
 # Base path for where all the sample directories are located
 basePath <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite_field_verification_git\\Data\\20190801_LakeSanAntonio\\noaa_files"
+
+
 
 
 map(noaa_file_dirs, function(x){ write_batch_file(samp_dir = x,

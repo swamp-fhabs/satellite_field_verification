@@ -96,17 +96,17 @@ map(noaa_file_dirs, function(x) copy_ascii_files(samp_dir= x,
 # Location of the NOAA program on the hard drive
 exe_file <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite_field_verification_git\\Data\\ASD_processing\\test_asd_group.exe"
 # Location of the 10% spectralon calibration file
-cal_file <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite_field_verification_git\\Data\\ASD_processing\\Raphe10%_Spectralon_10AA01-0517-8337.txt"
+cal_file <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite_field_verification_git\\Data\\ASD_processing\\Raphe10percent_Spectralon_10AA01-0517-8337.txt"
 # Base path for where all the sample directories are located
 basePath <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite_field_verification_git\\Data\\20190816_ClearLake\\noaa_files"
 
 
-map(noaa_file_dirs, function(x){ write_batch_file(samp_dir = x,
-                                           base_path= basePath,
-                                           exe_path = exe_file, 
-                                           cal_path = cal_file, 
-                                           batch_name = "ClearLake_20190816_batch.txt", 
-                                           out_dir = noaa_out_dir)
+map(noaa_file_dirs, function(x){write_batch_file(samp_dir = x,
+                                                 base_path= basePath,
+                                                 exe_path = exe_file, 
+                                                 cal_path = cal_file, 
+                                                 batch_name = "ClearLake_20190816_batch.bat", 
+                                                 out_dir = noaa_out_dir)
 })
 
 

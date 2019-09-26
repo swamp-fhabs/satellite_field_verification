@@ -247,20 +247,19 @@ copy_ascii_files <- function(base_dir, samp_dir, ascii_dir, out_dir){
 ## Changes the directory to the location of the ascii files and the .txt file
 ## Then it writes the Windows command prompt to run the EXE function for producing remote sense reflectance values
 ## Outputs a text file with the command for every sample in the directory
-write_batch_file <- function(samp_dir, base_path, exe_path, cal_path,  batch_name, out_dir){
+write_batch_file <- function(samp_dir, base_path, exe_path, cal_path,  batch_name, out_dir, overwrite= TRUE){
   require(tidyverse)
-  
+
   ## Change directory to where ascii files are located
   dir_path <- str_c(base_path, "\\", samp_dir)
   change_dir <- str_c("cd", dir_path, sep= " ")
   
   ## Run the EXE file
-  #command_text <- str_c(exe_path, "--cal", cal_path, "--file", str_c("..\\", samp_file), sep= " ")
-  command_text <- str_c(exe_path, "--cal", cal_path, "--file", str_c(samp_dir, ".txt"), sep= " ")
+  command_text <- str_c(exe_path, "--cal", cal_path, "--file", str_c(samp_dir, ".txt"), "--skip_plot_display", sep= " ")
   
   
-  write_lines(change_dir, path= file.path(out_dir, str_c(batch_name)), append= TRUE)
-  write_lines(command_text, path= file.path(out_dir, str_c(batch_name)), append= TRUE)
-  write_lines("", path= file.path(out_dir, str_c(batch_name)), append= TRUE)
+  write_lines(change_dir, path= file.path(out_dir, batch_name), append= TRUE)
+  write_lines(command_text, path= file.path(out_dir, batch_name), append= TRUE)
+  write_lines("", path= file.path(out_dir, batch_name), append= TRUE)
 }
 

@@ -16,6 +16,9 @@ metadata_file <- file.path(base_dir, "?.txt")
 spectra_out_dir <- file.path(base_dir, "")
 ascii_dir <- file.path(base_dir, "")
 noaa_out_dir <- file.path(base_dir, "")
+rrs_dir <- "Data/rrs_data"
+sampleName <- "Waterbody_YYYMMDD"
+
 
 
 
@@ -118,6 +121,15 @@ map(noaa_file_dirs, function(x){ write_batch_file(samp_dir = x,
                                            batch_name = "batch_test4.txt", 
                                            out_dir = basePath)
 })
+
+
+## Move rrs files to a single folder to combine with other samples
+sample_dirs <- list.dirs(noaa_out_dir)[-1]
+
+map(sample_dirs, function(x) copy_rrs_files(in_dir = x, 
+                                            out_dir= rrs_dir,
+                                            sample_name= sampleName))
+
 
 
 

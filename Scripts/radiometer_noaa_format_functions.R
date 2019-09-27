@@ -263,3 +263,23 @@ write_batch_file <- function(samp_dir, base_path, exe_path, cal_path,  batch_nam
   write_lines("", path= file.path(out_dir, batch_name), append= TRUE)
 }
 
+
+
+
+## Copy and rename seabass files and place in a single directory
+copy_rrs_files <- function(in_dir, out_dir, sample_name){
+  
+  # Copy file
+  rrs_file <- list.files(in_dir, pattern= "seabass")
+  
+  if(length(rrs_file) > 0){
+    file.copy(from= file.path(in_dir, rrs_file), to= out_dir)
+    
+    # Rename file
+    new_name <- str_c("rrs", '-', sample_name, "-", str_replace(in_dir, "^.*/", ""), ".txt", sep= "")
+    file.rename(from= file.path(out_dir, rrs_file),
+                to= file.path(out_dir, new_name))
+  } else {
+    warning(str_c("No seabass file in: ", in_dir))
+  }
+}

@@ -1,7 +1,7 @@
 ## Script to extract OLCI bands from HH2 data.
 
 
-extract_olci_bands <- function(spec){
+extract_olci_bands <- function(rrs_file){
   require(tidyverse)
   
   ## OLCI BANDS
@@ -16,20 +16,20 @@ extract_olci_bands <- function(spec){
   ## FILTER SPECTRA BY OLCI BANDS
   spec_olci_bands <- do.call(rbind, apply(olci, 1, 
                                           function(x){
-                                            spec %>% 
+                                            rrs_file %>% 
                                               filter(nm >= x["min"] & nm <= x["max"]) %>% 
                                               mutate(band= x["band"])
                                           }))
   
   ## AVERAGE OLCI BAND WIDTHS TOGETHER
   spec_olci_means <- spec_olci_bands %>% 
-    group_by(spec_file, band) %>% 
-    summarize(band_radiance= mean(radiance, na.rm= TRUE),
-              band_sd= sd(radiance, na.rm= TRUE))
+    group_by(band) %>% 
+    summarize(rrs_avg= mean(rrs, na.rm= TRUE),
+              sd= sd(rrs, na.rm= TRUE)) %>% 
+    rename(rrs= rrs_avg)
   return(spec_olci_means)
   
 }
-
 
 
 

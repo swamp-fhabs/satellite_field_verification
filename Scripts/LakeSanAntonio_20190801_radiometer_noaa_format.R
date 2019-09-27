@@ -16,6 +16,8 @@ metadata_file <- file.path(base_dir, "radiometer_LakeSanAntonio_20190801.txt")
 spectra_out_dir <- file.path(base_dir, "spectra_out")
 ascii_dir <- file.path(base_dir, "ascii_export")
 noaa_out_dir <- file.path(base_dir, "noaa_files")
+rrs_dir <- "Data/rrs_data"
+sampleName <- "LakeSanAntonio_20190801"
 
 
 
@@ -101,8 +103,6 @@ cal_file <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite
 basePath <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite_field_verification_git\\Data\\20190801_LakeSanAntonio\\noaa_files"
 
 
-
-
 map(noaa_file_dirs, function(x){ write_batch_file(samp_dir = x,
                                            base_path= basePath,
                                            exe_path = exe_file, 
@@ -113,8 +113,12 @@ map(noaa_file_dirs, function(x){ write_batch_file(samp_dir = x,
 
 
 
+## Move rrs files to a single folder to combine with other samples
+sample_dirs <- list.dirs(noaa_out_dir)[-1]
 
-
+map(sample_dirs, function(x) copy_rrs_files(in_dir = x, 
+                                            out_dir= rrs_dir,
+                                            sample_name= sampleName))
 
 
 

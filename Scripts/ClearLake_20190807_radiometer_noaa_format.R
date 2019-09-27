@@ -16,6 +16,8 @@ metadata_file <- file.path(base_dir, "radiometer_ClearLake_20190807.txt")
 spectra_out_dir <- file.path(base_dir, "spectra_out")
 ascii_dir <- file.path(base_dir, "ascii_export")
 noaa_out_dir <- file.path(base_dir, "noaa_files")
+rrs_dir <- "Data/rrs_data"
+sampleName <- "ClearLake_20190807"
 
 
 
@@ -110,6 +112,17 @@ map(noaa_file_dirs, function(x){write_batch_file(samp_dir = x,
                                                  batch_name = "ClearLake_20190807_batch.bat", 
                                                  out_dir = noaa_out_dir)
 })
+
+
+## Move rrs files to a single folder to combine with other samples
+sample_dirs <- list.dirs(noaa_out_dir)[-1]
+
+map(sample_dirs, function(x) copy_rrs_files(in_dir = x, 
+                                            out_dir= rrs_dir,
+                                            sample_name= sampleName))
+
+
+
 
 
 

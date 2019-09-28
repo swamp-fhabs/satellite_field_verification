@@ -6,46 +6,11 @@ library(tidyverse)
 library(ggplot2)
 
 ## Read in CI and rrs data
-ci_val <- read_tsv("Data/CI_values.tsv") 
+ci_fs <- read_tsv("Data/CI_values_field_sat.tsv") 
 rrs_bands <- read_tsv("Data/rrs_OLCI_band_values.tsv") %>% 
   mutate(nm= ifelse(band == "b07_620", 620,
                     ifelse(band == "b08_665", 665,
                            ifelse(band == "b10_681", 681, 709))))
-
-
-## Read in Sentinel satellite data
-sentinel_dir <- "Data/Sentinel_flyover_data"
-sent_files <- list.files(sentinel_dir, pattern= "*.csv")
-
-sent_list <- map(sent_files, function(x) read_csv(file.path(sentinel_dir, x)) %>% 
-                   rename(pix_val= `Pixel Value`))
-names(sent_list) <- str_replace(sent_files, "sentinel-", "") %>% str_replace(., ".csv", "")
-    
-# Add waterbody column
-sent_list <- map2(sent_list, names(sent_list), function(df, name) mutate(df, waterbody= name,
-                                                                         pixel_num= seq(1, length(df$pix_val))))
-
-    
-sent_cl_20190816 <- read_csv("Data/Sentinel_flyover_data/sentinel-ClearLake_20190816.csv") %>% 
-  rename(pix_val= `Pixel Value`)
-
-
-sent_lsa <- sent_list[[4]] %>% 
-  rename(long= Lon, lat= Lat)
-samp_lsa <- read_tsv("Data/20190801_LakeSanAntonio/LatLong_LakeSanAntonio.txt")
-
-
-sum(round(samp_lsa$long[1], 2) %in% round(sent_lsa$long, 2))
-
-val <- 1000
-lon_true <- (trunc(sent_lsa$long*val)/val) %in% (trunc(samp_lsa$long[1]*val)/val)
-
-lat_true <- (trunc(sent_lsa$lat*val)/val) %in% (trunc(samp_lsa$lat[1]*val)/val)
-
-which(lat_true & lon_true == TRUE)
-
-
-
 
 
 make_olci_band_plots <- function(df, sampID, out_dir){
@@ -73,14 +38,17 @@ make_olci_band_plots <- function(df, sampID, out_dir){
 
 map(rrs_bands$uniqueID, function(x) make_olci_band_plots(df= rrs_bands, sampID= x, out_dir= "Data/olci_band_plots2"))
 
-
-         
+ggplot(data= ci_fs) +
+  geom_boxplot(aes(x= sat_pix_val, y= pix_val)) +
+  #geom_point(aes(x= sat_pix_val, y= pix_val)) +
+  facet_grid(.~waterbody) +
+  theme_bw()
 
 
 
 
 ggplot(data= ci_val) +
-  geom_boxplot(aes(x= waterbody, y= ci, color= site)) +
+  geom_boxplot(aes(x= waterbody, y= ci, color= site))
   theme_bw()
   
 
@@ -106,5 +74,24 @@ ggplot(data= ci_val) +
 #   mutate(pixel= str_sub(pix_site, start= 1, end= 2),
 #          site= str_sub(pix_site, start= 3, end= 4)) %>% 
 #   select(uniqueID, waterbody, sample, pix_site, pixel,site, rep, ci)
+
+
+# sent_cl_20190816 <- read_csv("Data/Sentinel_flyover_data/sentinel-ClearLake_20190816.csv") %>% 
+#   rename(pix_val= `Pixel Value`)
+# 
+# 
+# sent_lsa <- sent_list[[4]] %>% 
+#   rename(long= Lon, lat= Lat)
+# samp_lsa <- read_tsv("Data/20190801_LakeSanAntonio/LatLong_LakeSanAntonio.txt")
+# 
+# 
+# sum(round(samp_lsa$long[1], 2) %in% round(sent_lsa$long, 2))
+# 
+# val <- 1000
+# lon_true <- (trunc(sent_lsa$long*val)/val) %in% (trunc(samp_lsa$long[1]*val)/val)
+# 
+# lat_true <- (trunc(sent_lsa$lat*val)/val) %in% (trunc(samp_lsa$lat[1]*val)/val)
+# 
+# which(lat_true & lon_true == TRUE)
 
 

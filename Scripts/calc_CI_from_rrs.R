@@ -3,6 +3,12 @@
 ## a TSV file is then written with the CI values
 ## CI value calculated using equation 1 in Wynne et al. 2008
 
+## Modified CI and pixel values (0-250) calculated based on equations provided
+## by Randy Turner at SFEI. A pixel value of 0 (or NaN in the equation) is the background CI value level.
+
+## CI to pixel value: CI=10^(3/250*Pix_val-4.2)
+## CI to modified CI: CI_mod= CI * 15805.18
+
 
 ## The files with the rrs data are named "Seabass" from the NOAA EXE program
 ## rrs= remote sensed reflectance
@@ -17,7 +23,7 @@ write_CI_values <- function(in_dir, out_path){
 rrs_files <- list.files(in_dir)
 sample_IDs <-  str_replace(rrs_files, ".txt", "") %>% str_replace(., "rrs-", "")
 
-rrs_list <- map(rrs_files, function(x) suppressMessages(read_csv(file.path(rrs_dir, x), 
+rrs_list <- map(rrs_files, function(x) suppressMessages(read_csv(file.path(in_dir, x), 
                                                 skip= 31, 
                                                 col_names = FALSE)) %>% 
                   rename(nm= X1, rrs= X2))
@@ -25,7 +31,7 @@ rrs_list <- map(rrs_files, function(x) suppressMessages(read_csv(file.path(rrs_d
 ## FILTER WAVELENGTHS TO MATCH OLCI BANDS: 620, 665, 681, AND 709
 extract_olci_bands <- function(rrs_file){
   require(tidyverse)
-  
+
   ## OLCI BANDS
   olci <- data.frame(band= c("b07_620", "b08_665", "b10_681", "b11_709"),
                      center=  c(620, 665, 681, 709),
@@ -77,27 +83,36 @@ ci_list <- map(olci_band_list, calc_CI)
 names(ci_list) <- sample_IDs
 
 
-# Make into a dataframe
-# ci_df <- tibble(uniqueID= names(ci_list), ci= do.call(rbind, ci_list)[, 1]) %>% 
-#   mutate(waterbody= do.call(rbind, str_split(uniqueID, "-"))[, 1], 
-#          sample= do.call(rbind, str_split(uniqueID, "-"))[, 2]) %>% 
-#   mutate(pix_site= do.call(rbind, str_split(sample, "_"))[, 1],
-#          rep= do.call(rbind, str_split(sample, "_"))[, 2]) %>% 
-#   mutate(pixel= str_sub(pix_site, start= 1, end= 2),
-#          site= str_sub(pix_site, start= 3, end= 4)) %>% 
-#   select(uniqueID, waterbody, sample, pix_site, pixel,site, rep, ci)
+# Make into a dataframes
+rrs_bands_df <- do.call(rbind, olci_band_list) %>% cbind(rep(names(olci_band_list), each= 4), .) %>% as_tibble()
+names(rrs_bands_df)[1] <- "uniqueID"
+
+rrs_bands_df <- rrs_bands_df %>% 
+  mutate(waterbody= do.call(rbind, str_split(uniqueID, "-"))[, 1], 
+         sample= do.call(rbind, str_split(uniqueID, "-"))[, 2]) %>% 
+  mutate(site= do.call(rbind, str_split(sample, "_"))[, 1],
+         rep= do.call(rbind, str_split(sample, "_"))[, 2]) %>% 
+  select(uniqueID, waterbody, sample, site, rep, band, rrs, sd) 
+
 
 ci_df <- tibble(uniqueID= names(ci_list), ci= do.call(rbind, ci_list)[, 1]) %>% 
   mutate(waterbody= do.call(rbind, str_split(uniqueID, "-"))[, 1], 
          sample= do.call(rbind, str_split(uniqueID, "-"))[, 2]) %>% 
   mutate(site= do.call(rbind, str_split(sample, "_"))[, 1],
          rep= do.call(rbind, str_split(sample, "_"))[, 2]) %>% 
-  select(uniqueID, waterbody, sample, site, rep, ci)
+  select(uniqueID, waterbody, sample, site, rep, ci) 
+  
+# Calc modified CI and pixel values
+ci_df <- ci_df %>% 
+  mutate(ci_mod= ci * 15805.18,
+         pix_val= (log10(ci)+4.2)/0.012) %>% 
+  mutate(pix_val= ifelse(is.na(pix_val), 0, pix_val))
 
 
-# Write file
-write_tsv(ci_df, path= out_path)
+# Write files
+write_tsv(rrs_bands_df, path= file.path(out_path, "rrs_OLCI_band_values.tsv"))
+write_tsv(ci_df, path= file.path(out_path, "CI_values.tsv"))
 }
 
 
-write_CI_values(in_dir = "Data/rrs_data", out_path = "Data/CI_values.tsv")
+write_CI_values(in_dir = "Data/rrs_data", out_path = "Data")

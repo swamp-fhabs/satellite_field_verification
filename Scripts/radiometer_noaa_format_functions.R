@@ -86,7 +86,6 @@ make_spectra_plots <- function(spectra_path, ascii_path){
   # List files
   spectra_files <- list.files(spectra_path, pattern = "*.tsv")
   
- # file <- spectra_files[2]
   for(file in spectra_files){
     
     ## Read in Data frame

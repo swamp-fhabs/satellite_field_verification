@@ -14,16 +14,16 @@ library(ggsn) #scalebar() and north() functions
 source("Scripts/map_sample_functions.R")
 
 # Open UTM lakes shapefile R object
-ca_lakes_utm <- readRDS("Data/ca_lakes_shapefile_utm.rds")
+ca_lakes_utm <- readRDS("Data/Shapefiles/ca_lakes_shapefile_utm.rds")
 
 # Function to import XY data and transform to UTM and create pixel boundaries
 # Lake San Antonio
-lsa_data <- read_and_transform_data(centroids= "../LakeMaps/LakeSanAntonio_pixel.csv",
+lsa_data <- read_and_transform_data(centroids= "Data/LakeMaps/LakeSanAntonio_pixel.csv",
                                 samples = "Data/20190801_LakeSanAntonio/LatLong_LakeSanAntonio.txt",
                                 utm_epsg = 32610, # UTM zone 10
                                 buff_dist = 150)
 # San Pablo Reservoir
-spr_data <- read_and_transform_data(centroids= "../LakeMaps/SanPabloReservoir_20190804_pixel.csv",
+spr_data <- read_and_transform_data(centroids= "Data/LakeMaps/SanPabloReservoir_20190804_pixel.csv",
                                     samples = "Data/20190812_SanPabloReservoir/LatLong_SanPabloReservoir.txt",
                                     utm_epsg = 32610, # UTM zone 10
                                     buff_dist = 150)
@@ -31,7 +31,7 @@ spr_data <- read_and_transform_data(centroids= "../LakeMaps/SanPabloReservoir_20
 
 
 # Extract bounding box of sample locations
-samp_bbox <- st_bbox(lsa_data[["samples"]])
+lsa_bbox <- st_bbox(lsa_data[["samples"]])
 spr_bbox <- st_bbox(spr_data[["samples"]])
 
 
@@ -46,7 +46,7 @@ spr_utm <- extract_lake_shapefile(ca_lakes_utm, DFGWATER_ID= 3884)
 
 
 #### PLOT THE MAPS ####
-# LAKE SANANTONIO 
+# LAKE SAN ANTONIO 
 # Whole lake
 ggplot() +
   geom_polygon(data= lsa_utm, aes(x= long, y= lat), fill= "skyblue", color= "black", alpha= 0.25) +
@@ -68,8 +68,8 @@ ggplot() +
   geom_sf(data= lsa_data[["pixels"]], fill= "transparent") +
   geom_sf(data= lsa_data[["centroids"]], size= 0.5, color= "black") +
   geom_sf(data= lsa_data[["samples"]], size= 1, aes(fill= pixel, color= pixel)) +
-  coord_sf(xlim= c(samp_bbox[1], samp_bbox[3]), 
-           ylim= c(samp_bbox[2], samp_bbox[4]),
+  coord_sf(xlim= c(lsa_bbox[1], lsa_bbox[3]), 
+           ylim= c(lsa_bbox[2], lsa_bbox[4]),
            crs= 32610) +
   scalebar(data= lsa_data[["samples"]], dist= 150, dist_unit = "m", location= "bottomleft", transform= FALSE, st.bottom= FALSE, 
            st.dist = 0.02,
@@ -136,8 +136,8 @@ ggplot() +
 # pixels_t <- st_buffer(cntrs_t, dist= 150, endCapStyle = "SQUARE")
 
 
-
-cntrs_utm <- st_transform(cntrs_w, crs= 32610)
-pixels_w2 <- st_buffer(cntrs_utm, dist= 150, endCapStyle = "SQUARE")
-
+# 
+# cntrs_utm <- st_transform(cntrs_w, crs= 32610)
+# pixels_w2 <- st_buffer(cntrs_utm, dist= 150, endCapStyle = "SQUARE")
+# 
 

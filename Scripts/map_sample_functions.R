@@ -1,6 +1,5 @@
-
-
-
+## Functions to make maps of the satellite pixels locations on waterbodies in California
+## Uses the sf package in R
 
 ## Package sf tutorials
 # https://datacarpentry.org/r-raster-vector-geospatial/10-vector-csv-to-shapefile-in-r/
@@ -9,6 +8,11 @@
 
 ## Function to read in lat/long data from satellite field verificaiton
 ## and output spatial data sets
+
+## centroids= csv file of the lat/longs of the center of each pixel
+## sample= tsv file of the lat/longs of each sample location
+## utm_epsg= the UTM project to transform the geodata base
+## buff_dist= half the width of the pixel (in units of UTM)
 
 read_and_transform_data <- function(centroids, samples, utm_epsg, buff_dist= 150){
   require(tidyverse)

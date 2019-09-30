@@ -26,10 +26,10 @@ read_and_transform_data <- function(centroids, samples, utm_epsg, buff_dist= 150
   samps_xy <- read_tsv(samples) 
   
   ## Convert to spatial data set with defined CRS
-  #cntrs_wgs84 <- st_as_sf(cntrs_xy, coords= c("Lon", "Lat"), crs= 4326) 
+  cntrs_wgs84 <- st_as_sf(cntrs_xy, coords= c("Lon", "Lat"), crs= 4326) 
   cntrs_utm <- st_transform(cntrs_wgs84, crs= utm_epsg)
   
-  #samps_wgs84 <- st_as_sf(samps_xy, coords= c("long", "lat"), crs= 4326) 
+  samps_wgs84 <- st_as_sf(samps_xy, coords= c("long", "lat"), crs= 4326) 
   samps_utm <- st_transform(samps_wgs84, crs= utm_epsg)
   
   
@@ -81,7 +81,7 @@ extract_lake_shapefile <- function(lakes_shapefile, DFGWATER_ID){
 
 
 #### PLOT MAPS ####
-plot_whole_lake <- function(data_list, shapefile_utm, scalebar_dist, utm_epsg= 32610){
+plot_whole_lake <- function(data_list, shapefile_utm, scalebar_dist, utm_epsg= 32610, label= FALSE){
   require(ggplot2)
   require(sf)
   require(ggsn) #scalebar() and north() functions

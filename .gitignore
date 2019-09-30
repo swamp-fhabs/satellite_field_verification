@@ -6,10 +6,11 @@ Data/**/*.ini
 Data/**/*.ref
 Data/**/Wireless.bat
 desktop.ini
+Data/
 
 # Image files
-*.jpg
-*.png
+#*.jpg
+#*.png
 *.tif
 
 # Misc. file formats

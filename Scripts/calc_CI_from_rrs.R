@@ -115,7 +115,7 @@ ci_df <- ci_df %>%
 
 # Write files
 write_tsv(rrs_bands_df, path= file.path(out_path, "rrs_OLCI_band_values.tsv"))
-write_tsv(ci_values, path= file.path(out_path, "CI_values_field.tsv"))
+write_tsv(ci_df, path= file.path(out_path, "CI_values_field.tsv"))
 return(ci_df)
 }
 
@@ -159,7 +159,7 @@ join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_path){
     return(extracted_pixels)
   }
   
-  sat_samp_pixs <- map(names(sent_list), function(x) extract_sample_pixels(satellite_list = sat_list, samp_pixs= samp_pixs, waterbodyID = x)) %>% 
+  sat_samp_pixs <- map(names(sat_list), function(x) extract_sample_pixels(satellite_list = sat_list, samp_pixs= samp_pixs, waterbodyID = x)) %>% 
     do.call(rbind, .)
   
   ## Calculate modified CI values
@@ -175,7 +175,10 @@ join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_path){
   write_tsv(ci_values, path= file.path(out_path, "CI_values_field_sat.tsv"))
 }
 
-CI_field_sat <- join_sat_field_CI(sat_dir = satellite_dir, CI_field_df = field_CI_values, samp_pixs = sample_pixels, out_path = "Data")
+CI_field_sat <- join_sat_field_CI(sat_dir = satellite_dir, 
+                                  CI_field_df = field_CI_values, 
+                                  samp_pixs = sample_pixels, 
+                                  out_path = "Data")
 
 # 
 # ## Read in Sentinel satellite data

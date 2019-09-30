@@ -1,6 +1,8 @@
 ## Script to plot the rrs and CI values
 ## OLCI bands (nanometers, nm) 620, 665, 681, and 709
 
+## TXT files generated in calc_CI_from_rrs.R script. Run this script first
+
 #### Libraries
 library(tidyverse)
 library(ggplot2)
@@ -34,15 +36,53 @@ make_olci_band_plots <- function(df, sampID, out_dir){
   
   
 }
+#map(rrs_bands$uniqueID, function(x) make_olci_band_plots(df= rrs_bands, sampID= x, out_dir= "Data/olci_band_plots"))
 
 
-map(rrs_bands$uniqueID, function(x) make_olci_band_plots(df= rrs_bands, sampID= x, out_dir= "Data/olci_band_plots2"))
+theme_sat <- theme(panel.grid = element_blank(),
+                  plot.margin = unit(c(1, 1, 1, 1), "cm"),
+                  text = element_text(size= 16),
+                  plot.background = element_rect(fill = "transparent", color= "transparent"), # bg of the plot
+                  panel.background = element_rect(fill= "transparent", color= "transparent"),
+                  panel.border= element_rect(fill= "transparent", color= "black", linetype= "solid", size= 0.5),
+                  panel.ontop = TRUE,
+                  axis.text = element_text(colour="black"),
+                  axis.title.x = element_text(vjust = -0.75),
+                  axis.title.y = element_text(vjust = 1.5),
+                  legend.background = element_rect(size=0.25, color="black", fill= "transparent"),
+                  legend.key = element_blank(),
+                  strip.background=element_rect(fill="transparent", color="transparent"),
+                  #axis.text.x = element_text(angle= 45, hjust= 1),
+                  legend.position = "top")
+
+
+
+
+cifs_lims <- c(0, 150)
+cifs_brks <- seq(0, 150, by= 25)
 
 ggplot(data= ci_fs) +
-  geom_boxplot(aes(x= sat_pix_val, y= pix_val)) +
-  #geom_point(aes(x= sat_pix_val, y= pix_val)) +
-  facet_grid(.~waterbody) +
-  theme_bw()
+  geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
+ # geom_boxplot(aes(x= sat_pix_val, y= pix_val, color= waterbody)) +
+  geom_point(aes(x= sat_pix_val, y= pix_val, fill= waterbody), size= 3, shape= 21) +
+  labs(x= "Satellite pixel value", y= "Field pixel value") +
+  #scale_shape_manual(values= c(21)) +
+  scale_color_discrete(name= "Waterbody") +
+  scale_x_continuous(limits= cifs_lims, breaks= cifs_brks, expand= c(0.02, 0)) +
+  scale_y_continuous(limits= cifs_lims, breaks= cifs_brks, expand= c(0.02, 0)) +
+  #facet_grid(.~waterbody, scales= "free_x") +
+  coord_equal() +
+  theme_sat
+
+
+# ## Plot satellite data agains field data
+# ggplot(data= ci_fs) +
+#   geom_boxplot(aes(x= sat_pix_val, y= pix_val)) +
+#   #geom_point(aes(x= sat_pix_val, y= pix_val)) +
+#   facet_grid(.~waterbody, scales= "free_x") +
+#   theme_sat
 
 
 

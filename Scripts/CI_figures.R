@@ -9,6 +9,11 @@ library(ggplot2)
 
 ## Read in CI and rrs data
 ci_fs <- read_tsv("Data/CI_values_field_sat.tsv") 
+ci_fs_mod <- ci_fs %>% 
+  mutate(ci_mod = ifelse(ci_mod < 0, 1, ci_mod),
+         ci_mod_sat = ifelse(ci_mod < 1, 1, ci_mod_sat))
+
+
 rrs_bands <- read_tsv("Data/rrs_OLCI_band_values.tsv") %>% 
   mutate(nm= ifelse(band == "b07_620", 620,
                     ifelse(band == "b08_665", 665,
@@ -38,7 +43,7 @@ make_olci_band_plots <- function(df, sampID, out_dir){
 }
 #map(rrs_bands$uniqueID, function(x) make_olci_band_plots(df= rrs_bands, sampID= x, out_dir= "Data/olci_band_plots"))
 
-
+#### GGPLOT THEMES ############################
 theme_sat <- theme(panel.grid = element_blank(),
                   plot.margin = unit(c(1, 1, 1, 1), "cm"),
                   text = element_text(size= 16),
@@ -54,10 +59,10 @@ theme_sat <- theme(panel.grid = element_blank(),
                   strip.background=element_rect(fill="transparent", color="transparent"),
                   #axis.text.x = element_text(angle= 45, hjust= 1),
                   legend.position = "top")
+#####################
 
 
-
-
+## PLOT PIXEL VALUES
 cifs_lims <- c(0, 150)
 cifs_brks <- seq(0, 150, by= 25)
 
@@ -76,13 +81,24 @@ ggplot(data= ci_fs) +
   coord_equal() +
   theme_sat
 
+## PLOT Modified CI VALUES
+cimod_lims <- c(0.9, 60)
+cimod_brks <- c(1, seq(10, 60, by= 10))
 
-# ## Plot satellite data agains field data
-# ggplot(data= ci_fs) +
-#   geom_boxplot(aes(x= sat_pix_val, y= pix_val)) +
-#   #geom_point(aes(x= sat_pix_val, y= pix_val)) +
-#   facet_grid(.~waterbody, scales= "free_x") +
-#   theme_sat
+ggplot(data= ci_fs_mod) +
+  geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
+  geom_hline(yintercept = 1) +
+  geom_vline(xintercept = 1) +
+  # geom_boxplot(aes(x= sat_pix_val, y= pix_val, color= waterbody)) +
+  geom_point(aes(x= ci_mod_sat, y= ci_mod, fill= waterbody), size= 3, shape= 21) +
+  labs(x= "Satellite CI-mod value", y= "Field CI-mod value") +
+  #scale_shape_manual(values= c(21)) +
+  scale_color_discrete(name= "Waterbody") +
+  scale_x_log10(limits= cimod_lims, breaks= cimod_brks, expand= c(0.02, 0)) +
+  scale_y_log10(limits= cimod_lims, breaks= cimod_brks, expand= c(0.02, 0)) +
+  coord_equal() +
+  theme_sat
+
 
 
 

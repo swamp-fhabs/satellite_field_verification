@@ -90,6 +90,8 @@ noaa_file_dirs <- list.dirs(noaa_out_dir, full.names= FALSE)[-1]
 
 ## CHECK TO SEE IF YOU ALWAYS NEED THE [-1] above
 
+
+
 map(noaa_file_dirs, function(x) copy_ascii_files(samp_dir= x,
                                                     base_dir= noaa_out_dir,
                                                     ascii_dir = ascii_dir,

@@ -30,6 +30,7 @@ Data/ShapeFiles
 
 # Exported R objects
 Data/**/*.rds
+Figures/Icon*
 
 # History files
 .Rhistory

@@ -45,8 +45,8 @@ make_olci_band_plots <- function(df, sampID, out_dir){
 
 #### GGPLOT THEMES ############################
 theme_sat <- theme(panel.grid = element_blank(),
-                  plot.margin = unit(c(1, 1, 1, 1), "cm"),
-                  text = element_text(size= 16),
+                  plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"),
+                  text = element_text(size= 14),
                   plot.background = element_rect(fill = "transparent", color= "transparent"), # bg of the plot
                   panel.background = element_rect(fill= "transparent", color= "transparent"),
                   panel.border= element_rect(fill= "transparent", color= "black", linetype= "solid", size= 0.5),
@@ -58,11 +58,11 @@ theme_sat <- theme(panel.grid = element_blank(),
                   legend.key = element_blank(),
                   strip.background=element_rect(fill="transparent", color="transparent"),
                   #axis.text.x = element_text(angle= 45, hjust= 1),
-                  legend.position = "top")
-#####################
+                  legend.position = "right")
 
 
-## PLOT PIXEL VALUES
+
+## CI PIXELS FIELD X SAT
 cifs_lims <- c(0, 150)
 cifs_brks <- seq(0, 150, by= 25)
 
@@ -74,12 +74,13 @@ ggplot(data= ci_fs) +
   geom_point(aes(x= sat_pix_val, y= pix_val, fill= waterbody), size= 3, shape= 21) +
   labs(x= "Satellite pixel value", y= "Field pixel value") +
   #scale_shape_manual(values= c(21)) +
-  scale_color_discrete(name= "Waterbody") +
+  scale_fill_discrete(name= "Waterbody") +
   scale_x_continuous(limits= cifs_lims, breaks= cifs_brks, expand= c(0.02, 0)) +
   scale_y_continuous(limits= cifs_lims, breaks= cifs_brks, expand= c(0.02, 0)) +
   #facet_grid(.~waterbody, scales= "free_x") +
   coord_equal() +
   theme_sat
+
 
 ## PLOT Modified CI VALUES
 cimod_lims <- c(0.9, 60)
@@ -98,6 +99,11 @@ ggplot(data= ci_fs_mod) +
   scale_y_log10(limits= cimod_lims, breaks= cimod_brks, expand= c(0.02, 0)) +
   coord_equal() +
   theme_sat
+
+ggsave(last_plot(), filename= "ci_pixel_fs.jpg", height= 6, width= 8, units= "in", dpi= 300,
+       path= "Data/Figures_output")
+
+
 
 
 

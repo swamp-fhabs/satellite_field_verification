@@ -115,31 +115,31 @@ ci_df <- ci_df %>%
 
 # Write files
 write_tsv(rrs_bands_df, path= file.path(out_path, "rrs_OLCI_band_values.tsv"))
-write_tsv(ci_df, path= file.path(out_path, "CI_values_field.tsv"))
+write_tsv(ci_df, path= file.path(out_path, "CI_field.tsv"))
 return(ci_df)
 }
 
 
-field_CI_values <- calc_CI_values(in_dir = "Data/rrs_data", out_path = "Data") 
+#field_CI_values <- calc_CI_values(in_dir = "Data/rrs_data", out_path = "Data") 
 
 
 ## JOIN SATELLITE AND FIELD CI VALUES
-satellite_dir <- "Data/Sentinel_flyover_data"
-sample_pixels <-  read_tsv("Data/Sentinel_flyover_data/sample_pixel_numbers.tsv")
+# satellite_dir <- "Data/Sentinel_flyover_data"
+# sample_pixels <-  read_tsv("Data/Sentinel_flyover_data/sample_pixel_numbers.tsv")
 
-join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_path){
+join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_path, writeFile= TRUE){
   
   ## Read in Sentinel satellite data
   make_satellite_data_list <- function(in_dir){
     sat_files <- list.files(in_dir, pattern= "*.csv")
     
     sat_list <- map(sat_files, function(x) read_csv(file.path(in_dir, x)) %>% 
-                      rename(pix_val= `Pixel Value`))
+                      rename(pix_val_sat= `Pixel Value`))
     names(sat_list) <- str_replace(sat_files, "sentinel-", "") %>% str_replace(., ".csv", "")
     
     # Add waterbody and pixel number column
     sat_list <- map2(sat_list, names(sat_list), function(df, name) mutate(df, waterbody= name,
-                                                                          pix_num= seq(1, length(df$pix_val))))
+                                                                          pix_num= seq(1, length(df$pix_val_sat))))
     return(sat_list)
   }
   sat_list <- make_satellite_data_list(in_dir = sat_dir)
@@ -154,8 +154,7 @@ join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_path){
     
     extracted_pixels <- waterbody_df %>% 
       filter(waterbody_df$pix_num %in% samp_pix_filt$pix_num) %>% 
-      left_join(., samp_pixs) %>% 
-      rename(sat_pix_val= pix_val) 
+      left_join(., samp_pixs) 
     return(extracted_pixels)
   }
   
@@ -163,60 +162,45 @@ join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_path){
     do.call(rbind, .)
   
   ## Calculate modified CI values
-  
   sat_samp_pixs <- sat_samp_pixs %>% 
-    mutate(ci_sat= 10^(3/250*sat_pix_val-4.2),
+    mutate(ci_sat= 10^(3/250*pix_val_sat-4.2),
            ci_mod_sat= ci_sat*15805.18)
   
   
   ## Join satellite and field data frames
-  ci_values <- left_join(sat_samp_pixs, CI_field_df, by= c("waterbody", "pixel"))
+  ci_values <- left_join(sat_samp_pixs, CI_field_df, by= c("waterbody", "pixel")) %>% 
+    rename(pix_site= site) %>% 
+    mutate(site= str_replace(pix_site, "P[0-9]", ""))
   
-  write_tsv(ci_values, path= file.path(out_path, "CI_values_field_sat.tsv"))
+  if(writeFile == TRUE){
+    write_tsv(ci_values, path= file.path(out_path, "CI_field_sat.tsv"))
+  }
+  return(ci_values)
 }
 
-CI_field_sat <- join_sat_field_CI(sat_dir = satellite_dir, 
-                                  CI_field_df = field_CI_values, 
-                                  samp_pixs = sample_pixels, 
-                                  out_path = "Data")
+# CI_field_sat <- join_sat_field_CI(sat_dir = satellite_dir, 
+#                                   CI_field_df = field_CI_values, 
+#                                   samp_pixs = sample_pixels, 
+#                                   out_path = "Data")
 
-# 
-# ## Read in Sentinel satellite data
-# make_satellite_data_list <- function(in_dir){
-#   sat_files <- list.files(in_dir, pattern= "*.csv")
-#   
-#   sat_list <- map(sat_files, function(x) read_csv(file.path(in_dir, x)) %>% 
-#                     rename(pix_val= `Pixel Value`))
-#   names(sat_list) <- str_replace(sat_files, "sentinel-", "") %>% str_replace(., ".csv", "")
-#   
-#   # Add waterbody and pixel number column
-#   sat_list <- map2(sat_list, names(sat_list), function(df, name) mutate(df, waterbody= name,
-#                                                                         pix_num= seq(1, length(df$pix_val))))
-#   return(sat_list)
-# }
-# 
-# sat_list <- make_satellite_data_list(in_dir = sentinel_dir)
-# 
-# 
-# ## Extract sample pixels from satellite data files
-# extract_sample_pixels <- function(satellite_list, samp_pixs, waterbodyID){
-#   samp_pix_filt <- samp_pixs %>% 
-#     filter(waterbody == waterbodyID)
-#   
-#   waterbody_df <- satellite_list[[waterbodyID]]
-#   
-#   extracted_pixels <- waterbody_df %>% 
-#     filter(waterbody_df$pix_num %in% samp_pix_filt$pix_num) %>% 
-#     left_join(., samp_pixs) %>% 
-#     rename(sat_pix_val= pix_val) 
-#   return(extracted_pixels)
-# }
-# 
-# sat_samp_pixs <- map(names(sent_list), function(x) extract_sample_pixels(satellite_list = sent_list, samp_pixs= sample_pixels, waterbodyID = x)) %>% 
-#   do.call(rbind, .)
-# 
-# ## Join satellite and field data frames
-# ci_values <- left_join(sent_semp_pix_df, ci.df, by= c("waterbody", "pixel"))
-# 
-# write_tsv(ci_values, path= file.path(out_path, "CI_values_field_sat.tsv"))
-# }
+join_CI_with_water_data <- function(ci_df, h2o_tsv_file, writeFile= TRUE, out_path){
+  
+# Read in h2o sample data (e.g. chla, secchi, turbidity, etc.)
+h2o_df <- read_tsv(h2o_tsv_file) %>% 
+  mutate(secchi_avg= (secchi_disappear_m + secchi_reappear_m)/2) %>% 
+  mutate(pix_site= str_c(pixel, site),
+         date= dmy(date))
+
+# Merge CI data with h2o Data 
+  ci_h2o_df <- left_join(ci_df, h20_df) %>% 
+    select(-Lon, -Lat) %>% 
+    select(waterbody, date, uniqueID, lat, long, pixel, site, pix_site, sample, rep, pix_num, ci, ci_mod, pix_val, ci_sat, ci_mod_sat, pix_val_sat, everything())
+  
+  if(writeFile == TRUE){
+    write_tsv(ci_h2o_df, path= file.path(out_path, "CI_field_sat_h2o_data.tsv"))
+  }
+  return(ci_h2o_df)
+}
+
+
+

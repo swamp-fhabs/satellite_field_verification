@@ -8,7 +8,7 @@ library(tidyverse)
 library(ggplot2)
 
 ## Read in CI and rrs data
-ci_fs <- read_tsv("Data/CI_values_field_sat.tsv") 
+ci_fs <- read_tsv("Data/CI_field_sat_h2o_data.tsv") 
 ci_fs_mod <- ci_fs %>% 
   mutate(ci_mod = ifelse(ci_mod < 0, 1, ci_mod),
          ci_mod_sat = ifelse(ci_mod < 1, 1, ci_mod_sat))
@@ -70,33 +70,11 @@ ggplot(data= ci_fs) +
   geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
   geom_hline(yintercept = 0) +
   geom_vline(xintercept = 0) +
- # geom_boxplot(aes(x= sat_pix_val, y= pix_val, color= waterbody)) +
-  geom_point(aes(x= sat_pix_val, y= pix_val, fill= waterbody), size= 3, shape= 21) +
+  geom_point(aes(x= pix_val_sat, y= pix_val, fill= waterbody), size= 3, shape= 21) +
   labs(x= "Satellite pixel value", y= "Field pixel value") +
-  #scale_shape_manual(values= c(21)) +
   scale_fill_discrete(name= "Waterbody") +
   scale_x_continuous(limits= cifs_lims, breaks= cifs_brks, expand= c(0.02, 0)) +
   scale_y_continuous(limits= cifs_lims, breaks= cifs_brks, expand= c(0.02, 0)) +
-  #facet_grid(.~waterbody, scales= "free_x") +
-  coord_equal() +
-  theme_sat
-
-
-## PLOT Modified CI VALUES
-cimod_lims <- c(0.9, 60)
-cimod_brks <- c(1, seq(10, 60, by= 10))
-
-ggplot(data= ci_fs_mod) +
-  geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
-  geom_hline(yintercept = 1) +
-  geom_vline(xintercept = 1) +
-  # geom_boxplot(aes(x= sat_pix_val, y= pix_val, color= waterbody)) +
-  geom_point(aes(x= ci_mod_sat, y= ci_mod, fill= waterbody), size= 3, shape= 21) +
-  labs(x= "Satellite CI-mod value", y= "Field CI-mod value") +
-  #scale_shape_manual(values= c(21)) +
-  scale_color_discrete(name= "Waterbody") +
-  scale_x_log10(limits= cimod_lims, breaks= cimod_brks, expand= c(0.02, 0)) +
-  scale_y_log10(limits= cimod_lims, breaks= cimod_brks, expand= c(0.02, 0)) +
   coord_equal() +
   theme_sat
 
@@ -105,55 +83,70 @@ ggsave(last_plot(), filename= "ci_pixel_fs.jpg", height= 6, width= 8, units= "in
 
 
 
+## CI-mod FIELD X SAT
+cimod_lims <- c(0.9, 60)
+cimod_brks <- c(1, seq(10, 60, by= 10))
+
+ggplot(data= ci_fs_mod) +
+  geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
+  geom_hline(yintercept = 1) +
+  geom_vline(xintercept = 1) +
+  geom_point(aes(x= ci_mod_sat, y= ci_mod, fill= waterbody), size= 3, shape= 21) +
+  labs(x= "Satellite CI-mod value", y= "Field CI-mod value") +
+  scale_color_discrete(name= "Waterbody") +
+  scale_x_log10(limits= cimod_lims, breaks= cimod_brks, expand= c(0.02, 0)) +
+  scale_y_log10(limits= cimod_lims, breaks= cimod_brks, expand= c(0.02, 0)) +
+  coord_equal() +
+  theme_sat
+
+ggsave(last_plot(), filename= "ci_mod_fs.jpg", height= 6, width= 8, units= "in", dpi= 300,
+       path= "Data/Figures_output")
 
 
 
+## CI PIXELS X WATERBODY
 
-ggplot(data= ci_val) +
-  geom_boxplot(aes(x= waterbody, y= ci, color= site))
-  theme_bw()
-  
+ggplot(data= ci_fs) +
+  geom_hline(yintercept = 0) +
+  geom_point(aes(x= pix_site, y= pix_val), size= 3, shape= 21, fill= "gray75") +
+  labs(x= "Measurement location", y= "Field pixel value") +
+  scale_fill_discrete(name= "Waterbody") +
+  facet_grid(.~waterbody, scales= "free_x") +
+  theme_sat +
+  theme(axis.text.x= element_text(angle= 90))
 
-ggplot(data= ci_val) +
-  geom_hline(yintercept = 0, size= 0.5) +
-  geom_boxplot(aes(x= waterbody, y= ci_mod, color= site)) +
-  theme_bw()
-
-ggplot(data= ci_val) +
-  geom_hline(yintercept = 0, size= 0.5) +
-  geom_boxplot(aes(x= waterbody, y= pix_val, color= site)) +
-  theme_bw()
+ggsave(last_plot(), filename= "ci_mod_wbd.jpg", height= 6, width= 8, units= "in", dpi= 300,
+       path= "Data/Figures_output")
 
 
 
+## CI X WATERBODY
+
+ggplot(data= ci_fs) +
+  geom_hline(yintercept = 0) +
+  geom_point(aes(x= pix_site, y= ci), size= 3, shape= 21, fill= "gray75") +
+  labs(x= "Measurement location", y= "Cyanobacterial Index (CI)") +
+  scale_fill_discrete(name= "Waterbody") +
+  scale_y_continuous(limits= c(-0.001, 0.004), expand= c(0.02, 0)) +
+  facet_grid(.~waterbody, scales= "free_x") +
+  theme_sat +
+  theme(axis.text.x= element_text(angle= 90))
+
+ggsave(last_plot(), filename= "ci_wbd.jpg", height= 6, width= 8, units= "in", dpi= 300,
+       path= "Data/Figures_output")
 
 
-# ci_df <- tibble(uniqueID= names(ci_list), ci= do.call(rbind, ci_list)[, 1]) %>% 
-#   mutate(waterbody= do.call(rbind, str_split(uniqueID, "-"))[, 1], 
-#          sample= do.call(rbind, str_split(uniqueID, "-"))[, 2]) %>% 
-#   mutate(pix_site= do.call(rbind, str_split(sample, "_"))[, 1],
-#          rep= do.call(rbind, str_split(sample, "_"))[, 2]) %>% 
-#   mutate(pixel= str_sub(pix_site, start= 1, end= 2),
-#          site= str_sub(pix_site, start= 3, end= 4)) %>% 
-#   select(uniqueID, waterbody, sample, pix_site, pixel,site, rep, ci)
 
+## CI PIXELS X CHLA
+ggplot(data= ci_fs) +
+  geom_hline(yintercept = 0) +
+  geom_point(aes(x= chla_ugL, y= ci_mod, fill= waterbody), size= 3, shape= 21) +
+  labs(x= "Chlorophyll-a (ug/L)", y= "Field CI-mod") +
+  scale_fill_discrete(name= "Waterbody") +
+  scale_x_continuous(expand= c(0.02, 0)) +
+  scale_y_continuous(limits= c(-10, 60), breaks= seq(-10, 60, by= 10), expand= c(0.02, 0)) +
+  theme_sat
 
-# sent_cl_20190816 <- read_csv("Data/Sentinel_flyover_data/sentinel-ClearLake_20190816.csv") %>% 
-#   rename(pix_val= `Pixel Value`)
-# 
-# 
-# sent_lsa <- sent_list[[4]] %>% 
-#   rename(long= Lon, lat= Lat)
-# samp_lsa <- read_tsv("Data/20190801_LakeSanAntonio/LatLong_LakeSanAntonio.txt")
-# 
-# 
-# sum(round(samp_lsa$long[1], 2) %in% round(sent_lsa$long, 2))
-# 
-# val <- 1000
-# lon_true <- (trunc(sent_lsa$long*val)/val) %in% (trunc(samp_lsa$long[1]*val)/val)
-# 
-# lat_true <- (trunc(sent_lsa$lat*val)/val) %in% (trunc(samp_lsa$lat[1]*val)/val)
-# 
-# which(lat_true & lon_true == TRUE)
-
+ggsave(last_plot(), filename= "ci_pixel_fs.jpg", height= 6, width= 8, units= "in", dpi= 300,
+       path= "Data/Figures_output")
 

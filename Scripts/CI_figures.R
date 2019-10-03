@@ -14,10 +14,10 @@ ci_fs_mod <- ci_fs %>%
          ci_mod_sat = ifelse(ci_mod < 1, 1, ci_mod_sat))
 
 
-rrs_bands <- read_tsv("Data/rrs_OLCI_band_values.tsv") %>% 
-  mutate(nm= ifelse(band == "b07_620", 620,
-                    ifelse(band == "b08_665", 665,
-                           ifelse(band == "b10_681", 681, 709))))
+# rrs_bands <- read_tsv("Data/rrs_OLCI_band_values.tsv") %>% 
+#   mutate(nm= ifelse(band == "b07_620", 620,
+#                     ifelse(band == "b08_665", 665,
+#                            ifelse(band == "b10_681", 681, 709))))
 
 
 make_olci_band_plots <- function(df, sampID, out_dir){
@@ -147,6 +147,6 @@ ggplot(data= ci_fs) +
   scale_y_continuous(limits= c(-10, 60), breaks= seq(-10, 60, by= 10), expand= c(0.02, 0)) +
   theme_sat
 
-ggsave(last_plot(), filename= "ci_pixel_fs.jpg", height= 6, width= 8, units= "in", dpi= 300,
+ggsave(last_plot(), filename= "ci_pixel_chla.jpg", height= 6, width= 8, units= "in", dpi= 300,
        path= "Data/Figures_output")
 

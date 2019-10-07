@@ -115,6 +115,22 @@ ggplot(data= ci_fs) +
   theme_sat +
   theme(axis.text.x= element_text(angle= 90))
 
+ggsave(last_plot(), filename= "ci_pix_wbd.jpg", height= 6, width= 8, units= "in", dpi= 300,
+       path= "Data/Figures_output")
+
+## CI-mod X WATERBODY
+
+ggplot(data= ci_fs) +
+  geom_hline(yintercept = 0) +
+  geom_boxplot(aes(x= pix_site, y= ci_mod)) +
+  #geom_point(aes(x= pix_site, y= ci_mod), size= 1, color= "black", alpha= 0.5) +
+  labs(x= "Measurement location", y= "Field CI-mod") +
+  scale_fill_discrete(name= "Waterbody") +
+  scale_y_continuous(limits= c(-10, 60), breaks= seq(-10, 60, by= 10), expand= c(0.02, 0)) +
+  facet_grid(.~waterbody, scales= "free_x") +
+  theme_sat +
+  theme(axis.text.x= element_text(angle= 90))
+
 ggsave(last_plot(), filename= "ci_mod_wbd.jpg", height= 6, width= 8, units= "in", dpi= 300,
        path= "Data/Figures_output")
 

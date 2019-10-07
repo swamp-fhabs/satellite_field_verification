@@ -72,8 +72,10 @@ alm_utm <- extract_lake_shapefile(ca_lakes_utm, DFGWATER_ID= 1116)
 #### PLOT THE MAPS ####
 
 # LAKE SAN ANTONIO 
-lsa_bbox_map <- plot_bounding_box(data_list = lsa_data, shapefile_utm = lsa_utm, bbox= lsa_bbox, label= TRUE)
+lsa_lake_map <- plot_whole_lake(data_list = lsa_data, shapefile_utm = lsa_utm, scalebar_dist = 1000)
+lsa_lake_map
 
+lsa_bbox_map <- plot_bounding_box(data_list = lsa_data, shapefile_utm = lsa_utm, bbox= lsa_bbox, label= TRUE)
 lsa_bbox_map
 
 # CLEAR LAKE 20190807

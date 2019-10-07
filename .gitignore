@@ -30,7 +30,7 @@ Data/ShapeFiles
 ## R FILES TO IGNORE ##
 
 # Exported R objects
-Data/**/*.rds
+#Data/**/*.rds
 Figures/Icon*
 Icon*
 Icon\r

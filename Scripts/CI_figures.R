@@ -14,6 +14,9 @@ ci_fs_mod <- ci_fs %>%
          ci_mod_sat = ifelse(ci_mod < 1, 1, ci_mod_sat))
 
 
+
+
+
 # rrs_bands <- read_tsv("Data/rrs_OLCI_band_values.tsv") %>% 
 #   mutate(nm= ifelse(band == "b07_620", 620,
 #                     ifelse(band == "b08_665", 665,
@@ -63,23 +66,46 @@ theme_sat <- theme(panel.grid = element_blank(),
 
 
 ## CI PIXELS FIELD X SAT
-cifs_lims <- c(0, 150)
-cifs_brks <- seq(0, 150, by= 25)
+cifs_lims <- c(1, 200)
+#cifs_brks <- seq(1, 150, by= 25)
 
-ggplot(data= ci_fs) +
+ggplot(data= ci_fs_mod) +
+  annotation_logticks() +
   geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
   geom_hline(yintercept = 0) +
   geom_vline(xintercept = 0) +
-  geom_point(aes(x= pix_val_sat, y= pix_val, fill= waterbody), size= 3, shape= 21) +
+  geom_point(aes(x= pix_val_sat+1, y= pix_val+1, fill= waterbody), size= 3, shape= 21) +
   labs(x= "Satellite pixel value", y= "Field pixel value") +
   scale_fill_discrete(name= "Waterbody") +
-  scale_x_continuous(limits= cifs_lims, breaks= cifs_brks, expand= c(0.02, 0)) +
-  scale_y_continuous(limits= cifs_lims, breaks= cifs_brks, expand= c(0.02, 0)) +
+  #scale_x_continuous(limits= cifs_lims, breaks= cifs_brks, expand= c(0.02, 0)) +
+  #scale_y_continuous(limits= cifs_lims, breaks= cifs_brks, expand= c(0.02, 0)) +
+  scale_x_log10(limits= cifs_lims, expand= c(0.01, 0)) +
+  scale_y_log10(limits= cifs_lims, expand= c(0.01, 0)) +
   coord_equal() +
   theme_sat
 
 ggsave(last_plot(), filename= "ci_pixel_fs.jpg", height= 6, width= 8, units= "in", dpi= 300,
        path= "Data/Figures_output")
+
+## CI FIELD X SAT
+ci_lims <- c(-0.001, 0.004)
+ci_brks <- seq(-0.001, 0.004, by= 0.001)
+
+ggplot(data= ci_fs) +
+  geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
+  geom_point(aes(x= ci_sat, y= ci, fill= waterbody), size= 3, shape= 21) +
+  labs(x= "Satellite CI value", y= "Field CI value") +
+  scale_fill_discrete(name= "Waterbody") +
+  scale_x_continuous(limits= c(0, 0.004), breaks= ci_brks, expand= c(0.01, 0)) +
+  scale_y_continuous(limits= ci_lims, breaks= ci_brks, expand= c(0.02, 0)) +
+  coord_equal() +
+  theme_sat
+
+ggsave(last_plot(), filename= "ci_fs.jpg", height= 6, width= 8, units= "in", dpi= 300,
+       path= "Data/Figures_output")
+
 
 
 
@@ -93,9 +119,10 @@ ggplot(data= ci_fs_mod) +
   geom_vline(xintercept = 1) +
   geom_point(aes(x= ci_mod_sat, y= ci_mod, fill= waterbody), size= 3, shape= 21) +
   labs(x= "Satellite CI-mod value", y= "Field CI-mod value") +
-  scale_color_discrete(name= "Waterbody") +
-  scale_x_log10(limits= cimod_lims, breaks= cimod_brks, expand= c(0.02, 0)) +
-  scale_y_log10(limits= cimod_lims, breaks= cimod_brks, expand= c(0.02, 0)) +
+  scale_fill_discrete(name= "Waterbody") +
+  scale_x_continuous(limits= cimod_lims, breaks= cimod_brks, expand= c(0.02, 0)) +
+  scale_y_continuous(limits= cimod_lims, breaks= cimod_brks, expand= c(0.02, 0)) +
+  
   coord_equal() +
   theme_sat
 
@@ -120,10 +147,10 @@ ggsave(last_plot(), filename= "ci_pix_wbd.jpg", height= 6, width= 8, units= "in"
 
 ## CI-mod X WATERBODY
 
-ggplot(data= ci_fs) +
+ggplot(data= ci_fs, aes(x= pixel, y= ci_mod)) +
   geom_hline(yintercept = 0) +
-  geom_boxplot(aes(x= pix_site, y= ci_mod)) +
-  #geom_point(aes(x= pix_site, y= ci_mod), size= 1, color= "black", alpha= 0.5) +
+  geom_boxplot() +
+  #geom_point(size= 2, color= "black", alpha= 0.4) +
   labs(x= "Measurement location", y= "Field CI-mod") +
   scale_fill_discrete(name= "Waterbody") +
   scale_y_continuous(limits= c(-10, 60), breaks= seq(-10, 60, by= 10), expand= c(0.02, 0)) +
@@ -153,7 +180,7 @@ ggsave(last_plot(), filename= "ci_wbd.jpg", height= 6, width= 8, units= "in", dp
 
 
 
-## CI PIXELS X CHLA
+## CI-mod X CHLA
 ggplot(data= ci_fs) +
   geom_hline(yintercept = 0) +
   geom_point(aes(x= chla_ugL, y= ci_mod, fill= waterbody), size= 3, shape= 21) +
@@ -163,6 +190,6 @@ ggplot(data= ci_fs) +
   scale_y_continuous(limits= c(-10, 60), breaks= seq(-10, 60, by= 10), expand= c(0.02, 0)) +
   theme_sat
 
-ggsave(last_plot(), filename= "ci_pixel_chla.jpg", height= 6, width= 8, units= "in", dpi= 300,
+ggsave(last_plot(), filename= "ci_mod_chla.jpg", height= 6, width= 8, units= "in", dpi= 300,
        path= "Data/Figures_output")
 

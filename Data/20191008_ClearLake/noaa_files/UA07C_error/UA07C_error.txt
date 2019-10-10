@@ -1,0 +1,10 @@
+0 sky Spec00111.asd.txt
+0 sky Spec00112.asd.txt
+0 sky Spec00113.asd.txt
+0 sky Spec00114.asd.txt
+0 sky Spec00115.asd.txt
+0 sky Spec00116.asd.txt
+0 sky Spec00117.asd.txt
+0 sky Spec00118.asd.txt
+0 sky Spec00119.asd.txt
+0 sky Spec00120.asd.txt

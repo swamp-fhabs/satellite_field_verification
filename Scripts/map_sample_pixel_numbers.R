@@ -47,6 +47,13 @@ clr0816_data <- read_and_transform_data(centroids= "Data/Sentinel_flyover_data/s
                                         utm_epsg = 32610, # UTM zone 10
                                         buff_dist = 150)
 
+# Clear Lake 20191008
+clr1008_data <- read_and_transform_data(centroids= "Data/Sentinel_flyover_data/sentinel-ClearLake_20191008.csv",
+                                        samples = "Data/20191008_ClearLake/LatLong_ClearLake_20191008.txt",
+                                        utm_epsg = 32610, # UTM zone 10
+                                        buff_dist = 150)
+
+
 
 
 
@@ -59,8 +66,8 @@ alm_bbox <- st_bbox(alm_data[["samples"]])
 
 
 # Filter lakes shapefile for the lake of interest to get DFGWATERID value
-ca_lakes_utm@data %>% 
-  filter(str_detect(ca_lakes_utm@data$GNIS_NAME, "Almanor"))
+#ca_lakes_utm@data %>% 
+#  filter(str_detect(ca_lakes_utm@data$GNIS_NAME, "Almanor"))
 
 # Run function to extract specific lake shapefile based on DFGWATERID field
 lsa_utm <- extract_lake_shapefile(ca_lakes_utm, DFGWATER_ID= 6342)
@@ -75,11 +82,18 @@ alm_utm <- extract_lake_shapefile(ca_lakes_utm, DFGWATER_ID= 1116)
 lsa_lake_map <- plot_whole_lake(data_list = lsa_data, shapefile_utm = lsa_utm, scalebar_dist = 1000)
 lsa_lake_map
 
+ggsave(last_plot(), filename= "lsa_lake_map.jpg", height= 6, width= 8, units= "in", dpi= 300,
+       path= "Data/20190801_LakeSanAntonio")
+
+
 lsa_bbox_map <- plot_bounding_box(data_list = lsa_data, shapefile_utm = lsa_utm, bbox= lsa_bbox, label= TRUE)
 lsa_bbox_map
 
+
 # CLEAR LAKE 20190807
 clr0807_lake_map <- plot_whole_lake(data_list = clr0807_data, shapefile_utm = clr_utm, scalebar_dist = 1000)
+ggsave(last_plot(), filename= "clr0807_lake_map.jpg", height= 6, width= 8, units= "in", dpi= 300,
+       path= "Data/20190807_ClearLake")
 
 clr0807_bbox_map <- plot_bounding_box(data_list = clr0807_data, shapefile_utm = clr_utm, bbox= clr0807_bbox, label= TRUE)
 clr0807_bbox_map

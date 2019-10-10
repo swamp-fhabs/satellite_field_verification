@@ -1,0 +1,3 @@
+spectra_id	type	keep_type_rep
+UA07C_1	plate	3
+OA04C_1	plate	2

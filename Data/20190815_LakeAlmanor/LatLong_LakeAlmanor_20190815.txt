@@ -1,0 +1,10 @@
+date	waterbody	pixel	site	pix_site	time	lat	long	context
+15-Aug-19	Lake Almanor	P1	S1	P1S1	10:30	40.29401	-121.19313	start site
+15-Aug-19	Lake Almanor	P1	S2	P1S2	11:12	40.29356	-121.19407	start site
+15-Aug-19	Lake Almanor	P1	S3	P1S3	11:36	40.29434	-121.19446	start site
+15-Aug-19	Lake Almanor	P2	S1	P2S1	11:55	40.29947	-121.19711	start site
+15-Aug-19	Lake Almanor	P2	S2	P2S2	12:13	40.30077	-121.19738	start site
+15-Aug-19	Lake Almanor	P2	S3	P2S3	12:54	40.29917	-121.19600	start site
+15-Aug-19	Lake Almanor	P3	S1	P3S1	13:26	40.26472	-121.18719	start site
+15-Aug-19	Lake Almanor	P3	S2	P3S2	13:53	40.26411	-121.18857	start site
+15-Aug-19	Lake Almanor	P3	S3	P3S3	14:14	40.26545	-121.18843	start site

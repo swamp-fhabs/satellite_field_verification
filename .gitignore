@@ -4,14 +4,17 @@ Data/**/*.asd
 Data/**/*.raw
 Data/**/*.ini
 Data/**/*.ref
+Data/**/*.ill
 Data/**/Wireless.bat
 desktop.ini
-Data/
+!Data/
+
 
 # Image files
 #*.jpg
 #*.png
 *.tif
+Pictures/
 
 # Misc. file formats
 *.pdf
@@ -19,13 +22,14 @@ Data/
 *.xlsx
 *.exe
 
+# GIS Files
+Data/Shapefiles/ca_lakes_shapefile.rds
+Data/Shapefiles/ca_lakes_shapefile_wgs84.rds
+LakeMaps/
+
 # Folders
 Data/ASD_processing
 Data/Calaveras_radiometer_data_2018
-Data/ShapeFiles
-
-
-
 
 ## R FILES TO IGNORE ##
 

@@ -1,0 +1,20 @@
+date	waterbody	pixel	site	pix_site	time	lat	long	context
+7-Aug-19	Clear Lake	P1	S1	P1S1	10:50	38.97833	-122.70942	start site
+7-Aug-19	Clear Lake	P1	S2	P1S2	11:30	38.97867	-122.70951	start site
+7-Aug-19	Clear Lake	P1	S3	P1S3	11:48	38.97916	-122.70921	start site
+7-Aug-19	Clear Lake	P2	S1	P2S1	12:18	38.97144	-122.69845	start site
+7-Aug-19	Clear Lake	P2	S2	P2S2	12:41	38.97125	-122.69933	start site
+7-Aug-19	Clear Lake	P2	S3	P2S3	13:09	38.97196	-122.69879	start site
+7-Aug-19	Clear Lake	P3	S1	P3S1	13:37	38.98331	-122.71700	start site
+7-Aug-19	Clear Lake	P3	S2	P3S2	14:08	38.98330	-122.71766	start site
+7-Aug-19	Clear Lake	P3	S3	P3S3	14:48	38.98348	-122.71617	start site
+7-Aug-19	Clear Lake	P1	S2	P1S2	NA	38.97861	-122.70956	finish site
+7-Aug-19	Clear Lake	P1	S3	P1S3	NA	38.97844	-122.70896	finish site
+7-Aug-19	Clear Lake	P2	S1	P2S1	NA	38.97099	-122.69818	finish site
+7-Aug-19	Clear Lake	P2	S2	P2S2	NA	38.97115	-122.69930	finish site
+7-Aug-19	Clear Lake	P2	S3	P2S3	NA	38.97190	-122.69883	finish site
+7-Aug-19	Clear Lake	P3	S1	P3S1	NA	38.98137	-122.71634	finish site
+7-Aug-19	Clear Lake	P3	S3	P3S3	14:40	38.98348	-122.71622	radiometer
+7-Aug-19	Clear Lake	P3	S3	P3S3	14:47	38.98250	-122.71533	radiometer
+7-Aug-19	Clear Lake	P3	S3	P3S3	14:52	38.98352	-122.71740	radiometer
+7-Aug-19	Clear Lake	P3	S3	P3S3	14:57	38.98281	-122.71656	radiometer

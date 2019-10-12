@@ -40,8 +40,8 @@ extract_olci_bands <- function(rrs_file){
                      center=  c(620, 665, 681, 709),
                      width= c(10, 10, 7.5, 10),
                      stringsAsFactors = FALSE) %>% 
-    mutate(min= center - width,
-           max= center + width)
+    mutate(min= center - width/2,
+           max= center + width/2)
   
   
   ## FILTER SPECTRA BY OLCI BANDS
@@ -184,7 +184,8 @@ join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_path, writeFi
 #                                   out_path = "Data")
 
 join_CI_with_water_data <- function(ci_df, h2o_tsv_file, writeFile= TRUE, out_path){
-  
+  require(tidyverse)
+  require(lubridate)  
 # Read in h2o sample data (e.g. chla, secchi, turbidity, etc.)
 h2o_df <- read_tsv(h2o_tsv_file) %>% 
   mutate(secchi_avg= (secchi_disappear_m + secchi_reappear_m)/2) %>% 
@@ -192,7 +193,7 @@ h2o_df <- read_tsv(h2o_tsv_file) %>%
          date= dmy(date))
 
 # Merge CI data with h2o Data 
-  ci_h2o_df <- left_join(ci_df, h20_df) %>% 
+  ci_h2o_df <- left_join(ci_df, h2o_df) %>% 
     select(-Lon, -Lat) %>% 
     select(waterbody, date, uniqueID, lat, long, pixel, site, pix_site, sample, rep, pix_num, ci, ci_mod, pix_val, ci_sat, ci_mod_sat, pix_val_sat, everything())
   

@@ -1,0 +1,6 @@
+date	waterbody	pixel	site	pix_site	time	lat	long	context
+10-Oct-19	Clear Lake	CL03C	CL03C	CL03C	NA	38.96326	-122.67919	site start
+10-Oct-19	Clear Lake	LA03C	LA03C	LA03C	NA	38.98260	-122.71777	site start
+10-Oct-19	Clear Lake	OA04C	OA04C	OA04C	NA	39.01071	-122.69981	site start
+10-Oct-19	Clear Lake	UA06C	UA06C	UA06C	NA	39.01221	-122.70309	site start
+10-Oct-19	Clear Lake	UA07C	UA07C	UA07C	NA	39.01221	-122.70309	site start

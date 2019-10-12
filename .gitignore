@@ -21,6 +21,9 @@ Pictures/
 *.xls
 *.xlsx
 *.exe
+*.gsheet
+.DS_Store
+*.zip
 
 # GIS Files
 Data/Shapefiles/ca_lakes_shapefile.rds
@@ -30,6 +33,8 @@ LakeMaps/
 # Folders
 Data/ASD_processing
 Data/Calaveras_radiometer_data_2018
+Data/20191008_ClearLake/noaa_files/UA07C_error/
+calaveras*
 
 ## R FILES TO IGNORE ##
 

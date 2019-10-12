@@ -64,6 +64,24 @@ theme_sat <- theme(panel.grid = element_blank(),
                   legend.position = "right")
 
 
+## CI-mod X WATERBODY
+
+ggplot(data= ci_fs, aes(x= pixel, y= ci_mod)) +
+  geom_hline(yintercept = 0) +
+  geom_boxplot() +
+  #geom_point(size= 2, color= "black", alpha= 0.4) +
+  labs(x= "Measurement location", y= "Field CI-mod") +
+  scale_fill_discrete(name= "Waterbody") +
+  scale_y_continuous(limits= c(-10, 60), breaks= seq(-10, 60, by= 10), expand= c(0.02, 0)) +
+  facet_grid(.~waterbody, scales= "free_x") +
+  theme_sat +
+  theme(axis.text.x= element_text(angle= 90))
+
+ggsave(last_plot(), filename= "ci_mod_wbd.jpg", height= 6, width= 8, units= "in", dpi= 300,
+       path= "Data/Figures_output")
+
+
+
 
 ## CI PIXELS FIELD X SAT
 cifs_lims <- c(1, 200)
@@ -118,11 +136,10 @@ ggplot(data= ci_fs_mod) +
   geom_hline(yintercept = 1) +
   geom_vline(xintercept = 1) +
   geom_point(aes(x= ci_mod_sat, y= ci_mod, fill= waterbody), size= 3, shape= 21) +
-  labs(x= "Satellite CI-mod value", y= "Field CI-mod value") +
+  labs(x= "Satellite CI-mod", y= "Field CI-mod") +
   scale_fill_discrete(name= "Waterbody") +
   scale_x_continuous(limits= cimod_lims, breaks= cimod_brks, expand= c(0.02, 0)) +
   scale_y_continuous(limits= cimod_lims, breaks= cimod_brks, expand= c(0.02, 0)) +
-  
   coord_equal() +
   theme_sat
 
@@ -144,23 +161,6 @@ ggplot(data= ci_fs) +
 
 ggsave(last_plot(), filename= "ci_pix_wbd.jpg", height= 6, width= 8, units= "in", dpi= 300,
        path= "Data/Figures_output")
-
-## CI-mod X WATERBODY
-
-ggplot(data= ci_fs, aes(x= pixel, y= ci_mod)) +
-  geom_hline(yintercept = 0) +
-  geom_boxplot() +
-  #geom_point(size= 2, color= "black", alpha= 0.4) +
-  labs(x= "Measurement location", y= "Field CI-mod") +
-  scale_fill_discrete(name= "Waterbody") +
-  scale_y_continuous(limits= c(-10, 60), breaks= seq(-10, 60, by= 10), expand= c(0.02, 0)) +
-  facet_grid(.~waterbody, scales= "free_x") +
-  theme_sat +
-  theme(axis.text.x= element_text(angle= 90))
-
-ggsave(last_plot(), filename= "ci_mod_wbd.jpg", height= 6, width= 8, units= "in", dpi= 300,
-       path= "Data/Figures_output")
-
 
 
 ## CI X WATERBODY

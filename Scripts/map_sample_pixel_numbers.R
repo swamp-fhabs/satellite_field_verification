@@ -63,7 +63,7 @@ spr_bbox <- st_bbox(spr_data[["samples"]])
 clr0807_bbox <- st_bbox(clr0807_data[["samples"]])
 clr0816_bbox <- st_bbox(clr0816_data[["samples"]])
 alm_bbox <- st_bbox(alm_data[["samples"]])
-
+clr1008_bbox <- st_bbox(clr1008_data[["samples"]])
 
 # Filter lakes shapefile for the lake of interest to get DFGWATERID value
 #ca_lakes_utm@data %>% 
@@ -116,5 +116,12 @@ alm_lake_map
 
 alm_bbox_map <- plot_bounding_box(data_list = alm_data, shapefile_utm = alm_utm, bbox= alm_bbox, label= TRUE)
 alm_bbox_map
+
+# CLEAR LAKE 20190816
+clr1008_lake_map <- plot_whole_lake(data_list = clr1008_data, shapefile_utm = clr_utm, scalebar_dist = 1000)
+clr1008_lake_map
+
+clr1008_bbox_map <- plot_bounding_box(data_list = clr1008_data, shapefile_utm = clr_utm, bbox= clr1008_bbox, label= TRUE)
+clr1008_bbox_map
 
 

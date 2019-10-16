@@ -67,7 +67,8 @@ names(olci_band_list) <- sample_IDs
 
 
 ## CALCULATE CYANOBACTERIAL INDEX
-## From Wynne et al. 2008
+## CI from Wynne et al. 2008 
+## SS(665) from Lunetta et al. 2015
 
 calc_CI <- function(df){
   
@@ -76,20 +77,27 @@ calc_CI <- function(df){
     spread(band, rrs)
   
   # Wynne et al. 2008 equation #1
-  CI= with(df.wide,
+  CI <-  with(df.wide,
            -1*(b10_681 - b08_665 - (b11_709 - b08_665)*((681-665)/(709-665)))
   )
-  return(CI)
+  
+  # From Lunetta et al. 2015
+  ss665 <-  with(df.wide,
+           -1*(b08_665 - b07_620 + (b07_620 - b10_681)*((665-620)/(681-620)))
+  )
+  return(data.frame(CI, ss665))
 }
 
 ci_list <- map(olci_band_list, calc_CI)
 names(ci_list) <- sample_IDs
 
 
+
 # Make into a dataframes
 rrs_bands_df <- do.call(rbind, olci_band_list) %>% cbind(rep(names(olci_band_list), each= 4), .) %>% as_tibble()
 names(rrs_bands_df)[1] <- "uniqueID"
 
+# Extract information from uniqueID column for rrs_bands_df
 rrs_bands_df <- rrs_bands_df %>% 
   mutate(waterbody= do.call(rbind, str_split(uniqueID, "-"))[, 1], 
          sample= do.call(rbind, str_split(uniqueID, "-"))[, 2]) %>% 
@@ -97,20 +105,23 @@ rrs_bands_df <- rrs_bands_df %>%
          rep= do.call(rbind, str_split(sample, "_"))[, 2]) %>% 
   select(uniqueID, waterbody, sample, site, rep, band, rrs, sd) 
 
-
-ci_df <- tibble(uniqueID= names(ci_list), ci= do.call(rbind, ci_list)[, 1]) %>% 
+# Extract information from uniqueID column for ci_df
+ci_df <- tibble(uniqueID= names(ci_list), 
+                ci= do.call(rbind, ci_list)[, 1],
+                ss665= do.call(rbind, ci_list)[, 2]) %>% 
   mutate(waterbody= do.call(rbind, str_split(uniqueID, "-"))[, 1], 
          sample= do.call(rbind, str_split(uniqueID, "-"))[, 2]) %>% 
   mutate(site= do.call(rbind, str_split(sample, "_"))[, 1],
          rep= do.call(rbind, str_split(sample, "_"))[, 2]) %>% 
-  select(uniqueID, waterbody, sample, site, rep, ci) 
+  select(uniqueID, waterbody, sample, site, rep, ci, ss665) 
   
 # Calc modified CI and pixel values
 ci_df <- ci_df %>% 
   mutate(ci_mod= ci * 15805.18,
          pix_val= (log10(ci)+4.2)/0.012) %>% 
   mutate(pix_val= ifelse(is.na(pix_val), 0, pix_val)) %>% 
-  mutate(pixel= str_replace(site, "S[0-9]", ""))
+  mutate(pixel= str_replace(site, "S[0-9]", "")) %>% 
+  mutate(ss665_threshold= ifelse(ss665 < 0, ))
 
 
 # Write files

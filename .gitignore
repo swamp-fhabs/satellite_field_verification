@@ -24,6 +24,7 @@ Pictures/
 *.gsheet
 .DS_Store
 *.zip
+*.msg
 
 # GIS Files
 Data/Shapefiles/ca_lakes_shapefile.rds

@@ -68,14 +68,15 @@ theme_sat <- theme(panel.grid = element_blank(),
 
 ggplot(data= ci_fs, aes(x= pixel, y= ci_mod)) +
   geom_hline(yintercept = 0) +
-  geom_boxplot() +
+  geom_boxplot(fill= "gray75") +
   #geom_point(size= 2, color= "black", alpha= 0.4) +
   labs(x= "Measurement location", y= "Field CI-mod") +
   scale_fill_discrete(name= "Waterbody") +
   scale_y_continuous(limits= c(-10, 60), breaks= seq(-10, 60, by= 10), expand= c(0.02, 0)) +
-  facet_grid(.~waterbody, scales= "free_x") +
+  #facet_grid(.~waterbody, scales= "free_x") +
+  facet_wrap(~waterbody, ncol= 3, scales= "free_x") +
   theme_sat +
-  theme(axis.text.x= element_text(angle= 90))
+  theme(axis.text.x= element_text(angle= 45, hjust= 1))
 
 ggsave(last_plot(), filename= "ci_mod_wbd.jpg", height= 6, width= 8, units= "in", dpi= 300,
        path= "Data/Figures_output")
@@ -125,8 +126,6 @@ ggsave(last_plot(), filename= "ci_fs.jpg", height= 6, width= 8, units= "in", dpi
        path= "Data/Figures_output")
 
 
-
-
 ## CI-mod FIELD X SAT
 cimod_lims <- c(0.9, 60)
 cimod_brks <- c(1, seq(10, 60, by= 10))
@@ -155,12 +154,33 @@ ggplot(data= ci_fs) +
   geom_point(aes(x= pix_site, y= pix_val), size= 3, shape= 21, fill= "gray75") +
   labs(x= "Measurement location", y= "Field pixel value") +
   scale_fill_discrete(name= "Waterbody") +
-  facet_grid(.~waterbody, scales= "free_x") +
-  theme_sat +
-  theme(axis.text.x= element_text(angle= 90))
+  #facet_grid(.~waterbody, scales= "free_x") +
+  facet_wrap(~waterbody, ncol= 3, scales= "free_x") +
+  theme_sat#+
+  #theme(axis.text.x= element_text(angle= 90))
 
 ggsave(last_plot(), filename= "ci_pix_wbd.jpg", height= 6, width= 8, units= "in", dpi= 300,
        path= "Data/Figures_output")
+
+
+## SS(665) X WATERBODY
+
+ggplot(data= ci_fs, aes(x= pixel, y= ss665)) +
+  geom_hline(yintercept = 0) +
+  geom_boxplot(fill= "gray75") +
+  labs(x= "Measurement location", y= "SS(665 nm)") +
+  scale_fill_discrete(name= "Waterbody") +
+  #scale_y_continuous(limits= c(-10, 60), breaks= seq(-10, 60, by= 10), expand= c(0.02, 0)) +
+  # facet_grid(.~waterbody, scales= "free_x") +
+  facet_wrap(~waterbody, ncol= 3, scales= "free_x") +
+  theme_sat +
+  theme(axis.text.x= element_text(angle= 45, hjust= 1))
+
+ggsave(last_plot(), filename= "ss665_wbd.jpg", height= 6, width= 8, units= "in", dpi= 300,
+       path= "Data/Figures_output")
+
+
+
 
 
 ## CI X WATERBODY

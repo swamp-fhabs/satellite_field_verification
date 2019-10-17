@@ -1,6 +1,6 @@
 library(tidyverse)
-library(tidyverse)
 library(tmaptools)
+library(lubridate)
 
 
 ## GPX time stamp at prime meridian UTC
@@ -14,9 +14,9 @@ gpx_tp <- gpx_sf$track_points
 
 ## Transform into a tibble and format columns
 # use do.call to extract the lat/long geometry from class sf
-gpx_df <- tibble(time= as.character(gpx_tp$time), 
+gpx_df <- tibble(date_time_UTC= as.character(gpx_tp$time), 
                  lon= do.call(rbind, st_geometry(gpx_tp$geometry))[, 1],
                  lat= do.call(rbind, st_geometry(gpx_tp$geometry))[, 2]) %>% 
-  mutate(date_time= ymd_hms(str_replace(gpx_df$time, "\\+00", "")))
+  mutate(date_time_PST= with_tz(ymd_hms(str_replace(.$date_time_UTC, "\\+00", "")), tzone= "America/Los_Angeles"))
 
 

@@ -117,7 +117,7 @@ alm_lake_map
 alm_bbox_map <- plot_bounding_box(data_list = alm_data, shapefile_utm = alm_utm, bbox= alm_bbox, label= TRUE)
 alm_bbox_map
 
-# CLEAR LAKE 20190816
+# CLEAR LAKE 20191008
 clr1008_lake_map <- plot_whole_lake(data_list = clr1008_data, shapefile_utm = clr_utm, scalebar_dist = 1000)
 clr1008_lake_map
 

@@ -1,11 +1,12 @@
 ## Script to plot the rrs and CI values
 ## OLCI bands (nanometers, nm) 620, 665, 681, and 709
 
-## TXT files generated in calc_CI_from_rrs.R script. Run this script first
+## TXT files generated in calc_CI_and_format.R script. Run this script first
 
 #### Libraries
 library(tidyverse)
 library(ggplot2)
+
 
 ## Read in CI and rrs data
 ci_fs <- read_tsv("Data/CI_field_sat_h2o_data.tsv") 
@@ -14,37 +15,63 @@ ci_fs_mod <- ci_fs %>%
          ci_mod_sat = ifelse(ci_mod < 1, 1, ci_mod_sat))
 
 
+## CIcyano results
+
+ci_fs_mod %>% 
+  count(ss665_threshold)
+summary(ci_fs$ss665)
 
 
-
-# rrs_bands <- read_tsv("Data/rrs_OLCI_band_values.tsv") %>% 
+# 
+# rrs_bands <- read_tsv("Data/rrs_OLCI_band_values.tsv") %>%
 #   mutate(nm= ifelse(band == "b07_620", 620,
 #                     ifelse(band == "b08_665", 665,
 #                            ifelse(band == "b10_681", 681, 709))))
 
 
-make_olci_band_plots <- function(df, sampID, out_dir){
+make_spectral_shape_plots <- function(df, sampID, out_dir){
+  
+  ## SS(681) CI
   
   # Filter data by band type
-  point_df <- filter(df, df$uniqueID == sampID, band != "b07_620")
-  line_df <- filter(df, uniqueID == sampID, band == "b08_665" | band == "b11_709")
+  point_df_681 <- filter(df, df$uniqueID == sampID, band != "b07_620")
+  line_df_681 <- filter(df, uniqueID == sampID, band == "b08_665" | band == "b11_709")
   
-  plot1 <- ggplot() +
-    geom_line(data= line_df,
+  plot681 <- ggplot() +
+    geom_line(data= line_df_681,
               aes(x= nm, y= rrs, group= sampID), linetype= "dashed", size= 0.25) +
-    geom_point(data= point_df, 
+    geom_point(data= point_df_681, 
                aes(x= nm, y= rrs), size= 3) +
     labs(x= "OLCI bands (nm)", y= "Remote sensed reflectance (rrs)") +
     scale_x_continuous(breaks= c(665, 681, 709)) +
     scale_y_continuous(limits= c(min(df$rrs), max(df$rrs))) +
-    ggtitle(sampID) +
+    ggtitle(sampID, subtitle= "SS(681)") +
     theme_bw(base_size= 16)
   
-  ggsave(plot1, filename= str_c("olci_bands-", sampID, ".jpg"), path=out_dir, dpi= 300, height= 5.5, width= 5, units= "in")
+  ggsave(plot681, filename= str_c(sampID, "_ss681", ".jpg"), path=out_dir, dpi= 300, height= 5.5, width= 5, units= "in")
   
+  
+  
+  ## SS(665) CIcyano
+  point_df_665 <- filter(df, df$uniqueID == sampID, band != "b11_709" )
+  line_df_665 <- filter(df, uniqueID == sampID, band == "b07_620" | band == "b10_681")
+  
+  
+  plot665 <- ggplot() +
+    geom_line(data= line_df_665,
+              aes(x= nm, y= rrs, group= sampID), linetype= "dashed", size= 0.25) +
+    geom_point(data= point_df_665, 
+               aes(x= nm, y= rrs), size= 3) +
+    labs(x= "OLCI bands (nm)", y= "Remote sensed reflectance (rrs)") +
+    scale_x_continuous(breaks= c(620, 665, 681)) +
+    scale_y_continuous(limits= c(min(df$rrs), max(df$rrs))) +
+    ggtitle(sampID,  subtitle= "SS(665)") +
+    theme_bw(base_size= 16)
+  
+  ggsave(plot665, filename= str_c(sampID, "_ss665", ".jpg"), path=out_dir, dpi= 300, height= 5.5, width= 5, units= "in")
   
 }
-#map(rrs_bands$uniqueID, function(x) make_olci_band_plots(df= rrs_bands, sampID= x, out_dir= "Data/olci_band_plots"))
+#map(rrs_bands$uniqueID, function(x) make_spectral_shape_plots(df= rrs_bands, sampID= x, out_dir= "Data/spectral_shape_plots"))
 
 #### GGPLOT THEMES ############################
 theme_sat <- theme(panel.grid = element_blank(),
@@ -62,6 +89,23 @@ theme_sat <- theme(panel.grid = element_blank(),
                   strip.background=element_rect(fill="transparent", color="transparent"),
                   #axis.text.x = element_text(angle= 45, hjust= 1),
                   legend.position = "right")
+
+
+## CIcyano Histogram
+ggplot(data= ci_fs, aes(x= ss665)) +
+  geom_histogram(binwidth= 0.0001, 
+                 boundary= 1,
+                 fill= "black",
+                 color= "gray50") +
+  labs(x= "SS(665) values", y= "Count") +
+  scale_y_continuous(expand= c(0,0)) +
+  scale_x_continuous(limits= c(-0.003, 0),
+                     breaks= seq(-0.003, 0, by= 0.0005),
+                     labels= c("-0.003", "", "-0.002", "", "-0.001", "", "0"),
+                     expand= c(0, 0)) +
+  theme_sat
+ggsave(last_plot(), filename= "ss665_hist.jpg", height= 6, width= 8, units= "in", dpi= 300,
+       path= "Data/Figures_output")
 
 
 ## CI-mod X WATERBODY

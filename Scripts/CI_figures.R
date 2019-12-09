@@ -22,7 +22,7 @@ ci_fs_mod %>%
 summary(ci_fs$ss665)
 
 
-# 
+
 # rrs_bands <- read_tsv("Data/rrs_OLCI_band_values.tsv") %>%
 #   mutate(nm= ifelse(band == "b07_620", 620,
 #                     ifelse(band == "b08_665", 665,
@@ -73,6 +73,25 @@ make_spectral_shape_plots <- function(df, sampID, out_dir){
 }
 #map(rrs_bands$uniqueID, function(x) make_spectral_shape_plots(df= rrs_bands, sampID= x, out_dir= "Data/spectral_shape_plots"))
 
+#### SUMMARY STATISTICS ####
+
+coef_variation_site <- ci_fs %>% 
+  group_by(waterbody, pix_site) %>% 
+  summarize(n= length(ci),
+            mean_ci= mean(ci, na.rm= TRUE),
+            sd_ci= sd(ci, na.rm= TRUE),
+            cv_ci= sd_ci / mean_ci) %>% 
+  ungroup()
+
+coef_variation_pixel <- ci_fs %>% 
+  group_by(waterbody, pixel) %>% 
+  summarize(n= length(ci),
+            mean_ci= mean(ci, na.rm= TRUE),
+            sd_ci= sd(ci, na.rm= TRUE),
+            cv_ci= sd_ci / mean_ci) %>% 
+  ungroup()
+
+
 #### GGPLOT THEMES ############################
 theme_sat <- theme(panel.grid = element_blank(),
                   plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"),
@@ -106,6 +125,45 @@ ggplot(data= ci_fs, aes(x= ss665)) +
   theme_sat
 ggsave(last_plot(), filename= "ss665_hist.jpg", height= 6, width= 8, units= "in", dpi= 300,
        path= "Data/Figures_output")
+
+## CV Histogram
+ggplot(data= coef_variation_site, aes(x= cv_ci)) +
+  geom_histogram() +
+  # geom_histogram(binwidth= 0.0001, 
+  #                boundary= 1,
+  #                fill= "black",
+  #                color= "gray50") +
+  # labs(x= "SS(665) values", y= "Count") +
+  # scale_y_continuous(expand= c(0,0)) +
+  # scale_x_continuous(limits= c(-0.003, 0),
+  #                    breaks= seq(-0.003, 0, by= 0.0005),
+  #                    labels= c("-0.003", "", "-0.002", "", "-0.001", "", "0"),
+  #                    expand= c(0, 0)) +
+  theme_sat
+# ggsave(last_plot(), filename= "ss665_hist.jpg", height= 6, width= 8, units= "in", dpi= 300,
+#        path= "Data/Figures_output")
+
+ggplot(data= coef_variation_pixel, aes(x= abs(cv_ci))) +
+  geom_histogram(binwidth = 0.05,
+                 boundary= 1,
+                 fill= "black") +
+  # geom_histogram(binwidth= 0.0001, 
+  #                boundary= 1,
+  #                fill= "black",
+  #                color= "gray50") +
+  # labs(x= "SS(665) values", y= "Count") +
+   scale_y_continuous(expand= c(0,0)) +
+  scale_x_continuous(expand= c(0,0)) +
+  # scale_x_continuous(limits= c(-0.003, 0),
+  #                    breaks= seq(-0.003, 0, by= 0.0005),
+  #                    labels= c("-0.003", "", "-0.002", "", "-0.001", "", "0"),
+  #                    expand= c(0, 0)) +
+  theme_sat
+# ggsave(last_plot(), filename= "ss665_hist.jpg", height= 6, width= 8, units= "in", dpi= 300,
+#        path= "Data/Figures_output")
+
+
+
 
 
 ## CI-mod X WATERBODY
@@ -255,5 +313,18 @@ ggplot(data= ci_fs) +
   theme_sat
 
 ggsave(last_plot(), filename= "ci_mod_chla.jpg", height= 6, width= 8, units= "in", dpi= 300,
+       path= "Data/Figures_output")
+
+## CI X CHLA
+ggplot(data= ci_fs) +
+  geom_hline(yintercept = 0) +
+  geom_point(aes(x= chla_ugL, y= ci, fill= waterbody), size= 3, shape= 21) +
+  labs(x= expression(paste("Chlorophyll-a (",mu,"g/L)")), y= "Field CI-mod") +
+  scale_fill_discrete(name= "Waterbody") +
+  scale_x_continuous(expand= c(0.02, 0)) +
+ # scale_y_continuous(limits= c(-10, 60), breaks= seq(-10, 60, by= 10), expand= c(0.02, 0)) +
+  theme_sat
+
+ggsave(last_plot(), filename= "ci_chla.jpg", height= 6, width= 8, units= "in", dpi= 300,
        path= "Data/Figures_output")
 

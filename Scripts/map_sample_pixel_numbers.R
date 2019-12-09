@@ -88,6 +88,8 @@ ggsave(last_plot(), filename= "lsa_lake_map.jpg", height= 6, width= 8, units= "i
 
 lsa_bbox_map <- plot_bounding_box(data_list = lsa_data, shapefile_utm = lsa_utm, bbox= lsa_bbox, label= TRUE)
 lsa_bbox_map
+ggsave(last_plot(), filename= "lsa_lake_bbox_map.jpg", height= 6, width= 8, units= "in", dpi= 300,
+       path= "Data/20190801_LakeSanAntonio")
 
 
 # CLEAR LAKE 20190807

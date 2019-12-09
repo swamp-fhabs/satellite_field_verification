@@ -3,10 +3,10 @@ title: "Satellite field verification results"
 author: "KBG"
 date: "December 6, 2019"
 output:
+  word_document: default
+  pdf_document: default
   html_document:
     df_print: paged
-  pdf_document: default
-  word_document: default
 editor_options: 
   chunk_output_type: console
 ---
@@ -102,7 +102,7 @@ kable(cyano_taxa, caption= "Table 2. Microscopic cyanobacteria identification.")
 
 All 142 field CIcyano values were <0 suggesing that cyanobacteria were not present at any of the field sampling locations (Figure 1). The range of SS(665) values was -0.0025 to -0.000071. 
 
-```{r pressure, echo=FALSE, fig.cap="", out.width = '50%'}
+```{r, echo=FALSE, fig.cap="", out.width = '50%'}
 knitr::include_graphics("C://Users/KBouma-Gregson/Documents/Satellite_CI_index/satellite_field_verification_git/Data/Figures_output/ss665_hist.jpg")
 ```
   

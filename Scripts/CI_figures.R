@@ -224,6 +224,16 @@ ggsave(last_plot(), filename= "ss665_wbd.jpg", height= 6, width= 8, units= "in",
        path= "Data/Figures_output")
 
 
+## SS(665) X CI-MOD
+ggplot(data= ci_fs_mod) +
+  geom_point(aes(x= ss665, y= ci_mod, fill= waterbody), size= 3, shape= 21) +
+  labs(x= "SS(665)", y= "Field CI-mod") +
+  scale_fill_discrete(name= "Waterbody") +
+  theme_sat
+
+ggsave(last_plot(), filename= "ss665_CImod.jpg", height= 6, width= 8, units= "in", dpi= 300,
+       path= "Data/Figures_output")
+
 
 
 

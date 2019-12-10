@@ -3,9 +3,9 @@ title: "Satellite field verification results"
 author: "KBG"
 date: "December 6, 2019"
 output:
-  word_document: default
-  html_document:
+  html_document: 
     df_print: paged
+  word_document: default
   pdf_document: default
 editor_options: 
   chunk_output_type: console
@@ -82,7 +82,6 @@ SFEI and the CA Waterboards then multiply CI-final by a constant to make the val
 ## **Results**
 
 #### *Lake conditions*
-<<<<<<< HEAD
 Lakes ranged in phytoplankton concentrations, with median chl-a concentrations ranging from 1-40 ug/L (Fig. 1) and Secchi depths ranged from <1 - 4.5 meters (Fig. 2). Only in Clear Lake were cyanobacterial colonies visible (Fig. 4), however, microscopic analysis of samples did identify cyanobacterial taxa in some waterbodies, including *Dolichospermum*, *Microcystis*, and *Gloeotrichia* (Table 2). No cell counts of cyanobacteria abundance were performed.
 
 ```{r, echo=FALSE, fig.cap="", out.width = '60%', fig.align= "center"}
@@ -90,13 +89,13 @@ include_graphics("../Data/Figures_output/chla.jpg")
 
 ```
   
-**Figure 2.** Chlorophyll-a concentrations at sampling locations in waterbodies. (Note: data is missing for Clear Lake on Aug-16 and Oct-8).  
+**Figure 2.** Chlorophyll-a concentrations at sampling locations in waterbodies. (Note: data was not collected  for Clear Lake on Aug-16 and Oct-8).  
 
 ```{r, echo=FALSE,  fig.cap="", out.width = '60%', fig.align= "center"}
 knitr::include_graphics("../Data/Figures_output/secchi.jpg")
 ```
   
-**Figure 3.** Secchi depth at sampling locations in waterbodies. (Note: data is missing for Clear Lake on Aug-16 and Oct-8).  
+**Figure 3.** Secchi depth at sampling locations in waterbodies. (Note: data was not collected for Clear Lake on Aug-16 and Oct-8).  
 
 
 
@@ -125,7 +124,7 @@ include_graphics("../Data/20191008_ClearLake/Pictures/pic4.jpg")
 ```
     
   
-**Figure 4.** Photographs of water conditions on sampling days. Top row (left to right): Lake San Antonio, Lake Almanon. Botom row (left to right) Clear Lake (16-Aug), Clear Lake (08-Oct).  
+**Figure 4.** Photographs of water conditions on sampling days. Top row (left to right): Lake San Antonio, Lake Almanor. Botom row (left to right) Clear Lake (16-Aug), Clear Lake (08-Oct).  
 
 #### *Remote sensed reflectance spectra*
   
@@ -133,7 +132,6 @@ The field collected remote sensed reflectance (rrs) showed chlorophyll-a reflect
   
 ```{r, echo=FALSE, fig.cap="", out.width = '50%', results= "asis"}
 
-<<<<<<< HEAD
 include_graphics("../Data/20190801_LakeSanAntonio/noaa_files/P1S2_3/avg_rrs_per_group_and_all_groups_2019_08_01___11_32_14_000000_UNKNOWN_UNKNOWN_sky_0.028.png")
 include_graphics("../Data/20190807_ClearLake/noaa_files/P2S3_1/avg_rrs_per_group_and_all_groups_2019_08_07___13_05_37_000000_UNKNOWN_UNKNOWN_sky_0.028.png")
 ```
@@ -150,7 +148,7 @@ include_graphics("../Data/20190812_SanPabloReservoir/noaa_files/P1S3_1/avg_rrs_p
 
 #### *CIcyano values*
   
-<<<<<<< HEAD
+
 All 142 field CI-cyano values were <0 suggesing that cyanobacteria were not present at any of the field sampling locations (Fig. 5). The range of SS(665) values was -0.0025 to -0.000071. 
 
 ```{r, echo=FALSE, fig.cap=""}
@@ -162,14 +160,12 @@ include_graphics("../Data/Figures_output/ss665_hist.jpg")
   
 #### *CI values*  
   
-CI values will be shown in the results, since CI-final values would all be zero, because  CI-cyano values were all <0. Variance among the triplicate measurements within a sample was low (Fig. 6). Lake Almanor and San Pablo reservoir had CI values <0 suggesting no cyanobacteria present in the waterbody. All other waterbodies had positive CI values, suggesting the presence of cyanobacteria.  
+CI values will be shown in the results, since CI-final values would all be zero, because  CI-cyano values were all <0. Variance among the triplicate measurements within a site was low (Fig. 6). Lake Almanor and San Pablo reservoir had CI values <0 suggesting no cyanobacteria present in the waterbody. All other waterbodies had positive CI values, suggesting the presence of cyanobacteria.  
 
 ```{r, echo=FALSE, fig.cap="", out.width = '60%', fig.align= "center"}
 include_graphics("../Data/Figures_output/ci_wbd.jpg")
 ```
-=======
-  **Figure 4.** Histogram of all SS(665) values (N = 142).
->>>>>>> d5f8859599abee9aa4c18cbf2ad394d72f116900
+
   
 **Figure 6.** CI values from all sampling locations.
 

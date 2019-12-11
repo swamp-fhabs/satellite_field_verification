@@ -12,7 +12,8 @@ library(ggplot2)
 ci_fs <- read_tsv("Data/CI_field_sat_h2o_data.tsv") 
 ci_fs_mod <- ci_fs %>% 
   mutate(ci_mod = ifelse(ci_mod < 0, 1, ci_mod),
-         ci_mod_sat = ifelse(ci_mod < 1, 1, ci_mod_sat))
+         ci_mod_sat = ifelse(ci_mod < 1, 1, ci_mod_sat),
+         ci_mod_final= ifelse(ss665_threshold == "Absent", 0, ci_mod))
 
 
 ## CIcyano results
@@ -246,6 +247,25 @@ ggplot(data= ci_fs_mod) +
 
 ggsave(last_plot(), filename= "ci_mod_fs.jpg", height= 6, width= 8, units= "in", dpi= 300,
        path= "Data/Figures_output")
+
+## CI-mod-final FIELD X SAT
+cimod_lims <- c(0.9, 60)
+cimod_brks <- c(1, seq(10, 60, by= 10))
+
+ggplot(data= ci_fs_mod) +
+  #geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
+  #geom_hline(yintercept = 1) +
+  #geom_vline(xintercept = 1) +
+  geom_point(aes(x= ci_mod_sat, y= ci_mod_final, fill= waterbody), size= 3, shape= 21) +
+  labs(x= "Satellite CI-mod", y= "Field CI-mod") +
+  scale_fill_discrete(name= "Waterbody") +
+  #scale_x_continuous(limits= cimod_lims, breaks= cimod_brks, expand= c(0.02, 0)) +
+  #scale_y_continuous(limits= cimod_lims, breaks= cimod_brks, expand= c(0.02, 0)) +
+  #coord_equal() +
+  theme_sat
+
+# ggsave(last_plot(), filename= "ci_mod_fs.jpg", height= 6, width= 8, units= "in", dpi= 300,
+#        path= "Data/Figures_output")
 
 
 

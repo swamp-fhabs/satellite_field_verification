@@ -21,6 +21,8 @@ ggplot(data= rrs_spec) +
                      breaks= seq(350, 900, by= 50), 
                      labels= c("", "400", "", "500", "", "600", "", "700", "", "800", "", "900")) +
   scale_y_continuous(expand= c(0.02, 0)) +
+  scale_x_continuous(limits= c(400, 800),
+                     expand= c(0, 0)) +
   geom_line(aes(x= nm, y= rrs), size= 1) +
   labs(x= "nm", y= "Field Rrs", title= sample_name) +
   theme_classic(base_size = 18)

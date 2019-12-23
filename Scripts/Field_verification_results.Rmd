@@ -57,21 +57,22 @@ include_graphics("../Data/20190801_LakeSanAntonio/lsa_lake_bbox_map.jpg")
 
 #### *Cyanobacterial index calculations*
 
-The rrs values were  used to calculate the cyanobacterial indices CI and CIcyano. The CI value is derived from the spectral shape (SS) at 681 nm and is calculated with equation 1 in Wynne et al. 2008: $$
+The rrs values were  used to calculate the cyanobacterial indices CI and CIcyano. The CI value is derived from the spectral shape (SS) at 681 nm and is calculated with equation 1 in Wynne et al. 2008: 
+$$
 \begin{equation}
-SS(681) = rrs681 - rrs665 - (rrs709 - rrs665) * \frac{681-665}{709-665} \tag{1}
+SS(681) = rrs681 - rrs665 - (rrs709 - rrs665) * \frac{681-665}{709-665}
 \end{equation}
 $$
 More negative SS(681) values represent higher cyanobacterial abundances in the surface waters of a pixel. To transform it into positive values the SS(681) is converted to CI by: 
 $$
 \begin{equation}
-CI = -1*SS(681) \tag{2}
+CI = -1*SS(681)
 \end{equation}
 $$
 CI values <0 indicate no cyanobacteria present. However, certain water conditions can generate positive CI values, even when there are no cyanobacteria present. To reduce the frequency of false positives, Lunetta et al. 2015 proposed an additional indice, CIcyano, based on the spectral shape at 665 nm, which is calculated by: 
 $$
 \begin{equation}
-SS(665) = rrs665 - rrs620 + (rrs620 - rrs681) * \frac{665-620}{681-620} \tag{3}
+SS(665) = rrs665 - rrs620 + (rrs620 - rrs681) * \frac{665-620}{681-620}
 \end{equation}
 $$
 When SS(665) is >0 it indicates cyanobacteria present in the water and when it is <0, cyanobacteria is predicted to be absent. SS(665) is then transformed into an exclusion criteria value of 1 when SS(665)  >0 and 0 when SS(665) <0. 
@@ -79,14 +80,14 @@ $$
 \begin{equation}
   f(SS(665))=\begin{cases}
     1, & \text{if SS(665) > 0}.\\
-    0, & \text{if SS(665) < 0}. \tag{4}
+    0, & \text{if SS(665) < 0}.
   \end{cases}
 \end{equation}
 $$
 Then for a given pixel the CIcyano value is calculated by: 
 $$
 \begin{equation}
-CIcyano = f(SS(665)) * CI \tag{5}
+CIcyano = f(SS(665)) * CI
 \end{equation}
 $$
 
@@ -97,7 +98,7 @@ This will render all measurements with f(SS(665)) = 0 as non-detects, even if th
 Satellite data is provided from NOAA and given as an integer for each pixel ranging in values 0-250, corresponding to increasing CIcyano value. The pixel integer is converted to CIcyano with: 
 $$
 \begin{equation}
-CIcyano = 10^{0.012 * PixInteger - 4.2} \tag{6}
+CIcyano = 10^{0.012 * PixInteger - 4.2}
 \end{equation}
 $$
 
@@ -105,7 +106,7 @@ $$
 SFEI and the CA Waterboards then multiply CIcyano by a constant to make the values easier to work with by putting them on a scale of 1-1000. This index is called CI-mod and calculateted by: 
 $$
 \begin{equation}
-CImod = CIcyano * 15805.18 \tag{7}
+CImod = CIcyano * 15805.18
 \end{equation}
 $$
 

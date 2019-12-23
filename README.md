@@ -7,7 +7,9 @@ Research project to verify satellite derived Cyanobacterial Index in California 
 California satellite data webpage :https://mywaterquality.ca.gov/habs/data_viewer/#satellite
 
 ## Workflow
-The README describes the workflow to convert raw radiometer data into remote sensed reflectance values, and then the calculate cyanobacterial index. The program, `test_asd_group.exe`, used to calculate remote sensed reflectance values from radiometer data was provided by NOAA scientists Michelle Tomlinson and Andrew Meredith.
+The README describes the workflow to convert raw radiometer data into remote sensed reflectance values, and then the calculate cyanobacterial index. The program, `test_asd_group.exe`, used to calculate remote sensed reflectance values from radiometer data was provided by NOAA scientists Michelle Tomlinson and Andrew Meredith. 
+
+All scripts are written in R. Pathways in R scripts are relative to the git directory. If you create an Rstudio Project `.Rmd` file in the same directory as the git directory or `setwd()` to the git directory, then all pathways should work.
 
 ### Field data collection
 On each lake, three sub-samples were collected within each satellite pixel. At each sampling site within the pixel, triplicate measurements of a calibrated 10% reflectance plate, water, and sky were made. Radiometer data was collected with a Malvern Panalytics ASD FieldSpec Handheld2 Pro (HH2) radiometer. Each of the triplicate measurement from the HH2 includes ten replicates, which are then averaged together to create a single spectra for the measurement. After collections, files are exported from the HH2 using the `asii export` function, which produces `.asd.txt` files with radiance values at each wavelength (nm).

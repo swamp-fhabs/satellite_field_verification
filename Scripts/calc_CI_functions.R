@@ -84,14 +84,23 @@ calc_CI <- function(df){
   
   # From Lunetta et al. 2015
   ss665 <-  with(df.wide,
-           b08_665 - b07_620 + (b07_620 - b10_681) * ((665-620) / (681-620))
+           b08_665 - b07_620 + (b07_620 - b10_681) * ((665-620) / (681-620)) # I prefer this equation because it uses a + like in Wynne et al. 2008
+           #b08_665 - b07_620 - (b10_681 - b07_620) * ((665-620) / (681-620))
   )
+  
+  ## The variations on the formula below generate the result as the ss665 equation above
+  ## Across the publications it is common to change the sign of the second operator between + and -
+  ## and then reverse the order of the bands in the parenthese. If you do this, the result is the same.
+  # ss665_2 <-  with(df.wide,
+  #                  b08_665 - b07_620 - (b10_681 - b07_620) * (665-620) / (681-620)
+  # )
+  
+  
   return(data.frame(CI, ss665))
 }
 
 ci_list <- map(olci_band_list, calc_CI)
 names(ci_list) <- sample_IDs
-
 
 
 # Make into a dataframes

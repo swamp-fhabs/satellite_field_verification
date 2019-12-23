@@ -27,7 +27,6 @@ source("Scripts/calc_CI_functions.R")
 field_CI_values <- calc_CI_values(in_dir = "Data/rrs_data", out_path = "Data") 
 
 
-
 ## JOIN SATELLITE AND FIELD CI VALUES
 satellite_dir <- "Data/Sentinel_flyover_data"
 sample_pixels <-  read_tsv("Data/Sentinel_flyover_data/sample_pixel_numbers.tsv")

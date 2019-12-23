@@ -40,6 +40,9 @@ ggplot(data= fd, aes(x= waterbody, y= secchi_avg)) +
   geom_boxplot(fill= "gray80") +
   geom_point() +
   labs(x= "Waterbody", y= "Secchi depth (m)") +
+  scale_y_reverse(limits= c(5.5, 0),
+                  breaks= seq(0, 5, by= 1),
+                  expand= c(0, 0)) +
   theme_sat
 ggsave(last_plot(), filename= "secchi.jpg", height= 6, width= 8, units= "in", dpi= 300,
        path= "Data/Figures_output")

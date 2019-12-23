@@ -1,5 +1,5 @@
 # satellite_field_verification
-California State Water Resources Control Board Office of Informationa Management and Analysis (OIMA)  
+California State Water Resources Control Board Office of Information Management and Analysis (OIMA)  
 San Francisco Estuary Institute (SFEI)  
 
 Research project to verify satellite derived Cyanobacterial Index in California lakes. This index uses satellite imagery from the OLCI sensor on Sentinel-3 to estimate cyanobacterial density in the surface of water bodies.

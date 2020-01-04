@@ -141,7 +141,24 @@ return(ci_df)
 }
 
 
-#field_CI_values <- calc_CI_values(in_dir = "Data/rrs_data", out_path = "Data") 
+
+format_satellite_data <- function(sat_dir){
+  sat_files <- list.files(sat_dir, pattern= "*.csv")
+  
+  CI.df <- map(sat_files[str_detect(sat_files, "CI.csv")], function(x) read_csv(file.path(sat_dir, x)) %>% 
+                   rename("CI_value" = `Pixel Value`)) %>% 
+    setNames(str_replace(sat_files[str_detect(sat_files, "CI.csv")], ".CI.csv", "")) %>% 
+    bind_rows(., .id= "waterbody")
+  
+  CIcyano.df <- map(sat_files[str_detect(sat_files, "CIcyano.csv")], function(x) read_csv(file.path(sat_dir, x)) %>% 
+                   rename("CIcyano_value" = `Pixel Value`)) %>% 
+    setNames(str_replace(sat_files[str_detect(sat_files, "CIcyano.csv")], ".CIcyano.csv", "")) %>% 
+    bind_rows(., .id= "waterbody")
+  
+  sentinel.df <- full_join(CI.df, CIcyano.df)
+}
+
+
 
 
 ## JOIN SATELLITE AND FIELD CI VALUES

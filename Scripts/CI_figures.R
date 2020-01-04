@@ -111,6 +111,14 @@ theme_sat <- theme(panel.grid = element_blank(),
                   legend.position = "right")
 
 
+waterbody_labeller <- c("ClearLake_20190807" = "Clear Lake\n2019-08-07",
+                        "ClearLake_20190816" = "Clear Lake\n2019-08-16",
+                        "ClearLake_20191008" = "Clear Lake\n2019-10-08",
+                        "LakeAlmanor_20190815" ="Lake Almanor\n2019-08-15",
+                        "LakeSanAntonio_20190801" = "L. San Antonio\n2019-08-01",
+                        "SanPabloReservoir_20190812" = "San Pablo Res.\n2019-08-12")
+
+
 ## CIcyano Histogram
 ggplot(data= ci_fs, aes(x= ss665)) +
   geom_histogram(binwidth= 0.0001, 
@@ -124,7 +132,7 @@ ggplot(data= ci_fs, aes(x= ss665)) +
                      labels= c("-0.003", "", "-0.002", "", "-0.001", "", "0"),
                      expand= c(0, 0)) +
   theme_sat
-ggsave(last_plot(), filename= "ss665_hist.jpg", height= 6, width= 8, units= "in", dpi= 300,
+ggsave(last_plot(), filename= "ss665_hist.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output")
 
 ## CV Histogram
@@ -141,7 +149,7 @@ ggplot(data= coef_variation_site, aes(x= cv_ci)) +
   #                    labels= c("-0.003", "", "-0.002", "", "-0.001", "", "0"),
   #                    expand= c(0, 0)) +
   theme_sat
-# ggsave(last_plot(), filename= "ss665_hist.jpg", height= 6, width= 8, units= "in", dpi= 300,
+# ggsave(last_plot(), filename= "ss665_hist.png", , units= "in", dpi= 300,
 #        path= "Data/Figures_output")
 
 ggplot(data= coef_variation_pixel, aes(x= abs(cv_ci))) +
@@ -160,7 +168,7 @@ ggplot(data= coef_variation_pixel, aes(x= abs(cv_ci))) +
   #                    labels= c("-0.003", "", "-0.002", "", "-0.001", "", "0"),
   #                    expand= c(0, 0)) +
   theme_sat
-# ggsave(last_plot(), filename= "ss665_hist.jpg", height= 6, width= 8, units= "in", dpi= 300,
+# ggsave(last_plot(), filename= "ss665_hist.png", , units= "in", dpi= 300,
 #        path= "Data/Figures_output")
 
 
@@ -181,7 +189,7 @@ ggplot(data= ci_fs, aes(x= pixel, y= ci_mod)) +
   theme_sat +
   theme(axis.text.x= element_text(angle= 45, hjust= 1))
 
-ggsave(last_plot(), filename= "ci_mod_wbd.jpg", height= 6, width= 8, units= "in", dpi= 300,
+ggsave(last_plot(), filename= "ci_mod_wbd.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output")
 
 
@@ -206,7 +214,7 @@ ggplot(data= ci_fs_mod) +
   coord_equal() +
   theme_sat
 
-ggsave(last_plot(), filename= "ci_pixel_fs.jpg", height= 6, width= 8, units= "in", dpi= 300,
+ggsave(last_plot(), filename= "ci_pixel_fs.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output")
 
 ## CI FIELD X SAT
@@ -225,7 +233,7 @@ ggplot(data= ci_fs) +
   coord_equal() +
   theme_sat
 
-ggsave(last_plot(), filename= "ci_fs.jpg", height= 6, width= 8, units= "in", dpi= 300,
+ggsave(last_plot(), filename= "ci_fs.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output")
 
 
@@ -245,28 +253,8 @@ ggplot(data= ci_fs_mod) +
   coord_equal() +
   theme_sat
 
-ggsave(last_plot(), filename= "ci_mod_fs.jpg", height= 6, width= 8, units= "in", dpi= 300,
+ggsave(last_plot(), filename= "ci_mod_fs.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output")
-
-## CI-mod-final FIELD X SAT
-cimod_lims <- c(0.9, 60)
-cimod_brks <- c(1, seq(10, 60, by= 10))
-
-ggplot(data= ci_fs_mod) +
-  #geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
-  #geom_hline(yintercept = 1) +
-  #geom_vline(xintercept = 1) +
-  geom_point(aes(x= ci_mod_sat, y= ci_mod_final, fill= waterbody), size= 3, shape= 21) +
-  labs(x= "Satellite CI-mod", y= "Field CI-mod") +
-  scale_fill_discrete(name= "Waterbody") +
-  #scale_x_continuous(limits= cimod_lims, breaks= cimod_brks, expand= c(0.02, 0)) +
-  #scale_y_continuous(limits= cimod_lims, breaks= cimod_brks, expand= c(0.02, 0)) +
-  #coord_equal() +
-  theme_sat
-
-# ggsave(last_plot(), filename= "ci_mod_fs.jpg", height= 6, width= 8, units= "in", dpi= 300,
-#        path= "Data/Figures_output")
-
 
 
 ## CI PIXELS X WATERBODY
@@ -281,7 +269,7 @@ ggplot(data= ci_fs) +
   theme_sat#+
   #theme(axis.text.x= element_text(angle= 90))
 
-ggsave(last_plot(), filename= "ci_pix_wbd.jpg", height= 6, width= 8, units= "in", dpi= 300,
+ggsave(last_plot(), filename= "ci_pix_wbd.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output")
 
 
@@ -294,11 +282,11 @@ ggplot(data= ci_fs, aes(x= pixel, y= ss665)) +
   scale_fill_discrete(name= "Waterbody") +
   #scale_y_continuous(limits= c(-10, 60), breaks= seq(-10, 60, by= 10), expand= c(0.02, 0)) +
   # facet_grid(.~waterbody, scales= "free_x") +
-  facet_wrap(~waterbody, ncol= 3, scales= "free_x") +
+  facet_wrap(~waterbody, ncol= 3, scales= "free_x", labeller= as_labeller(waterbody_labeller)) +
   theme_sat +
   theme(axis.text.x= element_text(angle= 45, hjust= 1))
 
-ggsave(last_plot(), filename= "ss665_wbd.jpg", height= 6, width= 8, units= "in", dpi= 300,
+ggsave(last_plot(), filename= "ss665_wbd.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output")
 
 
@@ -309,25 +297,26 @@ ggplot(data= ci_fs_mod) +
   scale_fill_discrete(name= "Waterbody") +
   theme_sat
 
-ggsave(last_plot(), filename= "ss665_CImod.jpg", height= 6, width= 8, units= "in", dpi= 300,
+ggsave(last_plot(), filename= "ss665_CImod.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output")
 
 
 
 
 ## CI X WATERBODY
-
 ggplot(data= ci_fs) +
   geom_hline(yintercept = 0) +
   geom_point(aes(x= pix_site, y= ci), size= 3, shape= 21, fill= "gray75") +
-  labs(x= "Measurement location", y= "Cyanobacterial Index (CI)") +
+  labs(x= "Measurement location", y= "Field cyano. index (CI)") +
   scale_fill_discrete(name= "Waterbody") +
-  scale_y_continuous(limits= c(-0.001, 0.004), expand= c(0.02, 0)) +
-  facet_grid(.~waterbody, scales= "free_x") +
+  scale_y_continuous(limits= c(-0.001, 0.0041), expand= c(0.02, 0)) +
+  facet_wrap(.~waterbody, ncol= 6, scales= "free_x", labeller= as_labeller(waterbody_labeller)) +
+  #facet_grid(.~waterbody, scales= "free_x") +
   theme_sat +
-  theme(axis.text.x= element_text(angle= 90))
+  theme(axis.text.x= element_text(angle= 90, size= 8, vjust= 0.5),
+        strip.text = element_text(size= 8))
 
-ggsave(last_plot(), filename= "ci_wbd.jpg", height= 6, width= 8, units= "in", dpi= 300,
+ggsave(last_plot(), filename= "ci_wbd.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output")
 
 
@@ -342,7 +331,7 @@ ggplot(data= ci_fs) +
   scale_y_continuous(limits= c(-10, 60), breaks= seq(-10, 60, by= 10), expand= c(0.02, 0)) +
   theme_sat
 
-ggsave(last_plot(), filename= "ci_mod_chla.jpg", height= 6, width= 8, units= "in", dpi= 300,
+ggsave(last_plot(), filename= "ci_mod_chla.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output")
 
 ## CI X CHLA
@@ -355,6 +344,6 @@ ggplot(data= ci_fs) +
  # scale_y_continuous(limits= c(-10, 60), breaks= seq(-10, 60, by= 10), expand= c(0.02, 0)) +
   theme_sat
 
-ggsave(last_plot(), filename= "ci_chla.jpg", height= 6, width= 8, units= "in", dpi= 300,
+ggsave(last_plot(), filename= "ci_chla.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output")
 

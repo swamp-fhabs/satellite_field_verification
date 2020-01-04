@@ -22,7 +22,7 @@ theme_sat <- theme(panel.grid = element_blank(),
                    #axis.text.x = element_text(angle= 45, hjust= 1),
                    legend.position = "right")
 
-
+x.axis.labels <- c("Clear Lake\n2019-08-07", "Lake Almanor\n2019-08-15", "Lake San Antonio\n2019-08-01", "San Pablo Reservoir\n2019-08-12")
 
 
 
@@ -31,8 +31,9 @@ ggplot(data= fd, aes(x= waterbody, y= chla_ugL)) +
   geom_boxplot(fill= "gray80") +
   geom_point() +
   labs(x= "Waterbody", y=expression(paste("Chlorophyll-a ("~mu,"g/L)"))) +
+  scale_x_discrete(labels= x.axis.labels) +
   theme_sat
-ggsave(last_plot(), filename= "chla.jpg", height= 6, width= 8, units= "in", dpi= 300,
+ggsave(last_plot(), filename= "chla.png", height= 6, width= 8, units= "in", dpi= 300,
        path= "Data/Figures_output")
 
 ## SECCHI
@@ -43,8 +44,9 @@ ggplot(data= fd, aes(x= waterbody, y= secchi_avg)) +
   scale_y_reverse(limits= c(5.5, 0),
                   breaks= seq(0, 5, by= 1),
                   expand= c(0, 0)) +
+  scale_x_discrete(labels= x.axis.labels) +
   theme_sat
-ggsave(last_plot(), filename= "secchi.jpg", height= 6, width= 8, units= "in", dpi= 300,
+ggsave(last_plot(), filename= "secchi.png", height= 6, width= 8, units= "in", dpi= 300,
        path= "Data/Figures_output")
 
 ## SECCHI X NTU

@@ -142,46 +142,58 @@ return(ci_df)
 
 
 
-format_satellite_data <- function(sat_dir){
-  sat_files <- list.files(sat_dir, pattern= "*.csv")
-  
-  CI.df <- map(sat_files[str_detect(sat_files, "CI.csv")], function(x) read_csv(file.path(sat_dir, x)) %>% 
-                   rename("CI_value" = `Pixel Value`)) %>% 
-    setNames(str_replace(sat_files[str_detect(sat_files, "CI.csv")], ".CI.csv", "")) %>% 
-    bind_rows(., .id= "waterbody")
-  
-  CIcyano.df <- map(sat_files[str_detect(sat_files, "CIcyano.csv")], function(x) read_csv(file.path(sat_dir, x)) %>% 
-                   rename("CIcyano_value" = `Pixel Value`)) %>% 
-    setNames(str_replace(sat_files[str_detect(sat_files, "CIcyano.csv")], ".CIcyano.csv", "")) %>% 
-    bind_rows(., .id= "waterbody")
-  
-  sentinel.df <- full_join(CI.df, CIcyano.df)
-}
-
-
-
 
 ## JOIN SATELLITE AND FIELD CI VALUES
-# satellite_dir <- "Data/Sentinel_flyover_data"
-# sample_pixels <-  read_tsv("Data/Sentinel_flyover_data/sample_pixel_numbers.tsv")
+# sat_dir <- "Data/Sentinel_flyover_data"
+# samp_pixs <-  read_tsv("Data/Sentinel_flyover_data/sample_pixel_numbers.tsv")
 
 join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_path, writeFile= TRUE){
+  require(tidyverse)
   
-  ## Read in Sentinel satellite data
-  make_satellite_data_list <- function(in_dir){
-    sat_files <- list.files(in_dir, pattern= "*.csv")
+  ## Read in sep-2019 Sentinel satellite data
+  make_sep2019_satellite_data_list <- function(in_dir){
+    sat_files <- list.files(in_dir, pattern= "*[0-9].csv")
     
     sat_list <- map(sat_files, function(x) read_csv(file.path(in_dir, x)) %>% 
-                      rename(pix_val_sat= `Pixel Value`))
-    names(sat_list) <- str_replace(sat_files, "sentinel-", "") %>% str_replace(., ".csv", "")
+                      rename(pix_CIcyano_sat= `Pixel Value`) %>% 
+                      mutate(data_delivery= "sep2019")) %>% 
+      setNames(str_replace(sat_files, "sentinel-", "") %>% str_replace(., ".csv", ""))
     
     # Add waterbody and pixel number column
     sat_list <- map2(sat_list, names(sat_list), function(df, name) mutate(df, waterbody= name,
-                                                                          pix_num= seq(1, length(df$pix_val_sat))))
+                                                                          pix_num= seq(1, length(df$pix_CIcyano_sat))))
     return(sat_list)
   }
-  sat_list <- make_satellite_data_list(in_dir = sat_dir)
+  sat_sep2019_list <- make_sep2019_satellite_data_list(in_dir = sat_dir)
   
+  ## Read in dec-2019 Sentinel satellite data
+  make_dec2019_satellite_data_list <- function(in_dir){
+    sat_files <- list.files(in_dir, pattern= "*.csv")
+    
+    CI.df <- map(sat_files[str_detect(sat_files, "CI.csv")], function(x) read_csv(file.path(sat_dir, x)) %>% 
+                   rename("pix_CI_sat" = `Pixel Value`)) %>% 
+      setNames(str_replace(sat_files[str_detect(sat_files, "CI.csv")], ".CI.csv", "")) %>% 
+      bind_rows(., .id= "waterbody")
+    
+    CIcyano.df <- map(sat_files[str_detect(sat_files, "CIcyano.csv")], function(x) read_csv(file.path(sat_dir, x)) %>% 
+                        rename("pix_CIcyano_sat" = `Pixel Value`)) %>% 
+      setNames(str_replace(sat_files[str_detect(sat_files, "CIcyano.csv")], ".CIcyano.csv", "")) %>% 
+      bind_rows(., .id= "waterbody")
+    
+    sentinel.list <- full_join(CI.df, CIcyano.df) %>% 
+      group_by(waterbody) %>% 
+      mutate(pix_num= seq(1, length(pix_CI_sat)), # Add pixel ID numbers for each waterbody
+             data_delivery= "dec2019") %>% 
+      ungroup() %>% 
+      mutate(waterbody= str_replace(waterbody, "sentinel-", "")) %>% 
+      split(., .$waterbody)
+    
+    
+    return(sentinel.list)
+  }
+    sat_dec2019_list <- make_dec2019_satellite_data_list(in_dir= sat_dir)
+  
+
   
   ## Extract sample pixels from satellite data files
   extract_sample_pixels <- function(satellite_list, samp_pixs, waterbodyID){
@@ -190,25 +202,45 @@ join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_path, writeFi
     
     waterbody_df <- satellite_list[[waterbodyID]]
     
+    if(all(waterbody_df$data_delivery == "dec2019")){
     extracted_pixels <- waterbody_df %>% 
-      filter(waterbody_df$pix_num %in% samp_pix_filt$pix_num) %>% 
-      left_join(., samp_pixs) 
+      filter(waterbody_df$pix_num %in% samp_pix_filt$pix_num_CI) %>% 
+      left_join(., select(samp_pix_filt, waterbody, pix_num_CI, pixel), by= c("waterbody", "pix_num" = "pix_num_CI")) 
+    }
+    
+    
+    if(all(waterbody_df$data_delivery == "sep2019")){
+      extracted_pixels <- waterbody_df %>% 
+        filter(waterbody_df$pix_num %in% samp_pix_filt$pix_num_OG) %>% 
+        left_join(., select(samp_pix_filt, waterbody, pix_num_OG, pixel), by= c("waterbody", "pix_num" = "pix_num_OG")) 
+    }
+    
     return(extracted_pixels)
   }
   
-  sat_samp_pixs <- map(names(sat_list), function(x) extract_sample_pixels(satellite_list = sat_list, samp_pixs= samp_pixs, waterbodyID = x)) %>% 
-    do.call(rbind, .)
+  sat_samp_pixs_sep2019 <- map(names(sat_sep2019_list), function(x) extract_sample_pixels(satellite_list = sat_sep2019_list, samp_pixs= samp_pixs, waterbodyID = x)) %>% 
+    bind_rows()
+  
+  sat_samp_pixs_dec2019 <- map(names(sat_dec2019_list), function(x) extract_sample_pixels(satellite_list = sat_dec2019_list, samp_pixs= samp_pixs, waterbodyID = x)) %>% 
+    bind_rows()
+  
+  ## Join sep-2019 and dec-2019 data
+  sat_samp_pixs <- full_join(sat_samp_pixs_sep2019, sat_samp_pixs_dec2019)
+  
   
   ## Calculate modified CI values
   sat_samp_pixs <- sat_samp_pixs %>% 
-    mutate(ci_sat= 10^(3/250*pix_val_sat-4.2),
-           ci_mod_sat= ci_sat*15805.18)
+    mutate(CI_sat= 10^(3/250*pix_CI_sat-4.2),
+           CI_mod_sat= CI_sat*15805.18,
+           CIcyano_sat= 10^(3/250*pix_CIcyano_sat-4.2),
+           CIcyano_mod_sat= CIcyano_sat*15805.18)
   
   
   ## Join satellite and field data frames
   ci_values <- left_join(sat_samp_pixs, CI_field_df, by= c("waterbody", "pixel")) %>% 
     rename(pix_site= site) %>% 
-    mutate(site= str_replace(pix_site, "P[0-9]", ""))
+    mutate(site= str_replace(pix_site, "P[0-9]", "")) %>% 
+    select(waterbody, sample, pix_site, pixel, site, rep, data_delivery, Lat, Lon, uniqueID, pix_num, everything())
   
   if(writeFile == TRUE){
     write_tsv(ci_values, path= file.path(out_path, "CI_field_sat.tsv"))
@@ -231,9 +263,9 @@ h2o_df <- read_tsv(h2o_tsv_file) %>%
          date= dmy(date))
 
 # Merge CI data with h2o Data 
-  ci_h2o_df <- left_join(ci_df, h2o_df) %>% 
-    select(-Lon, -Lat) %>% 
-    select(waterbody, date, uniqueID, lat, long, pixel, site, pix_site, sample, rep, pix_num, ci, ci_mod, pix_val, ss665, ss665_threshold, ci_sat, ci_mod_sat, pix_val_sat, everything())
+  ci_h2o_df <- left_join(ci_df, h2o_df)# %>% 
+    #select(-Lon, -Lat)# %>% 
+  #  select(waterbody, date, uniqueID, lat, long, pixel, site, pix_site, sample, rep, pix_num, ci, ci_mod, pix_val, ss665, ss665_threshold, ci_sat, ci_mod_sat, pix_val_sat, everything())
   
   if(writeFile == TRUE){
     write_tsv(ci_h2o_df, path= file.path(out_path, "CI_field_sat_h2o_data.tsv"))

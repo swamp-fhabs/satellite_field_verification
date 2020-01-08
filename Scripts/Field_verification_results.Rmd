@@ -47,7 +47,7 @@ names(lakes)[3:5] <- c("Sampling date", "Surface area (km^2^)", "Elevation (m)")
 kable(lakes, caption= "**Table 1.** Waterbody information")
 ```
 
-Field sampling occurred on the same day as the Sentinel-3a flyover. In a waterbody three pixels were selected for sampling. Within a pixel, three samples were collected, for a total of nine measurement sites (Fig. 1). At each sampling point, a Malvern Panalytical Fieldspec Handheld2 Pro radiometer was used to collect radiance data, which can be converted to a CI~cyano~ equivalent value for comparison to the satellite data. Each reading involved collecting ten measurements at 1 nm wavelength resolution from 300-900 nms, which were then averaged into a single value per nm for the reading. Readings were taken on a calibrated 10% Spectralon reflectance plate, the water, and the sky. All readings were taken 40-45 degrees altitude and 115-130 degrees alzimuth from the sun. Triplicate plate, water, and sky readings were collected at each sampling site.  Additionally, Secchi depth was measured, and depth integrated grab samples (1 m) for chlorophyll-a were collected at each sampling site. Chlorophyll-a samples were immediately chilled on ice in a cooler and filtered onto 0.7 micrometer (Whatman GF/C) filters back on shore. The filters were then wrapped in aluminum foil and frozen until fluorometric analysis.
+Field sampling occurred on the same day as the Sentinel-3a flyover. In a waterbody three pixels were selected for sampling. Within a pixel, three samples were collected, for a total of nine measurement sites (Fig. 1). At each sampling point, a Malvern Panalytical Fieldspec Handheld2 Pro radiometer was used to collect radiance data, which can be converted to a CI~cyano~ equivalent value for comparison to the satellite data. Each reading involved collecting ten measurements at 1 nm wavelength resolution from 300-900 nms, which were then averaged into a single value per nm for the reading. Readings were taken on a calibrated 10% Spectralon reflectance plate, the water, and the sky. All readings were taken 40-45 degrees altitude and 115-135  degrees alzimuth from the sun. Triplicate plate, water, and sky readings were collected at each sampling site.  Additionally, Secchi depth was measured, and depth integrated grab samples (1 m) for chlorophyll-a were collected at each sampling site. Chlorophyll-a samples were immediately chilled on ice in a cooler and filtered onto 0.7 micrometer (Whatman GF/C) filters back on shore. The filters were then wrapped in aluminum foil and frozen until fluorometric analysis.
 
 
 ```{r, echo= FALSE, out.width= "30%"}
@@ -56,13 +56,13 @@ include_graphics("../Data/Figures_output/Map_Figure.png")
 #include_graphics("../Data/20190801_LakeSanAntonio/lsa_lake_bbox_map.jpg")
 ```
   
-  **Figure 1.** Sampling maps of Lake San Antonio. Left panel) Entire lake showing the pixel locations for satellite imagery. Colors show the locations of the sampling pixels. Right panel) Zoom in of the sampling area showing the three different sampling sites within each of the three pixels. Numbers are the pixel ID for the satellite.  
+  **Figure 1.** Sampling maps of Lake San Antonio. Left panel) Entire lake showing the pixel locations for satellite imagery. Colors show the locations of the sampling pixels. Right panel) Zoom in of the sampling area showing the three different sampling sites within the three sampling pixels 21, 32, and 37. Numbers are the pixel ID for the satellite.  
   
 #### *Field remote sensed reflectance calculations* 
 The raw radiance values (W/m^2^/nm/sr) from the radiometer were converted to remote sensed reflectance (R~rs~) values per nm/sr using the program `test_asd_group.exe` provided to the Waterboards by NOAA staff. The calculations take the plate, water, and sky readings and calculate R~rs~ based on equation 4 in Mobley 1999:
 $$
 \begin{equation}
-R_{rs} = \frac{L_{water} - \rho * L_{sky}}{L_{plate}}
+R_{rs} = \frac{L_{water} - \rho \times L_{sky}}{\pi/0.1 \times L_{plate}}
 \end{equation}
 $$ {#eq:1}
 Where L indicates the radiance values, and $\rho$ represents the proportion of sky radiance that is reflected by the water's surface. 
@@ -81,30 +81,23 @@ $$
 CI = -1*SS(681)
 \end{equation}
 $$ {#eq:3}
-CI values <0 indicate no cyanobacteria present. However, certain water conditions can generate positive CI values, even when there are no cyanobacteria present. To reduce the frequency of false positives, an exclusionary criteria (Matthews et al. 2012 and Lunetta et al 2015) based on the spectral shape at 665 nm is used: 
+CI values <0 indicate no cyanobacteria present. However, certain water conditions can generate positive CI values, even when there are no cyanobacteria present. To reduce the frequency of false positives, the spectral shape at 665 nm is used as an additional measurement to determine if cyanobacteria are present (Matthews et al. 2012 and Lunetta et al 2015): 
 $$
 \begin{equation}
 SS(665) = rrs665 - rrs620 + (rrs620 - rrs681) * \frac{665-620}{681-620}
 \end{equation}
 $$ {#eq:4}
-When SS(665) is >0 it indicates cyanobacteria present in the water and when it is <0, cyanobacteria is predicted to be absent. SS(665) is then transformed into an exclusion criteria value of 1 when SS(665)  >0 and 0 when SS(665) <0. 
+When SS(665) is >0 it indicates cyanobacteria present in the water and when it is <0 cyanobacteria are predicted to be absent. SS(665) is used as an exclusion criteria to create a new indice CI~cyano~. The value of CI~cyano~ is a function of CI (eq. 3) and SS(665): 
 $$
 \begin{equation}
-  f(SS(665))=\begin{cases}
-    1, & \text{if SS(665) > 0}.\\  
+  CI_{cyano}=\begin{cases}
+    CI, & \text{if SS(665) > 0}.\\  
     0, & \text{if SS(665) < 0}.
   \end{cases}
 \end{equation}
 $$ {#eq:5}
-The CI value and f(SS(665)) are combined to create a new indice called CI~cyano~ which is calculated by: 
-$$
-\begin{equation}
-CI_{cyano} = f(SS(665)) * CI
-\end{equation}
-$$ {#eq:6}
 
-
-This will render all measurements with f(SS(665)) = 0 as non-detects, even if they had a positive CI value.
+If SS(665) is > 0, then cyanobacteria are assumed to be present and the value of CI~cyano~ is the same as the CI value calculated with eq. 3. When SS(665) <0 (i.e. no cyanobacteria) the value of CI~cyano~ is 0, even if they have a positive CI values with eq. 3.
 
 #### *Satellite data calculations*
 The satellite CI~cyano~ value is calculated from the OLCI sensor on Sentinel-3a satellite. The value is calculated by NOAA using top-of-atmosphere reflectance values applied to equations 1-5 above (Wynne et al. 2018). NOAA delivers the CI~cyano~ product for each pixel as an integer ranging in values 0-250, corresponding to increasing CI~cyano~ value. The pixel integer value is converted to CI~cyano~ with: 
@@ -112,7 +105,7 @@ $$
 \begin{equation}
 CI_{cyano} = 10^{0.012 * PixInteger - 4.2}
 \end{equation}
-$$ {#eq:7}
+$$ {#eq:6}
 
 
 CI~cyano~ has a range of 0.000063 - 0.063270. To make these values easier to work with, SFEI and the CA Waterboards then multiply CI~cyano~ by a constant to make the values easier to work with by putting them on a scale of 1-1000. This index is called CI~mod~ and calculated by: 
@@ -120,7 +113,7 @@ $$
 \begin{equation}
 CI_{mod} = CI_{cyano} * 15805.18
 \end{equation}
-$$ {#eq:8}
+$$ {#eq:7}
 
 ## **Results**
 

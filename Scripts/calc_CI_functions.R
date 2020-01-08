@@ -165,7 +165,7 @@ format_satellite_data <- function(sat_dir){
 # satellite_dir <- "Data/Sentinel_flyover_data"
 # sample_pixels <-  read_tsv("Data/Sentinel_flyover_data/sample_pixel_numbers.tsv")
 
-join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_path, writeFile= TRUE){
+join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_ cpath, writeFile= TRUE){
   
   ## Read in Sentinel satellite data
   make_satellite_data_list <- function(in_dir){

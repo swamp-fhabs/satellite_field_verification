@@ -147,6 +147,7 @@ return(ci_df)
 # sat_dir <- "Data/Sentinel_flyover_data"
 # samp_pixs <-  read_tsv("Data/Sentinel_flyover_data/sample_pixel_numbers.tsv")
 
+
 join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_path, writeFile= TRUE){
   require(tidyverse)
   

@@ -5,7 +5,7 @@ library(tidyverse)
 library(ggplot2)
 
 
-fd <- read_tsv("Data/field_Data_satellite_2019b.txt") %>% 
+fd <- read_tsv("Data/field_Data_satellite_2019.txt") %>% 
   mutate(secchi_avg= (secchi_disappear_m + secchi_reappear_m)/2)
 
 #### GGPLOT THEMES ############################

@@ -65,14 +65,22 @@ $$
 R_{rs} = \frac{L_{water} - \rho \times L_{sky}}{\pi/0.1 \times L_{plate}}
 \end{equation}
 $$ {#eq:1}
-Where L indicates the radiance values, and $\rho$ represents the proportion of sky radiance that is reflected by the water's surface. 
+Where L indicates the radiance values, and $\rho$ represents the proportion of sky radiance that is reflected by the water's surface and is set to 0.028 (Mobley 1999). The plate value is multiplied by $\pi$ to integrate over the hemisphere and convert from radiance units of W/m2/sr to W/m2.
+
+The R~rs~ values are then corrected following the procedure in Gould et al. (2001) to remove reflected sunglint and and sky light fr This involves 
+$$
+\begin{equation}
+Corrected~R_{rs} = R_{rs} - \frac{RrsSky_{708-712} - \frac{aw_{740}}{aw_{710}} \times RrsSky_{738-740}}{1 - \frac{aw_{740}}{aw_{710}}}
+\end{equation}
+$$ {#eq:1}
+Where the water absorbtion coefficients aw~710~ and aw~740~ are constants of 0.832 and 2.758 at 710 and 740 nm, respectively. 
 
 #### *Cyanobacterial index calculations*
 
 The R~rs~ values were  used to calculate the cyanobacterial indices CI and CI~cyano~. The CI value is derived from the spectral shape (SS) at 681 nm and is calculated with equation 1 in Wynne et al. 2008: 
 $$
 \begin{equation}
-SS(681) = rrs681 - rrs665 - (rrs709 - rrs665) * \frac{681-665}{709-665}
+SS(681) = rrs681 - rrs665 - (rrs709 - rrs665) \times \frac{681-665}{709-665}
 \end{equation}
 $$ {#eq:2}
 More negative SS(681) values represent higher cyanobacterial abundances in the surface waters of a pixel. To transform it into positive values the SS(681) is converted to CI by: 
@@ -84,7 +92,7 @@ $$ {#eq:3}
 CI values <0 indicate no cyanobacteria present. However, certain water conditions can generate positive CI values, even when there are no cyanobacteria present. To reduce the frequency of false positives, the spectral shape at 665 nm is used as an additional measurement to determine if cyanobacteria are present (Matthews et al. 2012 and Lunetta et al 2015): 
 $$
 \begin{equation}
-SS(665) = rrs665 - rrs620 + (rrs620 - rrs681) * \frac{665-620}{681-620}
+SS(665) = rrs665 - rrs620 + (rrs620 - rrs681) \times \frac{665-620}{681-620}
 \end{equation}
 $$ {#eq:4}
 When SS(665) is >0 it indicates cyanobacteria present in the water and when it is <0 cyanobacteria are predicted to be absent. SS(665) is used as an exclusion criteria to create a new indice CI~cyano~. The value of CI~cyano~ is a function of CI (eq. 3) and SS(665): 
@@ -103,7 +111,7 @@ If SS(665) is > 0, then cyanobacteria are assumed to be present and the value of
 The satellite CI~cyano~ value is calculated from the OLCI sensor on Sentinel-3a satellite. The value is calculated by NOAA using top-of-atmosphere reflectance values applied to equations 1-5 above (Wynne et al. 2018). NOAA delivers the CI~cyano~ product for each pixel as an integer ranging in values 0-250, corresponding to increasing CI~cyano~ value. The pixel integer value is converted to CI~cyano~ with: 
 $$
 \begin{equation}
-CI_{cyano} = 10^{0.012 * PixInteger - 4.2}
+CI_{cyano} = 10^{0.012 \times PixInteger - 4.2}
 \end{equation}
 $$ {#eq:6}
 

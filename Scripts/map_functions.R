@@ -69,13 +69,13 @@ read_lakes_shapefiles <- function(){
 
 
 extract_lake_shapefile <- function(lakes_shapefile, DFGWATER_ID){
-  library(broom)
+  require(broom)
   lake_extract <- lakes_shapefile[lakes_shapefile$DFGWATERID == DFGWATER_ID, ]
   lake_data <- lake_extract@data %>% 
     as_tibble() %>%
     mutate(id= rownames(lake_extract@data))
-  lsa.df <- tidy(lake_extract)
-  lsa.df.merge <- left_join(lsa.df, lake_data)
+  lake.df <- tidy(lake_extract)
+  lsa.df.merge <- left_join(lake.df, lake_data)
   return(lsa.df.merge)
 }
 

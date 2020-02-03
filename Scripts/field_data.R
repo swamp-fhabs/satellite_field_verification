@@ -1,3 +1,6 @@
+## Script to plot the data collected in the field during satellite sampling
+## Includes: chla, secchi, turbidity, pH, temperature, and conductivity
+
 library(tidyverse)
 library(ggplot2)
 
@@ -22,7 +25,7 @@ theme_sat <- theme(panel.grid = element_blank(),
                    #axis.text.x = element_text(angle= 45, hjust= 1),
                    legend.position = "right")
 
-x.axis.labels <- c("Clear Lake\n2019-08-07", "Lake Almanor\n2019-08-15", "Lake San Antonio\n2019-08-01", "San Pablo Reservoir\n2019-08-12")
+x.axis.labels <- c("Clear Lake\n2019-08-07", "Clear Lake\n2019-08-16", "Clear Lake\n2019-10-08", "Lake Almanor\n2019-08-15", "Lake San Antonio\n2019-08-01", "San Pablo Reservoir\n2019-08-12")
 
 
 

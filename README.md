@@ -48,22 +48,19 @@ More negative SS(681) values represent higher cyanobacterial abundances in the s
 
 >CI = -1*SS(681)
 
-CI values <0 indicate no cyanobacteria present. However, certain water conditions can generate positive CI values, even when there are no cyanobacteria present. To reduce the frequency of false positives, Lunetta et al. 2015 proposed an additional indice, CI-cyano, based on the spectral shape at 665 nm, which is calculated by: 
+CI values <0 indicate no cyanobacteria present. However, certain water conditions can generate positive CI values, even when there are no cyanobacteria present. To reduce the frequency of false positives, Lunetta et al. 2015 proposed an additional indice, CIcyano, based on the spectral shape at 665 nm, which is calculated by: 
 
 >SS(665) = rrs665 - rrs620 + (rrs620 - rrs681) * [(665-620)/(681-620)]
 
 When SS(665) is >0 it indicates cyanobacteria present in the water and when it is <0, cyanobacteria is predicted to be absent. SS(665) is then transformed into an exclusion criteria value of 1 when SS(665)  >0 and 0 when SS(665) <0. 
 
-> f(SS(665))= 1, if SS(665) > 0  
+> CIcyano = CI, if SS(665) > 0  
 
-> f(SS(665))= 0, if SS(665) < 0
+> CIcyano = 0, if SS(665) < 0
  
-Then for a given pixel the final CI value is calculated by:  
->CIcyano = f(SS(665)) * CI
+This will render all measurements with SS(665)< 0 as non-detects, even if they had a positive CI value.
 
-This will render all measurements with f(SS(665)) = 0 as non-detects, even if they had a positive CI value.
-
-The satellite returns an 8-bit pixel value from 0-250 for the CI. Conversions between the satellite pixel value and the CIcyano value use a log10 scale and are given as: 
+The satellite returns an 8-bit pixel value from 0-250 for the CIcyano. Conversions between the satellite pixel value and the CIcyano value use a log10 scale and are given as: 
 
 >CIcyano = 10^(0.012 * sat_pix_value - 4.2)  
 >sat_pix_value = (log10(CIcyano) + 4.2) / 0.012

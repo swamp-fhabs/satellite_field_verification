@@ -17,7 +17,6 @@ ci_fs_mod <- ci_fs %>%
 
 
 ## CIcyano results
-
 ci_fs_mod %>% 
   count(ss665_threshold)
 summary(ci_fs$ss665)
@@ -339,7 +338,7 @@ ggsave(last_plot(), filename= "ci_mod_chla.png", height= 4.875, width= 6.5, unit
 ggplot(data= ci_fs) +
   geom_hline(yintercept = 0) +
   geom_point(aes(x= chla_ugL, y= ci, fill= waterbody), size= 3, shape= 21) +
-  labs(x= expression(paste("Chlorophyll-a (",mu,"g/L)")), y= "Field CI-mod") +
+  labs(x= expression(paste("Chlorophyll-a (",mu,"g/L)")), y= "Field CI") +
   scale_fill_discrete(name= "Waterbody") +
   scale_x_continuous(expand= c(0.02, 0)) +
  # scale_y_continuous(limits= c(-10, 60), breaks= seq(-10, 60, by= 10), expand= c(0.02, 0)) +

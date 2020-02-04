@@ -260,7 +260,7 @@ join_CI_with_water_data <- function(ci_df, h2o_tsv_file, writeFile= TRUE, out_pa
 # Read in h2o sample data (e.g. chla, secchi, turbidity, etc.)
 h2o_df <- read_tsv(h2o_tsv_file) %>% 
   mutate(secchi_avg= (secchi_disappear_m + secchi_reappear_m)/2) %>% 
-  mutate(pix_site= str_c(pixel, site),
+  mutate(pix_site= ifelse(str_detect(.$pixel, "P[0-9]"), str_c(pixel, site), pixel),
          date= dmy(date))
 
 # Merge CI data with h2o Data 

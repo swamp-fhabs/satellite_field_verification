@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin/>
+        <origin/>
+        <origin/>
+        <pubdate>20120401</pubdate>
+        <title>Lakes, Reservoirs and Ponds (Polygons): California, 2012</title>
+        <geoform>vector digital data</geoform>
+        <pubinfo>
+          <pubplace/>
+          <publish>California. Department of Fish and Game. Marine Resources Region</publish>
+        </pubinfo>
+        <onlink>http://purl.stanford.edu/zx543xm6802</onlink>
+        <lworkcit>
+          <citeinfo>
+            <pubdate>20000101</pubdate>
+            <title>California Department of Fish and Wildlife GIS Maps and Data</title>
+          </citeinfo>
+        </lworkcit>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>This polygon shapefile is an update of California lake, reservoir, and pond layers as assembled by the California Department of Fish and Game (DFG). It includes many small and unnamed waterbodies in the High Sierra and California Cascades, some of which are not depicted on United States Geological Survey 7.5 arc-minute/1:24,000-scale topographic maps. Most data were captured at 1:24,000-scale or better. Waterbodies are represented as single polygons (with islands), with Latitude/Longitude coordinates of waterbody centroids and a unique numeric identifier for each. Waterbody polygons represent shorelines generally at full or near-full levels. A previous version of this dataset did not contain islands.</abstract>
+      <purpose>The dataset was created for two purposes: First, to attempt to correct many inaccuracies in current GIS datasets for California waterbodies, especially regarding NAMES. Second, to provide a unique numeric ID system for the California Department of Fish and Wildlife of all digitized waterbodies in California in order to assist with fisheries and biological programs management and public fishing programs, including biological surveys, fish planting, and public fishing guides.</purpose>
+      <supplinf>This dataset represents a combination of 1:24,000-scale or better GIS datasets considered the best currently available. The initial sources come from DFG's fisheries programs, some of which included many Sierra Nevada lakes and ponds not represented on existing USGS maps and/or not known to exist in digitized format elsewhere. Unique ID's in the field DFGLAKEID reflect the LAKE_ID in FPB_Lakes shapefile in about 22,400 cases. Many errors (attribute and spatial) existed in all the contributing datasets, and many (but not all) have been remedied here. Lake name errors were addressed to the greatest extent, spatial representation errors to a lesser extent. USGS National Hydrography Dataset (NHD) High Resolution 'waterbody' polygons were used to replace some existing polygons. It was not used exclusively however, due in part to existing errors within the NHD datasets to date, the lack of completeness for CA and the lack of time on the editors end to incorporate NHD in cases where NHD polygon representation is better than what exists here. It is the intent that NHD polygons will be incorporated more as they get updated.</supplinf>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <sngdate>
+          <caldate>20120401</caldate>
+        </sngdate>
+      </timeinfo>
+      <current>publication date</current>
+    </timeperd>
+    <status>
+      <progress>In work</progress>
+      <update>As needed</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>-124.475682</westbc>
+        <eastbc>-113.505015</eastbc>
+        <northbc>42.093039</northbc>
+        <southbc>32.438995</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>lcsh</themekt>
+        <themekey>Bodies of water</themekey>
+        <themekey>Fresh water</themekey>
+        <themekey>Lakes</themekey>
+        <themekey>Reservoirs</themekey>
+        <themekey>Ponds</themekey>
+        <themekey>Hydrography</themekey>
+      </theme>
+      <theme>
+        <themekt>ISO 19115 Topic Categories</themekt>
+        <themekey>inlandWaters</themekey>
+      </theme>
+      <place>
+        <placekt>geonames</placekt>
+        <placekey>California</placekey>
+      </place>
+      <temporal>
+        <tempkt>None</tempkt>
+        <tempkey>2012</tempkey>
+      </temporal>
+    </keywords>
+    <accconst>No restrictions on access or use. Please cite the authors when possible.</accconst>
+    <useconst>None</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>California. Fisheries Programs Branch</cntorg>
+          <cntper>Dixon, David</cntper>
+        </cntorgp>
+        <cntpos>GIS Analyst</cntpos>
+        <cntaddr>
+          <addrtype>physical</addrtype>
+          <address>1807 13th St., Ste. 202</address>
+          <city>Sacramento</city>
+          <state>CA</state>
+          <postal>95811</postal>
+          <country>US</country>
+        </cntaddr>
+        <cntvoice>916-319-9685</cntvoice>
+        <cntemail>David.Dixon@wildlife.ca.gov</cntemail>
+        <cntinst>Email is preferred contact method.</cntinst>
+      </cntinfo>
+    </ptcontac>
+    <datacred>California Department of Fish and Wildlife, 2012. Rancho Cordova CA: North Central Region (Region 2); Sacramento CA: Biogeographic Data Branch.</datacred>
+    <native>Microsoft Windows 7 Version 6.1 (Build 7601) Service Pack 1; Esri ArcGIS 10.2.2.3552</native>
+  </idinfo>
+  <dataqual>
+    <logic>Multiple sources of data were used for this layer, including currently available digitized lakes for CA from 24,000-scale state and federal government sources. Names were checked against USGS and public sources, spatial representation of polygons were checked in GIS against USGS scanned 7.5-minute/1:24,000-scale quad maps (DRG's), Digital Orthophoto Quads (DOQ's) and other aerial and/or satellite data where available. Not all waterbodies were checked.</logic>
+    <complete>Originated from data considered to be the most complete representation of smaller CA waterbodies in the Sierra Nevada and Cascade Mountains. Updates will occur as needed.</complete>
+    <posacc>
+      <horizpa>
+        <horizpar>Multiple source data generally captured from scanned 7.5-minute/1:24,000-scale USGS quads, which contain accuracies of +- 40 feet combined with additional inaccuracies of each raster dataset (DRGs). Some polygons are known to be greater than 40 foot accuracy.</horizpar>
+      </horizpa>
+    </posacc>
+    <lineage>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <title>DFG High Mountain Lakes Database, Region 6</title>
+          </citeinfo>
+        </srccite>
+        <srcscale>24</srcscale>
+        <typesrc>None</typesrc>
+        <srccitea>DFG High Mountain Lakes Database, Region 6</srccitea>
+        <srccontr>California Department of Fish and Game Region 6 High Mountain Lakes Database shapefile consisting of 3179 water bodies located mostly in the Sierra Nevada Mountains mostly in Mono, Madera, Fresno and Inyo Counties. LAKES_ID's from the HML database were used for 2731 water bodies for the field DFGLAKEID. The shapefile of HML data was used to create and overlay HML points with DFGLAKES polygons for cross-referencing. HML database provided by Curtis Milliron, California Department of Fish and Game Region 6, 10/2006.</srccontr>
+      </srcinfo>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <title>U.S. Geological Survey (USGS) and U.S. Department of Agriculture (USDA) aerial photography</title>
+          </citeinfo>
+        </srccite>
+        <srcscale>0</srcscale>
+        <typesrc>hardcopyPhoto</typesrc>
+        <srccitea>USGS and USDA aerial photography</srccitea>
+        <srccontr>These data sources were used for corrections to existing polygons and newly added, unmapped lakes and ponds. USGS Digital Orthophoto quadrangles 1999 - 2001. National Agricultural Imagery Program (NAIP), USDA/Farm Service Agency and Partners, statewide color imagery, 2005.</srccontr>
+      </srcinfo>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <title>Lakes of California (lakes)</title>
+          </citeinfo>
+        </srccite>
+        <srcscale>0</srcscale>
+        <typesrc>None</typesrc>
+        <srccitea>DFG Inland Fisheries Division</srccitea>
+        <srccontr>Shapefile: 'lakes.shp', updated 2006. U.S. Geological Survey Digital Line Graph (DLG) data at 1:100,000-scale, updated with approximately 400 polygons digitized from USGS 1:24,000 quad maps by DFG's Inland Fisheries Division.</srccontr>
+      </srcinfo>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <title>U.S. Geological Survey National Hydrography Dataset (NHD) - High resolution</title>
+          </citeinfo>
+        </srccite>
+        <srcscale>24</srcscale>
+        <typesrc>None</typesrc>
+        <srccitea>USGS NHD - High-resolution</srccitea>
+        <srccontr>USGS NHD - High-resolution. Approximately 200 polygons from NHD have been used in this dataset. GNIS information also came from this data, with the exception of a handful of new polygons which picked up GNIS information from GNIS point and online data. See USGS GNIS.</srccontr>
+      </srcinfo>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <title>U.S. Geological Survey (USGS) Geographic Names Information System (GNIS)</title>
+          </citeinfo>
+        </srccite>
+        <srcscale>24</srcscale>
+        <typesrc>None</typesrc>
+        <srccitea>USGS GNIS - Geographic Names Information System</srccitea>
+        <srccontr>USGS GNIS - Geographic Names Information System. GNIS Names and GNIS Feature ID's as of 10/2006 (online GNIS system used as needed through 10/2006. A DFG-assembled statewide GNIS GIS dataset from 01/2006 may have also been used). This data exists for named waterbodies only. GNIS information for this layer came mostly from NHD high-resolution GIS polygon data, less from GIS-format GNIS point data and the GNIS database. In using the 1:24,000-scale GIS-format GNIS point data, many points did not lie within the lake polygons used in this dataset (they may have actually been 1:100,000-scale source), therefore, the GIS format GNIS point data was only used where NHD high-resolution waterbody data did not exist.</srccontr>
+      </srcinfo>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <title>Lakes of California (fpb_lakes)</title>
+          </citeinfo>
+        </srccite>
+        <srcscale>0</srcscale>
+        <typesrc>None</typesrc>
+        <srccitea>DFG Fisheries Programs Branch</srccitea>
+        <srccontr>Shapefile: 'fpb_lakes.shp', 2001. Dataset consists of over 26000 CA waterbodies, focused on the Central Valley, Sierra Nevada Mountain Range and the Cascades.</srccontr>
+      </srcinfo>
+      <procstep>
+        <procdesc>Pre-publication review/editing of data and/or metadata by Fisheries Branch staff, the Biogeographic Information and Observation System (BIOS) Science Team, and other DFG staff.</procdesc>
+        <proccont>
+          <cntinfo>
+            <cntorgp>
+              <cntorg>California Department of Fish and Wildlife</cntorg>
+              <cntper>Various</cntper>
+            </cntorgp>
+          </cntinfo>
+        </proccont>
+      </procstep>
+      <procstep>
+        <procdesc>Adapted metadata for updated version (200908).</procdesc>
+        <proccont>
+          <cntinfo>
+            <cntorgp>
+              <cntorg>California Department of Fish and Wildlife</cntorg>
+              <cntper>Patterson, Will</cntper>
+            </cntorgp>
+            <cntpos>GIS Specialist/Data Manager</cntpos>
+            <cntaddr>
+              <addrtype>physical</addrtype>
+              <address>1807 13th St., Ste. 202</address>
+              <city>Sacramento</city>
+              <state>CA</state>
+              <postal>95811</postal>
+              <country>US</country>
+            </cntaddr>
+            <cntvoice>916-323-1484</cntvoice>
+            <cntemail>Will.Patterson@wildlife.ca.gov</cntemail>
+            <cntemail>bdb@wildlife.ca.gov</cntemail>
+            <cntinst>Email is preferred contact method.</cntinst>
+          </cntinfo>
+        </proccont>
+      </procstep>
+      <procstep>
+        <procdesc>Review and compilation of multiple datasets using ArcGIS ArcInfo. Spatial and attribute editing in ArcMap. Careful review of spatial representation of many waterbodies, names as per US Geological Survey standards and other attributes. Edits and additions used only USGS sources and/or high quality current aerial images. All attribute information was gained from spatial overlays using the 'identity' command in ArcInfo between a point representation of these polygon 'centroids'. Latitude and Longitude were calculated for the points after ArcMap editing of points within the larger, odd-shaped waterbodies to place to points closer the main center of each waterbody. Those points were moved before coordinates were picked up. GNIS (Federal geographic names and feature ID's) were gained mostly from USGS NHD polygon data. In using the 1:24,000-scale GIS-format GNIS point data, many points did not lie within the lake polygons used in this dataset (they may have actually been 1:100,000-scale source), and with smaller waterbodies they may land in an adjacent one. therefore, the GIS format GNIS point data was only used where NHD high-resolution waterbody data did not exist. Joins between the point table and the original polygon table using a unique ID obtained all the polygon attribute information. Accuracy checks included but were not limited to frequency and other statistical checks. Drafted metadata for the dataset.</procdesc>
+        <procdate>20032006</procdate>
+        <proccont>
+          <cntinfo>
+            <cntorgp>
+              <cntorg>California Department of Fish and Wildlife</cntorg>
+              <cntper>Truex, Adrienne</cntper>
+            </cntorgp>
+            <cntpos>Research Analyst II (GIS)</cntpos>
+            <cntvoice>(916) 358-2956</cntvoice>
+            <cntemail>atruex@dfg.ca.gov</cntemail>
+          </cntinfo>
+        </proccont>
+      </procstep>
+      <procstep>
+        <procdesc>Metadata and general data review. Metadata and dataset name edits.</procdesc>
+        <procdate>20070601</procdate>
+        <proccont>
+          <cntinfo>
+            <cntorgp>
+              <cntorg>California Department of Fish and Wildlife</cntorg>
+              <cntper>Will Patterson</cntper>
+            </cntorgp>
+            <cntpos>GIS Specialist/Data Manager</cntpos>
+            <cntaddr>
+              <addrtype>physical</addrtype>
+              <address>1807 13th St., Ste. 202</address>
+              <city>Sacramento</city>
+              <state>CA</state>
+              <postal>95811</postal>
+              <country>UM</country>
+            </cntaddr>
+            <cntvoice>916-323-1484</cntvoice>
+            <cntemail>Will.Patterson@wildlife.ca.gov</cntemail>
+            <cntemail>bdb@wildlife.ca.gov</cntemail>
+            <cntinst>Email is preferred contact method.</cntinst>
+          </cntinfo>
+        </proccont>
+      </procstep>
+      <procstep>
+        <procdesc>Over the last month or so, various additions and edits have been done. The previous version of this dataset did not include islands, this revision adds islands. Watershed name fields have been dropped from this version and township, range and meridian, fields have been concatenated into a single field.</procdesc>
+        <procdate>20090201</procdate>
+        <proccont>
+          <cntinfo>
+            <cntorgp>
+              <cntorg>California. Fisheries Programs Branch</cntorg>
+              <cntper>Dixon, David</cntper>
+            </cntorgp>
+            <cntpos>GIS Analyst</cntpos>
+            <cntaddr>
+              <addrtype>physical</addrtype>
+              <address>1807 13th St., Ste. 202</address>
+              <city>Sacramento</city>
+              <state>CA</state>
+              <postal>95811</postal>
+              <country>US</country>
+            </cntaddr>
+            <cntvoice>916-319-9685</cntvoice>
+            <cntemail>David.Dixon@wildlife.ca.gov</cntemail>
+          </cntinfo>
+        </proccont>
+      </procstep>
+      <procstep>
+        <procdesc>Metadata and general data review. Metadata and dataset name edits.</procdesc>
+        <procdate>20090201</procdate>
+        <proccont>
+          <cntinfo>
+            <cntorgp>
+              <cntorg>California Department of Fish and Wildlife</cntorg>
+              <cntper>Patterson, Will</cntper>
+            </cntorgp>
+            <cntpos>GIS Specialist/Data Manager</cntpos>
+            <cntaddr>
+              <addrtype>physical</addrtype>
+              <address>1807 13th St., Ste. 202</address>
+              <city>Sacramento</city>
+              <state>CA</state>
+              <postal>95811</postal>
+              <country>US</country>
+            </cntaddr>
+            <cntvoice>916-323-1484</cntvoice>
+            <cntemail>Will.Patterson@wildlife.ca.gov</cntemail>
+            <cntemail>bdb@wildlife.ca.gov</cntemail>
+            <cntinst>Email is preferred contact method.</cntinst>
+          </cntinfo>
+        </proccont>
+      </procstep>
+      <procstep>
+        <procdesc>Added "sfc_acres" and "elev_ft" fields. Also added "playa" coding to the "type" field. No new features added, just attribute adjustments.</procdesc>
+        <procdate>20090701</procdate>
+        <proccont>
+          <cntinfo>
+            <cntorgp>
+              <cntorg>California. Fisheries Programs Branch</cntorg>
+              <cntper>Dixon, David</cntper>
+            </cntorgp>
+            <cntpos>GIS Analyst</cntpos>
+            <cntaddr>
+              <addrtype>physical</addrtype>
+              <address>1807 13th St., Ste. 202</address>
+              <city>Sacramento</city>
+              <state>CA</state>
+              <postal>95811</postal>
+              <country>US</country>
+            </cntaddr>
+            <cntvoice>916-319-9685</cntvoice>
+            <cntemail>David.Dixon@wildlife.ca.gov</cntemail>
+          </cntinfo>
+        </proccont>
+      </procstep>
+      <procstep>
+        <procdesc>Incorporated edits from High Mountain Lakes Database.</procdesc>
+        <procdate>20091201</procdate>
+        <proccont>
+          <cntinfo>
+            <cntorgp>
+              <cntorg>California. Fisheries Programs Branch</cntorg>
+              <cntper>Dixon, David</cntper>
+            </cntorgp>
+            <cntpos>GIS Analyst</cntpos>
+            <cntaddr>
+              <addrtype>unknown</addrtype>
+              <address>1807 13th St., Ste. 202</address>
+              <city>Sacramento</city>
+              <state>CA</state>
+              <postal>95811</postal>
+              <country>US</country>
+            </cntaddr>
+            <cntvoice>916-319-9685</cntvoice>
+            <cntemail>David.Dixon@wildlife.ca.gov</cntemail>
+          </cntinfo>
+        </proccont>
+      </procstep>
+      <procstep>
+        <procdesc>Metadata review. Metadata and dataset name edits.</procdesc>
+        <procdate>20100101</procdate>
+        <proccont>
+          <cntinfo>
+            <cntorgp>
+              <cntorg>California Department of Fish and Wildlife</cntorg>
+              <cntper>Patterson, Will</cntper>
+            </cntorgp>
+            <cntpos>GIS Specialist/Data Manager</cntpos>
+            <cntaddr>
+              <addrtype>physical</addrtype>
+              <address>1807 13th St., Ste. 202</address>
+              <city>Sacramento</city>
+              <state>CA</state>
+              <postal>95811</postal>
+              <country>US</country>
+            </cntaddr>
+            <cntvoice>916-323-1484</cntvoice>
+            <cntemail>Will.Patterson@wildlife.ca.gov</cntemail>
+            <cntinst>Email is preferred contact method.</cntinst>
+          </cntinfo>
+        </proccont>
+      </procstep>
+      <procstep>
+        <procdesc>Per Dave Dixon, various additions, deletions and perimeter edits have been made. DFGWATERID field replaces DFGLAKEID field as unique identifier.</procdesc>
+        <procdate>20100901</procdate>
+        <proccont>
+          <cntinfo>
+            <cntorgp>
+              <cntorg>California Department of Fish and Wildlife</cntorg>
+              <cntper>Patterson, Will</cntper>
+            </cntorgp>
+            <cntpos>GIS Specialist/Data Manager</cntpos>
+            <cntaddr>
+              <addrtype>physical</addrtype>
+              <address>1807 13th St., Ste. 202</address>
+              <city>Sacramento</city>
+              <state>CA</state>
+              <postal>95811</postal>
+              <country>US</country>
+            </cntaddr>
+            <cntvoice>916-323-1484</cntvoice>
+            <cntemail>Will.Patterson@wildlife.ca.gov</cntemail>
+            <cntemail>bdb@wildlife.ca.gov</cntemail>
+            <cntinst>Email is preferred contact method.</cntinst>
+          </cntinfo>
+        </proccont>
+      </procstep>
+      <procstep>
+        <procdesc>Per Dave Dixon, the April 2012 update includes a small number of additions (from the stocked waters layer) and a few perimeter modifications.</procdesc>
+        <procdate>20120401</procdate>
+        <proccont>
+          <cntinfo>
+            <cntorgp>
+              <cntorg>California Department of Fish and Wildlife</cntorg>
+              <cntper>Patterson, Will</cntper>
+            </cntorgp>
+            <cntpos>GIS Specialist/Data Manager</cntpos>
+            <cntaddr>
+              <addrtype>physical</addrtype>
+              <address>1807 13th St., Ste. 202</address>
+              <city>Sacramento</city>
+              <state>CA</state>
+              <postal>95811</postal>
+              <country>US</country>
+            </cntaddr>
+            <cntvoice>916-323-1484</cntvoice>
+            <cntemail>Will.Patterson@wildlife.ca.gov</cntemail>
+            <cntemail>bdb@wildlife.ca.gov</cntemail>
+            <cntinst>Email is preferred contact method.</cntinst>
+          </cntinfo>
+        </proccont>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <spdoinfo>
+    <direct>Vector</direct>
+    <ptvctinf>
+      <sdtsterm>
+        <sdtstype>GT-polygon composed of chains</sdtstype>
+        <ptvctcnt>27506</ptvctcnt>
+      </sdtsterm>
+    </ptvctinf>
+  </spdoinfo>
+  <eainfo>
+    <detailed>
+      <enttyp>
+        <enttypl>CA_Lakes</enttypl>
+        <enttypd>California Lakes by the California Department of Fish and Game</enttypd>
+      </enttyp>
+      <attr>
+        <attrlabl>FID</attrlabl>
+        <attrdef>Internal feature number.</attrdef>
+        <attrdefs>ESRI</attrdefs>
+        <attrdomv>
+          <udom>Sequential unique whole numbers that are automatically generated.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Shape</attrlabl>
+        <attrdef>Feature geometry.</attrdef>
+        <attrdefs>ESRI</attrdefs>
+        <attrdomv>
+          <udom>Coordinates defining the features.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>DFGWATERID</attrlabl>
+      </attr>
+      <attr>
+        <attrlabl>TYPE</attrlabl>
+        <attrdef>Indicates if feature is perennial or ephemeral. This field is populated for features from the High Mountain Lakes dataset only.</attrdef>
+      </attr>
+      <attr>
+        <attrlabl>NAME</attrlabl>
+        <attrdef>Primary Lake Name</attrdef>
+        <attrdefs>USGS Name.  Sources:  7.5-minute/1:24,000-scale quad maps, the Geographic Names Information System (GNIS) as of 10/2006 and other sources.  Some spatial errors exist in the GNIS database, thus some NAMES here do not match names in the field GNISNAME. See details regarding source data.</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>GNIS_NAME</attrlabl>
+        <attrdef>Feature name from Geographic Names Information System.</attrdef>
+      </attr>
+      <attr>
+        <attrlabl>GNIS_ID</attrlabl>
+        <attrdef>Feature ID from Geographic Names Information System.</attrdef>
+      </attr>
+      <attr>
+        <attrlabl>COUNTY</attrlabl>
+        <attrdef>County name where feature centroid is located.</attrdef>
+      </attr>
+      <attr>
+        <attrlabl>QUAD_NAME</attrlabl>
+        <attrdef>USGS 24k quad name were feature centroid is located.</attrdef>
+      </attr>
+      <attr>
+        <attrlabl>QUAD_CODE</attrlabl>
+        <attrdef>USGS 24k quad code (leading "o" dropped) were feature centroid is located.</attrdef>
+      </attr>
+      <attr>
+        <attrlabl>LAT_NAD83</attrlabl>
+        <attrdef>Latitude in decimal degrees, NAD83, where feature centroid is located.</attrdef>
+      </attr>
+      <attr>
+        <attrlabl>LON_NAD83</attrlabl>
+        <attrdef>Longitude in decimal degrees, NAD83, where feature centroid is located.</attrdef>
+      </attr>
+      <attr>
+        <attrlabl>UTM_ZONE</attrlabl>
+        <attrdef>UTM Zone (NAD 83) where feature centroid is located.</attrdef>
+      </attr>
+      <attr>
+        <attrlabl>UTM_N_N83</attrlabl>
+        <attrdef>North UTM coordinate, NAD83, where feature centroid is located.</attrdef>
+      </attr>
+      <attr>
+        <attrlabl>UTM_E_N83</attrlabl>
+        <attrdef>East UTM coordinate, NAD83, where feature centroid is located.</attrdef>
+      </attr>
+      <attr>
+        <attrlabl>MTR</attrlabl>
+        <attrdef>Meridian, Township and Range where feature centroid is located.</attrdef>
+      </attr>
+      <attr>
+        <attrlabl>elev_ft</attrlabl>
+        <attrdef>Feature elevation (feet)</attrdef>
+      </attr>
+      <attr>
+        <attrlabl>sfc_acres</attrlabl>
+        <attrdef>Feature surface area (acres)</attrdef>
+      </attr>
+    </detailed>
+    <overview>
+      <eaover>DFGWATERID replaces DFGLAKEID as the unique identifier for all waterbodies depicted in this layer. Field values remain unchanged. DFGLAKEID was derived from DFG's Fisheries Program Branch fpb_lakes.shp LAKE_ID field.</eaover>
+    </overview>
+  </eainfo>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Stanford Geospatial Center</cntorg>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>physical</addrtype>
+          <address>Branner Earth Sciences Library</address>
+          <address>Mitchell Building, 2nd Floor</address>
+          <address>397 Panama Mall</address>
+          <city>Stanford</city>
+          <state>California</state>
+          <postal>94305</postal>
+        </cntaddr>
+        <cntvoice>650-723-2746</cntvoice>
+        <cntemail>brannerlibrary@stanford.edu</cntemail>
+      </cntinfo>
+    </distrib>
+    <distliab>See access and use constraints information.</distliab>
+  </distinfo>
+  <metainfo>
+    <metd>20150710</metd>
+    <metc>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>California. Biogeographic Data Branch</cntorg>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>physical</addrtype>
+          <address>1700 9th St., 4th Floor</address>
+          <city>Sacramento</city>
+          <state>CA</state>
+          <postal>95811</postal>
+          <country>US</country>
+        </cntaddr>
+        <cntvoice>916-322-2493</cntvoice>
+        <cntemail>bdb@wildlife.ca.gov</cntemail>
+        <cntinst>Email is preferred contact method.</cntinst>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+    <mettc>local time</mettc>
+  </metainfo>
+</metadata>

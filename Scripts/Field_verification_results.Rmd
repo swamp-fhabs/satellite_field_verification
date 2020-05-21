@@ -3,18 +3,11 @@ title: "Satellite field verification results"
 author: "Keith Bouma-Gregson | CA State Waterboards"
 date: "January 2, 2020"
 output:
-  word_document:  
-    pandoc_args: ["-Fpandoc-crossref"]
-    # https://stackoverflow.com/questions/47985267/equation-numbering-in-rmarkdown-for-export-to-word
-    # https://github.com/lierdakil/pandoc-crossref#readme
+  word_document:
+    pandoc_args: -Fpandoc-crossref
     reference_docx: word_Rmarkdown_styles.docx
-#   html_document: 
-#     df_print: paged
-#   pdf_document: default
-# editor_options: 
-#   chunk_output_type: console
-header-includes:
- - \usepackage{amsmath}
+  pdf_document: default
+header-includes: \usepackage{amsmath}
 ---
 
 ```{r setup, include=FALSE}

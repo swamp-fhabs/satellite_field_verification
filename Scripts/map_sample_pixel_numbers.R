@@ -21,7 +21,7 @@ ca_lakes_utm <- readRDS("Data/Shapefiles/ca_lakes_shapefile_utm.rds")
 
 # Function to import XY data and transform to UTM and create pixel boundaries
 # Lake San Antonio
-# Origina CSV, CIcyano, and CI csvs all same pixels
+# Original CSV, CIcyano, and CI csvs all same pixels
 lsa_data_OG <- read_and_transform_data(centroids= "Data/Sentinel_flyover_data/sentinel-LakeSanAntonio_20190801.csv",
                                 samples = "Data/20190801_LakeSanAntonio/LatLong_LakeSanAntonio.txt",
                                 utm_epsg = 32610, # UTM zone 10

@@ -1,20 +1,14 @@
 ---
 title: "Satellite field verification results"
 author: "Keith Bouma-Gregson | CA State Waterboards"
-date: "January 2, 2020"
+date: "February 10, 2020"
 output:
-  word_document:  
-    pandoc_args: ["-Fpandoc-crossref"]
-    # https://stackoverflow.com/questions/47985267/equation-numbering-in-rmarkdown-for-export-to-word
-    # https://github.com/lierdakil/pandoc-crossref#readme
-    reference_docx: word_Rmarkdown_styles.docx
-#   html_document: 
-#     df_print: paged
-#   pdf_document: default
-# editor_options: 
-#   chunk_output_type: console
-header-includes:
- - \usepackage{amsmath}
+  word_document:
+    pandoc_args: -Fpandoc-crossref
+  html_document:
+    df_print: paged
+  pdf_document: default
+header-includes: \usepackage{amsmath}
 ---
 
 ```{r setup, include=FALSE}
@@ -72,7 +66,7 @@ $$
 \begin{equation}
 Corrected~R_{rs} = R_{rs} - \frac{RrsSky_{708-712} - \frac{aw_{740}}{aw_{710}} \times RrsSky_{738-740}}{1 - \frac{aw_{740}}{aw_{710}}}
 \end{equation}
-$$ {#eq:1}
+$$ {#eq:2}
 Where the water absorbtion coefficients aw~710~ and aw~740~ are constants of 0.832 and 2.758 at 710 and 740 nm, respectively. 
 
 #### *Cyanobacterial index calculations*
@@ -82,19 +76,19 @@ $$
 \begin{equation}
 SS(681) = rrs681 - rrs665 - (rrs709 - rrs665) \times \frac{681-665}{709-665}
 \end{equation}
-$$ {#eq:2}
+$$ {#eq:3}
 More negative SS(681) values represent higher cyanobacterial abundances in the surface waters of a pixel. To transform it into positive values the SS(681) is converted to CI by: 
 $$
 \begin{equation}
 CI = -1*SS(681)
 \end{equation}
-$$ {#eq:3}
+$$ {#eq:4}
 CI values <0 indicate no cyanobacteria present. However, certain water conditions can generate positive CI values, even when there are no cyanobacteria present. To reduce the frequency of false positives, the spectral shape at 665 nm is used as an additional measurement to determine if cyanobacteria are present (Matthews et al. 2012 and Lunetta et al 2015): 
 $$
 \begin{equation}
 SS(665) = rrs665 - rrs620 + (rrs620 - rrs681) \times \frac{665-620}{681-620}
 \end{equation}
-$$ {#eq:4}
+$$ {#eq:5}
 When SS(665) is >0 it indicates cyanobacteria present in the water and when it is <0 cyanobacteria are predicted to be absent. SS(665) is used as an exclusion criteria to create a new indice CI~cyano~. The value of CI~cyano~ is a function of CI (eq. 3) and SS(665): 
 $$
 \begin{equation}
@@ -103,7 +97,7 @@ $$
     0, & \text{if SS(665) < 0}.
   \end{cases}
 \end{equation}
-$$ {#eq:5}
+$$ {#eq:6}
 
 If SS(665) is > 0, then cyanobacteria are assumed to be present and the value of CI~cyano~ is the same as the CI value calculated with eq. 3. When SS(665) <0 (i.e. no cyanobacteria) the value of CI~cyano~ is 0, even if they have a positive CI values with eq. 3.
 
@@ -113,7 +107,7 @@ $$
 \begin{equation}
 CI_{cyano} = 10^{0.012 \times PixInteger - 4.2}
 \end{equation}
-$$ {#eq:6}
+$$ {#eq:7}
 
 
 CI~cyano~ has a range of 0.000063 - 0.063270. To make these values easier to work with, SFEI and the CA Waterboards then multiply CI~cyano~ by a constant to make the values easier to work with by putting them on a scale of 1-1000. This index is called CI~mod~ and calculated by: 
@@ -121,7 +115,7 @@ $$
 \begin{equation}
 CI_{mod} = CI_{cyano} * 15805.18
 \end{equation}
-$$ {#eq:7}
+$$ {#eq:8}
 
 ## **Results**
 

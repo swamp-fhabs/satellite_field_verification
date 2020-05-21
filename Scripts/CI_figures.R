@@ -306,8 +306,9 @@ ggsave(last_plot(), filename= "ss665_CImod.png", height= 4.875, width= 6.5, unit
 ## CI X WATERBODY
 ggplot(data= ci_fs) +
   geom_hline(yintercept = 0) +
-  geom_point(aes(x= pix_site, y= ci), size= 3, shape= 21, fill= "gray75") +
-  labs(x= "Measurement location", y= "Field cyano. index (CI)") +
+ # geom_point(aes(x= pix_site, y= ci), size= 3, shape= 21, fill= "gray75") +
+  geom_boxplot(aes(x= pix_site, y= ci), fill= "gray75") +
+  labs(x= "Measurement location", y= "Field CI") +
   scale_fill_discrete(name= "Waterbody") +
   scale_y_continuous(limits= c(-0.001, 0.0041), expand= c(0.02, 0)) +
   facet_wrap(.~waterbody, ncol= 6, scales= "free_x", labeller= as_labeller(waterbody_labeller)) +
@@ -335,9 +336,11 @@ ggsave(last_plot(), filename= "ci_mod_chla.png", height= 4.875, width= 6.5, unit
        path= "Data/Figures_output")
 
 ## CI X CHLA
+#summary(lm(ci ~ chla_ugL, data=ci_fs))$coefficients
 ggplot(data= ci_fs) +
   geom_hline(yintercept = 0) +
   geom_point(aes(x= chla_ugL, y= ci, fill= waterbody), size= 3, shape= 21) +
+  geom_abline(intercept= -0.000242, slope= 0.0000633) +
   labs(x= expression(paste("Chlorophyll-a (",mu,"g/L)")), y= "Field CI") +
   scale_fill_discrete(name= "Waterbody") +
   scale_x_continuous(expand= c(0.02, 0)) +
@@ -349,6 +352,8 @@ ggsave(last_plot(), filename= "ci_chla.png", height= 4.875, width= 6.5, units= "
 
 
 
+
+
 #### DECEMBER 2019 DATA DELIVERY #########################
 
 ## Field CI X SAT CI
@@ -356,8 +361,12 @@ ci_lims <- c(-.0005, 0.005)
 ci_brks <- c(6.309573e-05, seq(0.001, 0.005, by= 0.001))
 ci_labels <- c("DL", "0.001", "0.002", "0.003", "0.004", "0.005")
 
+fit1 <- lm(ci ~ CI_sat, data= filter(ci_fs, data_delivery == "dec2019"))
+summary(fit1)$coefficients
+
 ggplot(data= filter(ci_fs, data_delivery == "dec2019")) +
   geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
+  geom_abline(aes(slope= 0.9004424658, intercept= -0.0003458048), color= "black", size= 0.75) +
   geom_hline(yintercept = 6.309573e-05) +
   geom_vline(xintercept = 6.309573e-05) +
   geom_point(aes(x= CI_sat, y= ci, fill= waterbody), size= 3, shape= 21) +
@@ -371,6 +380,15 @@ ggplot(data= filter(ci_fs, data_delivery == "dec2019")) +
 ggsave(last_plot(), filename= "CI_fs_dec2019.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output")
 
+
+
+fit1_rmse <- Metrics::rmse(filter(ci_fs, data_delivery == "dec2019")$CI_sat, predict(fit1))
+plot(filter(ci_fs, data_delivery == "dec2019")$CI_sat ~ predict(fit1))
+
+fit1_rmse/mean(filter(ci_fs, data_delivery == "dec2019")$CI_sat)
+
+length(ci_fs$ci)
+length(predict(fit1))
 
 ## Field CI X SAT CIcyano
 

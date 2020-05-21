@@ -5,6 +5,7 @@ date: "February 10, 2020"
 output:
   word_document:
     pandoc_args: -Fpandoc-crossref
+        reference_docx: word_Rmarkdown_styles.docx
   html_document:
     df_print: paged
   pdf_document: default

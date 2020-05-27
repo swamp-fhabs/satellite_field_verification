@@ -88,7 +88,7 @@ plot_whole_lake <- function(data_list, shapefile_utm, scalebar_dist, utm_epsg= 3
   
   if(label== FALSE){
     whole_lake_plot <-  ggplot() +
-      geom_polygon(data= shapefile_utm, aes(x= long, y= lat), fill= "skyblue", color= "black", alpha= 0.25) +
+      geom_polygon(data= shapefile_utm, aes(x= long, y= lat, group= id), fill= "skyblue", color= "black", alpha= 0.25) +
       geom_sf(data= data_list[["pixels"]], fill= "transparent") +
       geom_sf(data= data_list[["centroids"]], size= 0.5, color= "black") +
       geom_sf(data= data_list[["samples"]], size= 3, aes(color= pixel, fill= pixel)) +
@@ -103,7 +103,7 @@ plot_whole_lake <- function(data_list, shapefile_utm, scalebar_dist, utm_epsg= 3
   
   if(label==TRUE){
     whole_lake_plot <-  ggplot() +
-      geom_polygon(data= shapefile_utm, aes(x= long, y= lat), fill= "skyblue", color= "black", alpha= 0.25) +
+      geom_polygon(data= shapefile_utm, aes(x= long, y= lat, group= id), fill= "skyblue", color= "black", alpha= 0.25) +
       geom_sf(data= data_list[["pixels"]], fill= "transparent") +
       #geom_sf(data= data_list[["centroids"]], size= 0.5, color= "black") +
       geom_sf_text(data= data_list[["centroids"]], aes(label= pixel_num), color= "black", alpha= 0.5) +
@@ -126,7 +126,7 @@ plot_bounding_box <-  function(data_list, shapefile_utm, bbox, scalebar_dist= 15
 
   if(label== FALSE){
   bbox_plot <- ggplot() +
-    geom_polygon(data= shapefile_utm, aes(x= long, y= lat), fill= "skyblue", color= "black", alpha= 0.25) +
+    geom_polygon(data= shapefile_utm, aes(x= long, y= lat, group= id), fill= "skyblue", color= "black", alpha= 0.25) +
     geom_sf(data= data_list[["pixels"]], fill= "transparent") +
     geom_sf(data= data_list[["centroids"]], size= 0.5, color= "black") +
     geom_sf(data= data_list[["samples"]], size= 1, aes(fill= pixel, color= pixel)) +
@@ -143,7 +143,7 @@ plot_bounding_box <-  function(data_list, shapefile_utm, bbox, scalebar_dist= 15
   
   if(label== TRUE){
     bbox_plot <-  ggplot() +
-      geom_polygon(data= shapefile_utm, aes(x= long, y= lat), fill= "skyblue", color= "black", alpha= 0.25) +
+      geom_polygon(data= shapefile_utm, aes(x= long, y= lat, group= id), fill= "skyblue", color= "black", alpha= 0.25) +
       geom_sf(data= data_list[["pixels"]], fill= "transparent") +
       #geom_sf(data= data_list[["centroids"]], size= 0.5, color= "black") +
       geom_sf_text(data= data_list[["centroids"]], aes(label= pixel_num), color= "black", alpha= 0.5) +

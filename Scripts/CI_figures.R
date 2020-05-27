@@ -391,7 +391,6 @@ length(ci_fs$ci)
 length(predict(fit1))
 
 ## Field CI X SAT CIcyano
-
 ggplot(data= filter(ci_fs, data_delivery == "dec2019")) +
   geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
   geom_hline(yintercept = 6.309573e-05) +

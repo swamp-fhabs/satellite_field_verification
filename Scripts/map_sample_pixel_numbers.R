@@ -193,9 +193,15 @@ clr0807_bbox_map_CIcyano
 # SAN PABLO RESERVOIR
 spr_lake_map_OG <- plot_whole_lake(data_list = spr_data_OG, shapefile_utm = spr_utm, scalebar_dist = 1000)
 spr_lake_map_OG
+ggsave(spr_lake_map_OG, filename= "SPRmap_Sep.png", height= 6, width= 6, units= "in",
+       path= "../SepDec_SatData")
+
 
 spr_lake_map_CI <- plot_whole_lake(data_list = spr_data_CI, shapefile_utm = spr_utm, scalebar_dist = 1000)
 spr_lake_map_CI
+ggsave(spr_lake_map_CI, filename= "SPRmap_Dec.png", height= 6, width= 6, units= "in",
+       path= "../SepDec_SatData")
+
 
 spr_bbox_map_OG <- plot_bounding_box(data_list = spr_data_OG, shapefile_utm = spr_utm, bbox= spr_bbox_OG, label= TRUE)
 spr_bbox_map_OG

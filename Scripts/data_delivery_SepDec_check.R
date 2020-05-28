@@ -4,15 +4,13 @@
 ## The suffix OG, CI and CIcyano. Refer to the original (OG) CIcyano file from Sep-2019 and the new CI and CIcyano CSV files from Dec-2019.
 
 
-
-
 library(tidyverse)
 library(ggplot2)
 source("Scripts/map_functions.R")
 
 
 df <- read_tsv("Data/CI_field_sat_h2o_data.tsv")
-
+df <- CI_field_sat
 dfw <- df %>% 
   dplyr::select(waterbody, pixel, data_delivery, pix_num, pix_CIcyano_sat) %>% 
   distinct() %>% 
@@ -101,6 +99,21 @@ sep <- read_csv("Data/Sentinel_flyover_data/sentinel-ClearLake_20190816.csv") %>
   mutate(llid7= str_c(round(Lat, 7), round(Lon, 7), sep= " , ")) %>% 
   mutate(llid8= str_c(round(Lat, 8), round(Lon, 8), sep= " , ")) 
 
+may <- read_csv("Data/Sentinel_flyover_data/CSVs_20200527/clear-lake.20190816.CIcyano.csv") %>% 
+  rename(cicy= `Pixel Value`) %>% 
+  mutate(llid= str_c(Lat, Lon, sep= " , "),
+         mon= "Sep") %>% 
+  mutate(llid1= str_c(round(Lat, 1), round(Lon, 1), sep= " , ")) %>%
+  mutate(llid2= str_c(round(Lat, 2), round(Lon, 2), sep= " , ")) %>%
+  mutate(llid3= str_c(round(Lat, 3), round(Lon, 3), sep= " , ")) %>% 
+  mutate(llid4= str_c(round(Lat, 4), round(Lon, 4), sep= " , ")) %>% 
+  mutate(llid5= str_c(round(Lat, 5), round(Lon, 5), sep= " , ")) %>% 
+  mutate(llid6= str_c(round(Lat, 6), round(Lon, 6), sep= " , ")) %>% 
+  mutate(llid7= str_c(round(Lat, 7), round(Lon, 7), sep= " , ")) %>% 
+  mutate(llid8= str_c(round(Lat, 8), round(Lon, 8), sep= " , ")) 
+
+
+
 table(dec$llid %in% sep$llid)
 table(dec$llid2 %in% sep$llid2)
 table(dec$llid3 %in% sep$llid3)
@@ -121,10 +134,6 @@ write_tsv(anti4d, path= "../SepDec_SatData/Dec_mismatch_4DD.tsv")
 
 anti5d <- anti_join(dec, sep, by= "llid5")
 anti5s <- anti_join(sep, dec, by= "llid5")
-
-
-
-
 
 
 both.w <- both %>% 
@@ -168,6 +177,23 @@ ggplot(filter(bloom.sf.ll, CIcyano != 252)) +
   ggtitle("ClearLake_20190807 P3 CIcyano=124")
 ggsave(last_plot(), filename= "ClearLake_20190816_CL03C_124.png", height= 6, width= 6, units= "in",
        path= "../SepDec_SatData")
+
+may16_124 <- may %>% 
+  filter(cicy == 124)
+
+sep16_124 <- sep %>% 
+  filter(cicy == 124)
+dec16_124 <- dec %>% 
+  filter(cicy == 124)
+
+
+
+may16_124$llid6 == sep16_124$llid6
+may16_124$llid6 == dec16_124$llid6
+
+
+
+
 
 
 ### Clear Lake Aug-07
@@ -243,5 +269,35 @@ ggsave(last_plot(), filename= "ClearLake_20190807_P1_117.png", height= 6, width=
 38.97916	-122.70921
 
 
-  
+
+
+#### MAY DELIVERY
+may07 <- read_csv("Data/Sentinel_flyover_data/CSVs_20200527/clear-lake.20190807.CIcyano.csv") %>% 
+  rename(cicy= `Pixel Value`) %>% 
+  mutate(llid= str_c(Lat, Lon, sep= " , "),
+         mon= "Sep") %>% 
+  mutate(llid1= str_c(round(Lat, 1), round(Lon, 1), sep= " , ")) %>%
+  mutate(llid2= str_c(round(Lat, 2), round(Lon, 2), sep= " , ")) %>%
+  mutate(llid3= str_c(round(Lat, 3), round(Lon, 3), sep= " , ")) %>% 
+  mutate(llid4= str_c(round(Lat, 4), round(Lon, 4), sep= " , ")) %>% 
+  mutate(llid5= str_c(round(Lat, 5), round(Lon, 5), sep= " , ")) %>% 
+  mutate(llid6= str_c(round(Lat, 6), round(Lon, 6), sep= " , ")) %>% 
+  mutate(llid7= str_c(round(Lat, 7), round(Lon, 7), sep= " , ")) %>% 
+  mutate(llid8= str_c(round(Lat, 8), round(Lon, 8), sep= " , ")) 
+
+may07_94 <- may07 %>% 
+  filter(cicy == 94)
+
+may07_117 <- may07 %>% 
+  filter(cicy == 117)
+
+
+may07_94$llid6 == sep07_94$llid6
+may07_94$llid6 == dec07_94$llid6
+
+may07_117$llid6 == sep07_117$llid6
+may07_117$llid6 == dec07_117$llid6
+may07_117$llid2 == dec07_117$llid2
+
+
 

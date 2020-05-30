@@ -117,21 +117,21 @@ rrs_bands_df <- rrs_bands_df %>%
 
 # Extract information from uniqueID column for ci_df
 ci_df <- tibble(uniqueID= names(ci_list), 
-                ci= do.call(rbind, ci_list)[, 1],
-                ss665= do.call(rbind, ci_list)[, 2]) %>% 
+                CI_field= do.call(rbind, ci_list)[, 1],
+                ss665_field= do.call(rbind, ci_list)[, 2]) %>% 
   mutate(waterbody= do.call(rbind, str_split(uniqueID, "-"))[, 1], 
          sample= do.call(rbind, str_split(uniqueID, "-"))[, 2]) %>% 
   mutate(site= do.call(rbind, str_split(sample, "_"))[, 1],
          rep= do.call(rbind, str_split(sample, "_"))[, 2]) %>% 
-  select(uniqueID, waterbody, sample, site, rep, ci, ss665) 
+  select(uniqueID, waterbody, sample, site, rep, CI_field, ss665_field) 
   
 # Calc modified CI and pixel values
 ci_df <- ci_df %>% 
-  mutate(ci_mod= ci * 15805.18,
-         pix_val= (log10(ci)+4.2) / 0.012) %>% 
-  mutate(pix_val= ifelse(is.na(pix_val), 0, pix_val)) %>% 
+  mutate(CI_mod_field= CI_field * 15805.18,
+         CI_pix_field= (log10(CI_field)+4.2) / 0.012) %>% 
+  mutate(CI_pix_field= ifelse(is.na(CI_pix_field), 0, CI_pix_field)) %>% 
   mutate(pixel= str_replace(site, "S[0-9]", "")) %>% 
-  mutate(ss665_threshold= ifelse(ss665 < 0, "Absent", "Present"))
+  mutate(ss665_threshold= ifelse(ss665_field <= 0, "<0", ">0"))
 
 
 # Write files
@@ -154,18 +154,18 @@ join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_path, writeFi
     sat_files <- list.files(in_dir, pattern= "*.csv")
     
     CI.df <- map(sat_files[str_detect(sat_files, "CInoncyano.csv")], function(x) read_csv(file.path(sat_dir, x)) %>%
-                   rename("pix_CI_sat" = `Pixel Value`)) %>%
+                   rename("CInoncyano_pix_sat" = `Pixel Value`)) %>%
       setNames(str_replace(sat_files[str_detect(sat_files, "CInoncyano.csv")], ".CInoncyano.csv", "")) %>%
       bind_rows(., .id= "waterbody")
 
     CIcyano.df <- map(sat_files[str_detect(sat_files, "CIcyano.csv")], function(x) read_csv(file.path(sat_dir, x)) %>%
-                        rename("pix_CIcyano_sat" = `Pixel Value`)) %>% 
+                        rename("CIcyano_pix_sat" = `Pixel Value`)) %>% 
     setNames(str_replace(sat_files[str_detect(sat_files, "CIcyano.csv")], ".CIcyano.csv", "")) %>%
       bind_rows(., .id= "waterbody")
     
     sentinel.list <- full_join(CI.df, CIcyano.df) %>%
       group_by(waterbody) %>%
-      mutate(pix_num= seq(1, length(pix_CI_sat))) %>%  # Add pixel ID numbers for each waterbody
+      mutate(pix_FID= seq(0, length(CIcyano_pix_sat) - 1)) %>%  # Add pixel ID numbers for each waterbody. Start at zero to match FID on ESRI ArcGIS
       ungroup() %>%
       mutate(waterbody= str_replace(waterbody, "sentinel-", "")) %>%
       split(., .$waterbody)
@@ -231,8 +231,8 @@ join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_path, writeFi
     
     extracted_pixels <- waterbody_df %>% 
       #filter(waterbody_df$pix_num %in% samp_pix_filt$pix_num_CI) %>% 
-      filter(waterbody_df$pix_num %in% samp_pix_filt$pix_num_OG) %>% 
-      left_join(., select(samp_pix_filt, waterbody, pix_num_OG, pixel), by= c("waterbody", "pix_num" = "pix_num_OG")) 
+      filter(waterbody_df$pix_FID %in% samp_pix_filt$pix_FID) %>% 
+      left_join(., select(samp_pix_filt, waterbody, pix_FID, pixel), by= c("waterbody", "pix_FID")) 
     
     # 
     # if(all(waterbody_df$data_delivery == "sep2019")){
@@ -257,17 +257,20 @@ join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_path, writeFi
   
   ## Calculate modified CI values
   sat_samp_pixs <- sat_samp_pixs %>% 
-    mutate(CI_sat= 10^(3/250*pix_CI_sat-4.2),
-           CI_mod_sat= CI_sat*15805.18,
-           CIcyano_sat= 10^(3/250*pix_CIcyano_sat-4.2),
-           CIcyano_mod_sat= CIcyano_sat*15805.18)
+    mutate(CInoncyano_sat= 10^(3/250*CInoncyano_pix_sat-4.2),
+           CInoncyano_mod_sat= CInoncyano_sat*15805.18,
+           CIcyano_sat= 10^(3/250*CIcyano_pix_sat-4.2),
+           CIcyano_mod_sat= CIcyano_sat*15805.18,
+           CI_sat= ifelse(CInoncyano_pix_sat == 0, CIcyano_sat, CInoncyano_sat),
+           CI_mod_sat= CI_sat*15805.18)
+            
   
   
   ## Join satellite and field data frames
   ci_values <- left_join(sat_samp_pixs, CI_field_df, by= c("waterbody", "pixel")) %>% 
     rename(pix_site= site) %>% 
     mutate(site= str_replace(pix_site, "P[0-9]", "")) %>% 
-    select(waterbody, sample, pix_site, pixel, site, rep, Lat, Lon, uniqueID, pix_num, everything())
+    select(waterbody, sample, pix_site, pixel, site, rep, Lat, Lon, uniqueID, pix_FID, everything())
   
   if(writeFile == TRUE){
     write_tsv(ci_values, path= file.path(out_path, "CI_field_sat.tsv"))

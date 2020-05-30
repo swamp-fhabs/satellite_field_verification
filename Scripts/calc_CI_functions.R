@@ -8,8 +8,8 @@
 ## Modified CI and pixel values (0-250) calculated based on equations provided
 ## by Randy Turner at SFEI. A pixel value of 0 (or NaN in the equation) is the background CI value level.
 
-## CI to pixel value: CI=10^(3/250*Pix_val-4.2)
-## CI to modified CI: CI_mod= CI * 15805.18
+## CI to pixel value: CI=10^(3/250*Pix_val-4.2) (Equation from Appendix D of NOAA 2018 report https://repository.library.noaa.gov/view/noaa/20270)
+## CI to modified CI: CI_mod= CI * 15805.18 (Equation from SFEI scaling factor fhab.sfei.org)
 ## rrs= remote sensed reflectance
 
 ## Field CI values are then merged with the satellite pixel values (0-250)
@@ -20,6 +20,7 @@
 ## in_dir= Pathway to output of NOAA EXE program rrs files
 ## out_path= path and filename for exported .tsv file with CI values
 
+#### FUNCTIONS ###########
 calc_CI_values <- function(in_dir, out_path){
   require(tidyverse)
 
@@ -141,12 +142,6 @@ return(ci_df)
 }
 
 
-
-
-## JOIN SATELLITE AND FIELD CI VALUES
-# sat_dir <- "Data/Sentinel_flyover_data"
-# samp_pixs <-  read_tsv("Data/Sentinel_flyover_data/sample_pixel_numbers.tsv")
-
 join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_path, writeFile= TRUE){
   require(tidyverse)
 
@@ -174,54 +169,6 @@ join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_path, writeFi
   }
   sat_data_list <- make_satellite_data_list(in_dir= sat_dir)
   
-
-  ## Read in sep-2019 Sentinel satellite data
-  # make_sep2019_satellite_data_list <- function(in_dir){
-  #   sat_files <- list.files(in_dir, pattern= "*[0-9].csv")
-  #   
-  #   sat_list <- map(sat_files, function(x) read_csv(file.path(in_dir, x)) %>% 
-  #                     rename(pix_CIcyano_sat= `Pixel Value`) %>% 
-  #                     mutate(data_delivery= "sep2019")) %>% 
-  #     setNames(str_replace(sat_files, "sentinel-", "") %>% str_replace(., ".csv", ""))
-  #   
-  #   # Add waterbody and pixel number column
-  #   sat_list <- map2(sat_list, names(sat_list), function(df, name) mutate(df, waterbody= name,
-  #                                                                         pix_num= seq(1, length(df$pix_CIcyano_sat))))
-  #   return(sat_list)
-  # }
-  # sat_sep2019_list <- make_sep2019_satellite_data_list(in_dir = sat_dir)
-  # 
-  ## Read in dec-2019 Sentinel satellite data
- #  make_dec2019_satellite_data_list <- function(in_dir){
- #    sat_files <- list.files(file.path(in_dir, "CSVs_20200527"), pattern= "*.csv")
- # 
- #    CI.df <- map(sat_files[str_detect(sat_files, "CInoncyano.csv")], function(x) read_csv(file.path(sat_dir, "CSVs_20200527", x)) %>%
- #                   rename("pix_CI_sat" = `Pixel Value`)) %>%
- #      setNames(str_replace(sat_files[str_detect(sat_files, "CInoncyano.csv")], ".CInoncyano.csv", "")) %>%
- #      bind_rows(., .id= "waterbody")
- # #   y <- sat_files[str_detect(sat_files, "CIcyano.csv")]
- #    #list.files(file.path(sat_dir, "CSVs_20200527"))
- # 
- #    CIcyano.df <- map(sat_files[str_detect(sat_files, "CIcyano.csv")], function(x) read_csv(file.path(sat_dir, "CSVs_20200527", x)) %>%
- #                        rename("pix_CIcyano_sat" = `Pixel Value`))
- #      setNames(str_replace(sat_files[str_detect(sat_files, "CIcyano.csv")], ".CIcyano.csv", "")) %>%
- #      bind_rows(., .id= "waterbody")
- # 
- #    sentinel.list <- full_join(CI.df, CIcyano.df) %>%
- #      group_by(waterbody) %>%
- #      mutate(pix_num= seq(1, length(pix_CI_sat)), # Add pixel ID numbers for each waterbody
- #             data_delivery= "may2020") %>%
- #      ungroup() %>%
- #      mutate(waterbody= str_replace(waterbody, "sentinel-", "")) %>%
- #      split(., .$waterbody)
- # 
- # 
- #    return(sentinel.list)
- #  }
- #    sat_dec2019_list <- make_dec2019_satellite_data_list(in_dir= sat_dir)
- #  
-
-  
   ## Extract sample pixels from satellite data files
   extract_sample_pixels <- function(satellite_list, samp_pixs, waterbodyID){
     samp_pix_filt <- samp_pixs %>% 
@@ -247,17 +194,9 @@ join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_path, writeFi
   sat_samp_pixs <- map(names(sat_data_list), function(x) extract_sample_pixels(satellite_list = sat_data_list, samp_pixs= samp_pixs, waterbodyID = x)) %>% 
     bind_rows()
   
-  # sat_samp_pixs_dec2019 <- map(names(sat_dec2019_list), function(x) extract_sample_pixels(satellite_list = sat_dec2019_list, samp_pixs= samp_pixs, waterbodyID = x)) %>% 
-  #   bind_rows()
-  # 
-  
-  ## Join sep-2019 and dec-2019 data
-  #sat_samp_pixs <- full_join(sat_samp_pixs_sep2019, sat_samp_pixs_dec2019)
-  
-  
   ## Calculate modified CI values
   sat_samp_pixs <- sat_samp_pixs %>% 
-    mutate(CInoncyano_sat= 10^(3/250*CInoncyano_pix_sat-4.2),
+    mutate(CInoncyano_sat= 10^(3/250*CInoncyano_pix_sat-4.2),  ## Equation from Appendix D of NOAA 2018 report https://repository.library.noaa.gov/view/noaa/20270
            CInoncyano_mod_sat= CInoncyano_sat*15805.18,
            CIcyano_sat= 10^(3/250*CIcyano_pix_sat-4.2),
            CIcyano_mod_sat= CIcyano_sat*15805.18,
@@ -277,7 +216,6 @@ join_sat_field_CI <- function(sat_dir, CI_field_df, samp_pixs, out_path, writeFi
   }
   return(ci_values)
 }
-
 
 
 join_CI_with_water_data <- function(ci_df, h2o_tsv_file, writeFile= TRUE, out_path){

@@ -10,10 +10,10 @@ library(ggplot2)
 
 ## Read in CI and rrs data
 ci_fs <- read_tsv("Data/CI_field_sat_h2o_data.tsv") 
-ci_fs_mod <- ci_fs %>% 
-  mutate(ci_mod = ifelse(ci_mod < 0, 1, ci_mod),
-         ci_mod_sat = ifelse(ci_mod < 1, 1, ci_mod_sat),
-         ci_mod_final= ifelse(ss665_threshold == "Absent", 0, ci_mod))
+# ci_fs_mod <- ci_fs %>% 
+#   mutate(ci_mod = ifelse(CI_mod_field < 0, 1, CI_mod_field),
+#          ci_mod_sat = ifelse(ci_mod < 1, 1, ci_mod_sat),
+#          ci_mod_final= ifelse(ss665_threshold == "Absent", 0, ci_mod))
 
 
 ## CIcyano results
@@ -77,10 +77,10 @@ make_spectral_shape_plots <- function(df, sampID, out_dir){
 
 coef_variation_site <- ci_fs %>% 
   group_by(waterbody, pix_site) %>% 
-  summarize(n= length(ci),
-            mean_ci= mean(ci, na.rm= TRUE),
-            sd_ci= sd(ci, na.rm= TRUE),
-            cv_ci= sd_ci / mean_ci) %>% 
+  summarize(n= length(CI_field),
+            mean_CI_field= mean(CI_field, na.rm= TRUE),
+            sd_CI_field= sd(CI_field, na.rm= TRUE),
+            cv_CI_field= sd_CI_field / mean_CI_field) %>% 
   ungroup()
 
 coef_variation_pixel <- ci_fs %>% 
@@ -120,7 +120,7 @@ waterbody_labeller <- c("ClearLake_20190807" = "Clear Lake\n2019-08-07",
 #### SEPTEMBER 2019 DATA DELIVERY ####################################################
 
 ## CIcyano Histogram
-ggplot(data= ci_fs, aes(x= ss665)) +
+ggplot(data= ci_fs, aes(x= ss665_field)) +
   geom_histogram(binwidth= 0.0001, 
                  boundary= 1,
                  fill= "black",
@@ -136,7 +136,7 @@ ggsave(last_plot(), filename= "ss665_hist.png", height= 4.875, width= 6.5, units
        path= "Data/Figures_output")
 
 ## CV Histogram
-ggplot(data= coef_variation_site, aes(x= cv_ci)) +
+ggplot(data= coef_variation_site, aes(x= cv_CI_field)) +
   geom_histogram() +
   # geom_histogram(binwidth= 0.0001, 
   #                boundary= 1,
@@ -472,4 +472,122 @@ ggplot(data= ci_fs) +
   geom_point(aes(x= waterbody, y= pix_CIcyano_sat, fill= data_delivery), size= 3, shape= 21, position= "jitter") +
   #labs(x= expression(Satellite~CI~value), y= expression(Satellite~CI[cyano]~value)) +
   theme_sat
+
+
+
+
+
+#### MAY 2020 DATA DELIVERY #########################
+
+## Field CI X SAT CI
+ci_lims <- c(-.0005, 0.005)
+ci_brks <- c(6.309573e-05, seq(0.001, 0.005, by= 0.001))
+ci_labels <- c("DL", "0.001", "0.002", "0.003", "0.004", "0.005")
+
+fit1 <- lm(ci ~ CI_sat, data= ci_fs)
+summary(fit1)$coefficients
+
+ggplot(data= ci_fs) +
+  geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
+#  geom_abline(aes(slope= 0.9004424658, intercept= -0.0003458048), color= "black", size= 0.75) +
+  geom_hline(yintercept = 6.309573e-05) +
+  geom_vline(xintercept = 6.309573e-05) +
+  geom_point(aes(x= CI_sat, y= CI_field, fill= waterbody), size= 3, shape= 21) +
+  labs(x= "Satellite CI value", y= "Field CI value") +
+  scale_fill_discrete(name= "Waterbody") +
+  scale_x_continuous(limits= ci_lims, breaks= ci_brks, labels= ci_labels, expand= c(0.01, 0)) +
+  scale_y_continuous(limits= ci_lims, breaks= ci_brks, labels= ci_labels, expand= c(0.02, 0)) +
+  coord_equal() +
+  theme_sat
+
+ggsave(last_plot(), filename= "CIF_CIS.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
+       path= "Data/Figures_output")
+
+
+
+fit1_rmse <- Metrics::rmse(filter(ci_fs, data_delivery == "dec2019")$CI_sat, predict(fit1))
+plot(filter(ci_fs, data_delivery == "dec2019")$CI_sat ~ predict(fit1))
+
+fit1_rmse/mean(filter(ci_fs, data_delivery == "dec2019")$CI_sat)
+
+length(ci_fs$ci)
+length(predict(fit1))
+
+## Field CI X SAT CIcyano
+ggplot(data= ci_fs) +
+  geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
+  geom_hline(yintercept = 6.309573e-05) +
+  geom_vline(xintercept = 6.309573e-05) +
+  geom_point(aes(x= CIcyano_sat, y= CI_field, fill= waterbody), size= 3, shape= 21) +
+  labs(x= expression(Satellite~CI[cyano]~value), y= "Field CI value") +
+  scale_fill_discrete(name= "Waterbody") +
+  scale_x_continuous(limits= ci_lims, breaks= ci_brks, labels= ci_labels, expand= c(0.01, 0)) +
+  scale_y_continuous(limits= ci_lims, breaks= ci_brks, labels= ci_labels, expand= c(0.02, 0)) +
+  coord_equal() +
+  theme_sat
+
+ggsave(last_plot(), filename= "CIF_CIcyanoS.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
+       path= "Data/Figures_output")
+
+## Field CI-mod X SAT CI-mod
+cimod_lims <- c(-10, 80)
+cimod_brks <- c(-10, 1, seq(10, 80, by= 10))
+cimod_labels <- c("-10", "DL", "10", "20", "30", "40", "50", "60", "70", "80")
+
+ggplot(data= ci_fs) +
+  geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
+  geom_hline(yintercept = 1) +
+  geom_vline(xintercept = 1) +
+  geom_point(aes(x= CI_mod_sat, y= CI_mod_field, fill= waterbody), size= 3, shape= 21) +
+  labs(x= expression(Satellite~CI[mod]~value), y= expression(Field~CI[mod]~value)) +
+  scale_fill_discrete(name= "Waterbody") +
+  scale_x_continuous(limits= cimod_lims, breaks= cimod_brks, labels= cimod_labels, expand= c(0.02, 0)) +
+  scale_y_continuous(limits= cimod_lims, breaks= cimod_brks, labels= cimod_labels, expand= c(0.02, 0)) +
+  coord_equal() +
+  theme_sat
+
+ggsave(last_plot(), filename= "CImodF_CImodS.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
+       path= "Data/Figures_output")
+
+
+## Field CI-mod X SAT CIcyano-mod
+ggplot(data= ci_fs) +
+  geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
+  geom_hline(yintercept = 1) +
+  geom_vline(xintercept = 1) +
+  geom_point(aes(x= CIcyano_mod_sat, y= CI_mod_field, fill= waterbody), size= 3, shape= 21) +
+  labs(x= expression(Satellite~CI[cyano-mod]~value), y= expression(Field~CI[mod]~value)) +
+  scale_fill_discrete(name= "Waterbody") +
+  scale_x_continuous(limits= cimod_lims, breaks= cimod_brks, labels= cimod_labels, expand= c(0.02, 0)) +
+  scale_y_continuous(limits= cimod_lims, breaks= cimod_brks, labels= cimod_labels, expand= c(0.02, 0)) +
+  coord_equal() +
+  theme_sat
+
+ggsave(last_plot(), filename= "CImodF_CIcyanomodS.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
+       path= "Data/Figures_output")
+
+
+## Sat CI X SAT CIcyano
+ci_lims <- c(6.309573e-05, 0.005)
+ci_brks <- c(6.309573e-05, seq(0.001, 0.005, by= 0.001))
+ci_labels <- c("DL", "0.001", "0.002", "0.003", "0.004", "0.005")
+
+ggplot(data= ci_fs) +
+  geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
+  geom_hline(yintercept = 6.309573e-05, size= 0.5) +
+  geom_vline(xintercept = 6.309573e-05, size= 0.5) +
+  geom_point(aes(x= CI_sat, y= CIcyano_sat, fill= waterbody), size= 3, shape= 21) +
+  labs(x= expression(Satellite~CI~value), y= expression(Satellite~CI[cyano]~value)) +
+  scale_fill_discrete(name= "Waterbody") +
+  scale_x_continuous(limits= ci_lims, breaks= ci_brks, labels= ci_labels, expand= c(0.02, 0)) +
+  scale_y_continuous(limits= ci_lims, breaks= ci_brks, labels= ci_labels, expand= c(0.02, 0)) +
+  coord_equal() +
+  theme_sat
+
+ggsave(last_plot(), filename= "CIS_CIS.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
+       path= "Data/Figures_output")
+
+
+
+
 

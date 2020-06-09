@@ -129,7 +129,8 @@ ci_df <- tibble(uniqueID= names(ci_list),
 # Calc modified CI and pixel values
 ci_df <- ci_df %>% 
   mutate(CI_mod_field= CI_field * 15805.18,
-         CI_pix_field= (log10(CI_field)+4.2) / 0.012) %>% 
+         CI_pix_field= (log10(CI_field)+4.2) / 0.012,
+         CIcyano_field= ifelse(ss665_field <= 0, 0, CI_field)) %>% 
   mutate(CI_pix_field= ifelse(is.na(CI_pix_field), 0, CI_pix_field)) %>% 
   mutate(pixel= str_replace(site, "S[0-9]", "")) %>% 
   mutate(ss665_threshold= ifelse(ss665_field <= 0, "<0", ">0"))

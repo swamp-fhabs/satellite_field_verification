@@ -182,13 +182,13 @@ ggsave(last_plot(), filename= "ciF_wbd.png", height= 4.875, width= 6.5, units= "
 ggplot(data= ci_fs_pixsite.sum) +
   geom_hline(yintercept = 0) +
   geom_errorbar(aes(x= chla_ugL, 
-                    ymin= CI_field.mean - CI_field.se, 
-                    ymax= CI_field.mean + CI_field.se)) +
+                    ymin= CI_field.mean - 1.96*CI_field.se, 
+                    ymax= CI_field.mean + 1.96*CI_field.se)) +
   geom_point(aes(x= chla_ugL, y= CI_field.mean, fill= waterbody), size= 2, shape= 21) +
   geom_abline(intercept= lm(CI_field.mean ~ chla_ugL, data= ci_fs_pixsite.sum)$coefficients[1], 
               slope= lm(CI_field.mean ~ chla_ugL, data= ci_fs_pixsite.sum)$coefficients[2], 
               size= 1) +
-  labs(x= expression(paste("Chlorophyll-a (",mu,"g/L)")), y= "Field CI") +
+  labs(x= expression(paste("Chlorophyll-a (",mu,"g/L)")), y= "Field CI (\u00B1 1.96*SE) ") +
   scale_x_continuous(limits= c(0, 50), expand= c(0.01, 0)) +
   scale_fill_discrete(name= "Waterbody_Date") +
   theme_sat
@@ -238,12 +238,12 @@ ggplot(data= ci_fs_pix.sum) +
               size= 1) +
   geom_point(aes(x= CI_sat, y= CI_field.mean, color= waterbody), size= 3) +
   geom_errorbar(aes(x= CI_sat, 
-                    ymin= CI_field.mean - CI_field.se, 
-                    ymax= CI_field.mean + CI_field.se)) +
+                    ymin= CI_field.mean - 1.96*CI_field.se, 
+                    ymax= CI_field.mean + 1.96*CI_field.se)) +
   # geom_abline(intercept= lm.fit1$coefficients[1],
   #             slope= lm.fit1$coefficients[2],
   #             size= 1, color= "red") +
-  labs(x= "Satellite CI", y= "Field CI") +
+  labs(x= "Satellite CI", y= "Field CI (\u00B1 1.96*SE)") +
   scale_fill_discrete(name= "Waterbody") +
   scale_x_continuous(limits= ci_lims, breaks= ci_brks, labels= ci_labels, expand= c(0.01, 0)) +
   scale_y_continuous(limits= ci_lims, breaks= ci_brks, labels= ci_labels, expand= c(0.02, 0)) +

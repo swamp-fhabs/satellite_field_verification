@@ -53,7 +53,7 @@ export_spectra_files <- function(metadata_df, export_path){
   spectra_list <- metadata_df %>% 
     group_by(spectra_id) %>% #, type) %>% 
     # group_map() loops over group_by() categories and returns a list
-    group_map(.tbl=., keep= TRUE,
+    group_map(.data=., keep= TRUE,
               .f= ~ mutate(.x, type= ifelse(type == "PL", "plate",
                                             ifelse(type == "WA", "water", "sky"))) %>% 
                 select(-file_num))
@@ -138,7 +138,7 @@ noaa_format_export <- function(metadata_df, export_path, keep_tr){
   spectra_list_noaa <- metadata_df %>% 
     group_by(spectra_id) %>% #, type) %>% 
     # group_map() loops over group_by() categories and returns a list
-    group_map(.tbl=., keep= TRUE,
+    group_map(.data=., keep= TRUE,
               .f= ~ mutate(.x, type= ifelse(type == "PL", "plate",
                                             ifelse(type == "WA", "water", "sky")),
                            num= 0))
@@ -250,7 +250,7 @@ write_batch_file <- function(samp_dir, base_path, exe_path, cal_path,  batch_nam
   require(tidyverse)
 
   ## Change directory to where ascii files are located
-  dir_path <- str_c(base_path, "\\", samp_dir)
+  dir_path <- str_c(base_path, "\\", samp_dir, '"', sep="")
   change_dir <- str_c("cd", dir_path, sep= " ")
   
   ## Run the EXE file

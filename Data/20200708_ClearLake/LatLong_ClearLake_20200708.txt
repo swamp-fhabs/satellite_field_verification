@@ -1,0 +1,10 @@
+date	waterbody	pixel	site	pix_site	time	lat	long	context
+08-Jul-20	Clear Lake	P1	S1	P1S1
+08-Jul-20	Clear Lake	P1	S2	P1S2
+08-Jul-20	Clear Lake	P1	S3	P1S3
+08-Jul-20	Clear Lake	P2	S1	P2S1
+08-Jul-20	Clear Lake	P2	S2	P2S2
+08-Jul-20	Clear Lake	P2	S3	P2S3
+08-Jul-20	Clear Lake	P3	S1	P3S1
+08-Jul-20	Clear Lake	P3	S2	P3S2
+08-Jul-20	Clear Lake	P3	S3	P3S3	

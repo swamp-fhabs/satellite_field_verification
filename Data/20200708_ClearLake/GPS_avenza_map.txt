@@ -1,0 +1,5 @@
+site  lat long  notes
+P1  39.02623  -122.78006
+P2  39.03672  -122.78717
+P3  39.01802  -122.73389
+color_transition  39.01688  -122.72732  color transition from red to blue-green water

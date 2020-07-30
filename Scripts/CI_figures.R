@@ -6,6 +6,7 @@
 #### Libraries
 library(tidyverse)
 library(ggplot2)
+library(cowplot)
 library(extrafont)
 library(smatr)
 
@@ -103,16 +104,16 @@ coef_variation_pixel <- ci_fs %>%
 
 #### GGPLOT THEMES ############################
 theme_sat <- theme(panel.grid = element_blank(),
-                  plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"),
-                  text = element_text(size= 14),
+                  plot.margin = unit(c(0.2, 0.2, 0.2, 0.2), "cm"),
+                  text = element_text(size= 12),
                   plot.background = element_rect(fill = "transparent", color= "transparent"), # bg of the plot
                   panel.background = element_rect(fill= "transparent", color= "transparent"),
                   panel.border= element_rect(fill= "transparent", color= "black", linetype= "solid", size= 0.5),
                   panel.ontop = TRUE,
-                  axis.text = element_text(colour="black"),
-                  axis.title.x = element_text(vjust = -0.75),
-                  axis.title.y = element_text(vjust = 1.5),
-                  legend.background = element_rect(size=0.25, color="black", fill= "transparent"),
+                  axis.text = element_text(colour="black", size= 12),
+                  axis.title.x = element_text(vjust= -0.75),
+                  axis.title.y = element_text(vjust= 1.5),
+                  legend.background = element_rect(size= 0.25, color="black", fill= "transparent"),
                   legend.key = element_blank(),
                   strip.background=element_rect(fill="transparent", color="transparent"),
                   #axis.text.x = element_text(angle= 45, hjust= 1),
@@ -173,7 +174,7 @@ ggplot(data= ci_fs) +
   theme(axis.text.x= element_text(angle= 90, size= 8, vjust= 0.5),
         strip.text = element_text(size= 8))
 
-ggsave(last_plot(), filename= "ciF_wbd.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
+ggsave(last_plot(), filename= "CIF_wbd.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output")
 
 
@@ -193,7 +194,7 @@ ggplot(data= ci_fs_pixsite.sum) +
   scale_fill_discrete(name= "Waterbody_Date") +
   theme_sat
 
-ggsave(last_plot(), filename= "ciF_chla.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
+ggsave(last_plot(), filename= "CIF_chla.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output")
 
 
@@ -202,7 +203,7 @@ ci_lims <- c(-.0005, 0.005)
 ci_brks <- c(6.309573e-05, seq(0.001, 0.005, by= 0.001))
 ci_labels <- c("DL", "0.001", "0.002", "0.003", "0.004", "0.005")
 
-ggplot(data= ci_fs) +
+CIF_CIS.plot <- ggplot(data= ci_fs) +
   geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
   geom_hline(yintercept = 6.309573e-05) +
   geom_vline(xintercept = 6.309573e-05) +
@@ -228,8 +229,9 @@ lm.fit1 <- lm(CI_field.mean ~ CI_sat, ci_fs_pix.sum)
 lm.fit2 <- lm(CI_sat ~ CI_field.mean, ci_fs_pix.sum)
 #summary(lm.fit2)
 
+sma_annotation <- "Standardized major axis regression\ny = 1.18*x - 0.0007\nr2= 0.63"
 
-ggplot(data= ci_fs_pix.sum) +
+CIF_CIS_sma.plot <- ggplot(data= ci_fs_pix.sum) +
   geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
   geom_hline(yintercept = 6.309573e-05) +
   geom_vline(xintercept = 6.309573e-05) +
@@ -240,6 +242,7 @@ ggplot(data= ci_fs_pix.sum) +
   geom_errorbar(aes(x= CI_sat, 
                     ymin= CI_field.mean - 1.96*CI_field.se, 
                     ymax= CI_field.mean + 1.96*CI_field.se)) +
+  annotate("text", x= 0.0001, y= 0.0045, label= sma_annotation, hjust= 0, size= 3) +
   # geom_abline(intercept= lm.fit1$coefficients[1],
   #             slope= lm.fit1$coefficients[2],
   #             size= 1, color= "red") +
@@ -250,9 +253,41 @@ ggplot(data= ci_fs_pix.sum) +
   scale_color_discrete(name= "Waterbody_Date") +
   coord_equal() +
   theme_sat
+CIF_CIS_sma.plot
 
-ggsave(last_plot(), filename= "CIF_CIS_sma.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
+ggsave(CIF_CIS_sma.plot, filename= "CIF_CIS_sma.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output")
+
+
+CIF_CIS.plot <- ggplot(data= ci_fs_pix.sum) +
+  geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
+  geom_hline(yintercept = 6.309573e-05) +
+  geom_vline(xintercept = 6.309573e-05) +
+  # geom_abline(intercept= sma.fit1$coef[[1]][1, 1],
+  #             slope= sma.fit1$coef[[1]][2, 1],
+  #             size= 1) +
+  geom_point(aes(x= CI_sat, y= CI_field.mean, color= waterbody), size= 3) +
+  geom_errorbar(aes(x= CI_sat, 
+                    ymin= CI_field.mean - 1.96*CI_field.se, 
+                    ymax= CI_field.mean + 1.96*CI_field.se)) +
+  # annotate("text", x= 0.0001, y= 0.0045, label= sma_annotation, hjust= 0, size= 3) +
+  # geom_abline(intercept= lm.fit1$coefficients[1],
+  #             slope= lm.fit1$coefficients[2],
+  #             size= 1, color= "red") +
+  labs(x= "Satellite CI", y= "Field CI (\u00B1 1.96*SE)") +
+  scale_fill_discrete(name= "Waterbody") +
+  scale_x_continuous(limits= ci_lims, breaks= ci_brks, labels= ci_labels, expand= c(0.01, 0)) +
+  scale_y_continuous(limits= ci_lims, breaks= ci_brks, labels= ci_labels, expand= c(0.02, 0)) +
+  scale_color_discrete(name= "Waterbody_Date") +
+  coord_equal() +
+  theme_sat
+CIF_CIS.plot
+
+ggsave(CIF_CIS.plot, filename= "CIF_CIS.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
+       path= "Data/Figures_output")
+
+
+
 
 ## Root mean square error
 rmse.fit1 <- Metrics::rmse(ci_fs_pix.sum$CI_field.mean, predict(lm.fit1))
@@ -263,7 +298,7 @@ rmse.fit2/mean(ci_fs_pix.sum$CI_sat) # return % estimate error.
 
 
 ## Field CI X SAT CIcyano
-ggplot(data= ci_fs) +
+CIF_CIcyanoS.plot <- ggplot(data= ci_fs) +
   geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
   geom_hline(yintercept = 6.309573e-05) +
   geom_vline(xintercept = 6.309573e-05) +
@@ -294,6 +329,56 @@ ggplot(data= ci_fs) +
 
 ggsave(last_plot(), filename= "CIcyanoF_CIcyanoS.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output")
+
+
+#### COMBINED PLOTS
+waterbody_date_legend <- get_legend(CIF_CIS.plot +guides(fill = guide_legend(ncol=2)) + theme(legend.background= element_rect(color= "transparent")))
+
+CIF_CIS_combined <- plot_grid(CIF_CIcyanoS.plot + theme(legend.position= "none"), 
+                         CIF_CIS.plot + theme(legend.position= "none"), 
+                         CIF_CIS_sma.plot+ theme(legend.position= "none"),
+                         ncol= 2,
+                         labels= c("A", "B", "C"),
+                         rel_widths = c(1, 1))
+CIF_CIS_combined_legend <- plot_grid(CIF_CIS_combined, waterbody_date_legend,
+                                     nrow= 2,
+                                     rel_heights = c(1, 0.5))
+
+CIF_CIS_combined_legend
+ggsave(CIF_CIS_combined, filename= "CIF_CIS_combined.png", height= 6.5, width= 6.5, units= "in", dpi= 300,
+       path= "Data/Figures_output")
+
+
+library(ggplot2)
+theme_set(theme_half_open())
+
+p1 <- ggplot(mtcars, aes(mpg, disp)) + geom_line()
+plot.mpg <- ggplot(mpg, aes(x = cty, y = hwy, colour = factor(cyl))) + geom_point(size=2.5)
+# Note that these cannot be aligned vertically due to the legend in the plot.mpg
+ggdraw(plot_grid(p1, plot.mpg, ncol=1, align='v'))
+
+legend <- get_legend(plot.mpg)
+plot.mpg <- plot.mpg + theme(legend.position='none')
+# Now plots are aligned vertically with the legend to the right
+ggdraw(plot_grid(plot_grid(p1, plot.mpg, ncol=1, align='v'),
+                 plot_grid(NULL, legend, ncol=1),
+                 rel_widths=c(1, 0.2)))
+
+
+## CIcyano_sat X CHLA
+ggplot(data= ci_fs) +
+  geom_hline(yintercept = 0) +
+  geom_point(aes(x= chla_ugL, y= CIcyano_sat, fill= waterbody), size= 3, shape= 21) +
+  #labs(x= expression(paste("Chlorophyll-a (",mu,"g/L)")), y= "Field CI-mod") +
+  scale_fill_discrete(name= "Waterbody") +
+  #scale_x_continuous(expand= c(0.02, 0)) +
+  #scale_y_continuous(limits= c(-10, 60), breaks= seq(-10, 60, by= 10), expand= c(0.02, 0)) +
+  theme_sat
+
+# ggsave(last_plot(), filename= "ci_mod_chla.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
+#        path= "Data/Figures_output")
+
+
 
 
 #### OLD PLOTS ######################################################################################

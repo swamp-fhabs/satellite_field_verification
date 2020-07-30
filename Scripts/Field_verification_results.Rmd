@@ -3,13 +3,9 @@ title: "Satellite field verification results"
 author: "Keith Bouma-Gregson | CA State Waterboards"
 date: "February 10, 2020"
 output:
-  word_document:
-    pandoc_args: -Fpandoc-crossref
-        reference_docx: word_Rmarkdown_styles.docx
+  word_document: default
   html_document:
     df_print: paged
-  pdf_document: default
-header-includes: \usepackage{amsmath}
 ---
 
 ```{r setup, include=FALSE}
@@ -192,7 +188,7 @@ All 142 field SS(665) values were <0 suggesting that cyanobacteria were not pres
 include_graphics("../Data/Figures_output/ss665_hist.png")
 ```
   
-  **Figure 6.** Histogram of all SS(665) values (N = 142).
+  **Figure 6.** Histogram of all field SS(665) values (N = 142).
   
   
 #### *CI values*  
@@ -200,7 +196,7 @@ include_graphics("../Data/Figures_output/ss665_hist.png")
 CI values will be shown in the results, since CI~cyano~ values would all be zero, because  CI~cyano~ values were all <0. Variance among the triplicate measurements within a site was low (Fig. 7). Lake Almanor and San Pablo reservoir had CI values <0 suggesting no cyanobacteria present in the waterbody. All other waterbodies had positive CI values, possibly suggesting the presence of cyanobacteria, though other water quality conditions can generate positive CI values in the absence of cyanobacteria. 
 
 ```{r, echo=FALSE, fig.cap="", fig.align= "center"}
-include_graphics("../Data/Figures_output/ci_wbd.png")
+include_graphics("../Data/Figures_output/CIF_wbd.png")
 ```
 
   
@@ -209,10 +205,17 @@ include_graphics("../Data/Figures_output/ci_wbd.png")
 The field data estimated higher cyanobacterial abundances than the satellite data (Fig. 8). Both the satellite and field data estimated no cyanobacteria at Lake Almanor and San Pablo Reservoir. The field and satellite data were also well correlated in estimating cyanobacterial abundances at Clear Lake on Aug-07 and a single pixel on 16-Aug. However, all field R~rs~ spectra and visual observations from Lake San Antonio, Clear Lake 08-Oct, and two pixels at Clear Lake 16-Aug suggested cyanobacterial abundances, while the satellite estimated no cyanobacteria. If the field derived CI~cyano~ were used, instead of CI, then all field data would have CI~cyano~=0. This would more closely match the satellite data, since the majority of the satellite pixels were non-detects. The field CI values related correlated better with chlorophyll-a levels (Fig. 9), than with the the satellite CI values.
 
 
-```{r, echo=FALSE, fig.cap="", out.width = '50%'}
+```{r, echo=FALSE, fig.cap=""}
 
-include_graphics("../Data/Figures_output/ci_fs.png")
-include_graphics("../Data/Figures_output/ci_mod_fs.png")
+# include_graphics("../Data/Figures_output/ci_fs.png")
+# include_graphics("../Data/Figures_output/ci_mod_fs.png")
+
+# include_graphics("../Data/Figures_output/CIF_CIcyanoS.png")
+# include_graphics("../Data/Figures_output/CIf_CIs.png")
+# include_graphics("../Data/Figures_output/CIF_CIS_sma.png")
+include_graphics("../Data/Figures_output/CIF_CIS_combined.png")
+
+
 
 ```
 

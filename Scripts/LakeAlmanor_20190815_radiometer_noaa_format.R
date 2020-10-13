@@ -102,11 +102,11 @@ cal_file <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite
 basePath <- "C:\\Users\\KBouma-Gregson\\Documents\\Satellite_CI_index\\satellite_field_verification_git\\Data\\20190815_LakeAlmanor\\noaa_files"
 
 
-map(noaa_file_dirs, function(x){write_batch_file(samp_dir = x,
+map(noaa_file_dirs[1:3], function(x){write_batch_file(samp_dir = x,
                                                  base_path= basePath,
                                                  exe_path = exe_file, 
                                                  cal_path = cal_file, 
-                                                 batch_name = "LakeAlmanor_20190815_batch.bat", 
+                                                 batch_name = "LakeAlmanor_20190815_batch2.txt", 
                                                  out_dir = noaa_out_dir)
 })
 

@@ -11,13 +11,13 @@ library(tidyverse)
 ## SAMPLING DATE: 08-Jul-2020
 
 ## Specify pathways
-base_dir <- "Data/20200708_ClearLake"
-metadata_file <- file.path(base_dir, "radiometer_ClearLake_20200708.txt")
+base_dir <- "Data/20200724_ClearLake"
+metadata_file <- file.path(base_dir, "radiometer_ClearLake_20200724.txt")
 spectra_out_dir <- file.path(base_dir, "spectra_out")
 ascii_dir <- file.path(base_dir, "ascii_export")
 noaa_out_dir <- file.path(base_dir, "noaa_files")
 rrs_dir <- "Data/rrs_data"
-sampleName <- "ClearLake_20200708"
+sampleName <- "ClearLake_20200724"
 
 
 
@@ -104,14 +104,14 @@ exe_file <- '..\\..\\..\\ASD_processing\\test_asd_group.exe'
 cal_file <- '..\\..\\..\\ASD_processing\\OIMA_10percent_Spectralon_Calibration_SRT-10-050_ASDformat.txt'
 
 # Base path for where all the sample directories are located
-basePath <- '"C:\\Users\\KBouma-Gregson\\OneDrive - Water Boards\\Satellite_CI_index\\satellite_field_verification_git\\Data\\20200708_ClearLake\\noaa_files'
+basePath <- '"C:\\Users\\KBouma-Gregson\\OneDrive - Water Boards\\Satellite_CI_index\\satellite_field_verification_git\\Data\\20200724_ClearLake\\noaa_files'
 
 
 map(noaa_file_dirs, function(x){write_batch_file(samp_dir = x,
                                                  base_path= basePath,
                                                  exe_path = exe_file, 
                                                  cal_path = cal_file, 
-                                                 batch_name = "ClearLake_20200708_batch_16.txt", 
+                                                 batch_name = "ClearLake_20200724_batch.bat", 
                                                  out_dir = noaa_out_dir)
 })
 

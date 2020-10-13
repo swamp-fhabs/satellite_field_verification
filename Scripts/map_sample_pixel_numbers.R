@@ -22,9 +22,9 @@ ca_lakes_utm <- readRDS("Data/Shapefiles/ca_lakes_shapefile_utm.rds")
 # Function to import XY data and transform to UTM and create pixel boundaries
 # Lake San Antonio
 # Original CSV, CIcyano, and CI csvs all same pixels
-lsa_data_OG <- read_and_transform_data(centroids= "Data/Sentinel_flyover_data/sentinel-LakeSanAntonio_20190801.csv",
+lsa_data_OG <- read_and_transform_data(centroids= "Data/Sentinel_flyover_data/sentinel-LakeSanAntonio_20190801.CIcyano.csv",
                                 samples = "Data/20190801_LakeSanAntonio/LatLong_LakeSanAntonio.txt",
-                                utm_epsg = 32610, # UTM zone 10
+                                utm_epsg = 32611, # UTM zone 11
                                 buff_dist = 150)
 
 lsa_data_CI <- read_and_transform_data(centroids= "Data/Sentinel_flyover_data/sentinel-LakeSanAntonio_20190801.CI.csv",
@@ -33,7 +33,7 @@ lsa_data_CI <- read_and_transform_data(centroids= "Data/Sentinel_flyover_data/se
                                     buff_dist = 150)
 
 # Clear Lake 20190807
-clr0807_data_OG <- read_and_transform_data(centroids= "Data/Sentinel_flyover_data/sentinel-ClearLake_20190807.csv",
+clr0807_data_OG <- read_and_transform_data(centroids= "Data/Sentinel_flyover_data/sentinel-ClearLake_20190807.CIcyano.csv",
                                     samples = "Data/20190807_ClearLake/LatLong_ClearLake_20190807.txt",
                                     utm_epsg = 32610, # UTM zone 10
                                     buff_dist = 150)
@@ -156,7 +156,7 @@ alm_utm <- extract_lake_shapefile(ca_lakes_utm, DFGWATER_ID= 1116)
 #### PLOT THE MAPS ####
 
 # LAKE SAN ANTONIO 
-lsa_lake_map_OG <- plot_whole_lake(data_list = lsa_data_OG, shapefile_utm = lsa_utm, scalebar_dist = 1000)
+lsa_lake_map_OG <- plot_whole_lake(data_list = lsa_data_OG, shapefile_utm = lsa_utm, scalebar_dist = 1000, utm_epsg = 32611)
 lsa_lake_map_OG
 
 ggsave(last_plot(), filename= "lsa_lake_map.jpg", height= 6, width= 8, units= "in", dpi= 300,

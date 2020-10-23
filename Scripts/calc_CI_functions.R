@@ -59,6 +59,7 @@ extract_olci_bands <- function(rrs_file){
     group_by(band) %>% 
     summarize(rrs_avg= mean(rrs, na.rm= TRUE),
               sd= sd(rrs, na.rm= TRUE)) %>% 
+    ungroup() %>% 
     rename(rrs= rrs_avg)
   return(spec_olci_means)
   

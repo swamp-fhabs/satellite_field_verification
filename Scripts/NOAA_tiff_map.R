@@ -65,7 +65,7 @@ extract_lake_map_pixels <- function(tif.matrix, lake.id, utm){
     st_as_sf(.,
              coords= c("x", "y"),
              crs= utm.crs) %>% 
-    mutate(pixFID= str_pad(as.character(seq(0:(nrow(.)-1))), width=2, pad= "0"))
+    mutate(pix_FID= str_pad(as.character(seq(0:(nrow(.)-1))), width=2, pad= "0"))
   
   pix.border.sf <- st_buffer(pix.center.sf, dist= 150, endCapStyle = "SQUARE")
   
@@ -161,7 +161,7 @@ plot_bounding_box <-  function(data_list, field_df, shapefile_utm, bbox, scaleba
     geom_polygon(data= shapefile_utm, aes(x= long, y= lat, group= id), fill= "skyblue", color= "black", alpha= 0.25) +
     geom_sf(data= data_list[[1]][["border"]], fill= "transparent") +
     #geom_sf(data= data_list[[1]][["center"]], size= 0.5, color= "black") +
-    geom_sf_text(data= data_list[[1]][["center"]], aes(label= pixFID), size= 3, color= "black") +
+    geom_sf_text(data= data_list[[1]][["center"]], aes(label= pix_FID), size= 3, color= "black") +
     geom_sf(data= field_df, size= 4, aes(fill= pix_site, color= pix_site)) +
     coord_sf(xlim= c(bbox[1], bbox[3]), 
              ylim= c(bbox[2], bbox[4]),

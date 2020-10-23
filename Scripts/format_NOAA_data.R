@@ -184,6 +184,7 @@ sampled.pixels.list <- map2(noaa.extract.list, noaa.field.info$field.path, funct
 ci_sat_list <- map(sampled.pixels.list, calc_CI)
 ci_sat_list[[1]]$waterbody
 
+test <- ci_sat_list[[1]]
 
 #### MERGE WITH FIELD DATA
 
@@ -206,3 +207,4 @@ ggplot(field.sat.df) +
 
 
 
+test <- field.CI.list[[6]]

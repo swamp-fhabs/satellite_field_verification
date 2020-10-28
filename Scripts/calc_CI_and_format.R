@@ -29,14 +29,14 @@ field_CI_values <- calc_CI_values(in_dir = "Data/rrs_data", out_path = "Data")
 
 ## JOIN SATELLITE AND FIELD CI VALUES
 satellite_dir <- "Data/Sentinel_flyover_data"
-sample_pixels <-  read_tsv("Data/Sentinel_flyover_data/sample_pixel_numbers.tsv")
+sample_pixels <-  read_tsv("Data/Sentinel_flyover_data/sample_pixel_numbers_NOAA_tif.tsv")
 
 
 CI_field_sat <- join_sat_field_CI(sat_dir = satellite_dir, 
                                   CI_field_df = field_CI_values, 
                                   samp_pixs = sample_pixels, 
                                   out_path = "Data", 
-                                  writeFile= TRUE)
+                                  writeFile= FALSE)
 
 ## JOIN WITH WATER SAMPLE DATA
 ci_h2o_df <- join_CI_with_water_data(ci_df = CI_field_sat, 

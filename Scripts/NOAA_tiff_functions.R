@@ -1,6 +1,6 @@
 
 
-#### FORMAT UNCTIONS #############################################################
+#### FORMAT FUNCTIONS ######################################################
 
 read_noaa_tiff <- function(tif.file){
   require(stringr)
@@ -150,7 +150,7 @@ calc_CI <- function(df){
 ############################################################################
 
 
-#### MAP FUNCTIONS ####
+#### MAP FUNCTIONS #########################################################
 extract_lake_shapefile <- function(lakes_shapefile, DFGWATER_ID){
   require(broom)
   lake_extract <- lakes_shapefile[lakes_shapefile$DFGWATERID == DFGWATER_ID, ]
@@ -294,4 +294,130 @@ plot_bounding_box <-  function(data_list, field_df, shapefile_utm, bbox, scaleba
   return(bbox_plot)
 }
 
+############################################################################
+
+#### RADIOMETER FUNCTIONS ####
+## in_dir= Pathway to output of NOAA EXE program rrs files
+## out_path= path and filename for exported .tsv file with CI values
+calc_CI_values <- function(in_dir, out_path){
+  require(tidyverse)
+  
+  ## Read in rrs files
+  rrs_files <- list.files(in_dir)
+  sample_IDs <-  str_replace(rrs_files, ".txt", "") %>% str_replace(., "rrs-", "")
+  
+  rrs_list <- map(rrs_files, function(x) suppressMessages(read_csv(file.path(in_dir, x), 
+                                                                   skip= 31, 
+                                                                   col_names = FALSE)) %>% 
+                    rename(nm= X1, rrs= X2))
+  
+  ## FILTER WAVELENGTHS TO MATCH OLCI BANDS: 620, 665, 681, AND 709
+  extract_olci_bands <- function(rrs_file){
+    require(tidyverse)
+    
+    ## OLCI BANDS
+    olci <- data.frame(band= c("b07_620", "b08_665", "b10_681", "b11_709"),
+                       center=  c(620, 665, 681, 709),
+                       width= c(10, 10, 7.5, 10),
+                       stringsAsFactors = FALSE) %>% 
+      mutate(min= center - width/2,
+             max= center + width/2)
+    
+    
+    ## FILTER SPECTRA BY OLCI BANDS
+    spec_olci_bands <- do.call(rbind, apply(olci, 1, 
+                                            function(x){
+                                              rrs_file %>% 
+                                                filter(nm >= x["min"] & nm <= x["max"]) %>% 
+                                                mutate(band= x["band"])
+                                            }))
+    
+    ## AVERAGE OLCI BAND WIDTHS TOGETHER
+    spec_olci_means <- spec_olci_bands %>% 
+      group_by(band) %>% 
+      summarize(rrs_avg= mean(rrs, na.rm= TRUE),
+                sd= sd(rrs, na.rm= TRUE)) %>% 
+      ungroup() %>% 
+      rename(rrs= rrs_avg)
+    return(spec_olci_means)
+    
+  }
+  
+  olci_band_list <- map(rrs_list, extract_olci_bands)
+  names(olci_band_list) <- sample_IDs
+  
+  
+  ## CALCULATE CYANOBACTERIAL INDEX
+  ## CI from Wynne et al. 2008 
+  ## SS(665) from Lunetta et al. 2015
+  
+  calc_CI <- function(df){
+    
+    df.wide <- df %>% 
+      select(-sd) %>% 
+      spread(band, rrs)
+    
+    # Wynne et al. 2008 equation #1
+    CI <-  with(df.wide,
+                -1*(b10_681 - b08_665 - (b11_709 - b08_665) * ((681-665) / (709-665)))
+    )
+    
+    # From Lunetta et al. 2015
+    ss665 <-  with(df.wide,
+                   b08_665 - b07_620 + (b07_620 - b10_681) * ((665-620) / (681-620)) # I prefer this equation because it uses a + like in Wynne et al. 2008
+                   #b08_665 - b07_620 - (b10_681 - b07_620) * ((665-620) / (681-620))
+    )
+    
+    ## The variations on the formula below generate the result as the ss665 equation above
+    ## Across the publications it is common to change the sign of the second operator between + and -
+    ## and then reverse the order of the bands in the parenthese. If you do this, the result is the same.
+    # ss665_2 <-  with(df.wide,
+    #                  b08_665 - b07_620 - (b10_681 - b07_620) * (665-620) / (681-620)
+    # )
+    
+    
+    return(data.frame(CI, ss665))
+  }
+  
+  ci_list <- map(olci_band_list, calc_CI)
+  names(ci_list) <- sample_IDs
+  
+  
+  # Make into a dataframes
+  rrs_bands_df <- do.call(rbind, olci_band_list) %>% cbind(rep(names(olci_band_list), each= 4), .) %>% as_tibble()
+  names(rrs_bands_df)[1] <- "uniqueID"
+  
+  # Extract information from uniqueID column for rrs_bands_df
+  rrs_bands_df <- rrs_bands_df %>% 
+    mutate(waterbody= do.call(rbind, str_split(uniqueID, "-"))[, 1], 
+           sample= do.call(rbind, str_split(uniqueID, "-"))[, 2]) %>% 
+    mutate(site= do.call(rbind, str_split(sample, "_"))[, 1],
+           rep= do.call(rbind, str_split(sample, "_"))[, 2]) %>% 
+    select(uniqueID, waterbody, sample, site, rep, band, rrs, sd) 
+  
+  # Extract information from uniqueID column for ci_df
+  ci_df <- tibble(uniqueID= names(ci_list), 
+                  CI_field= do.call(rbind, ci_list)[, 1],
+                  ss665_field= do.call(rbind, ci_list)[, 2]) %>% 
+    mutate(waterbody= do.call(rbind, str_split(uniqueID, "-"))[, 1], 
+           sample= do.call(rbind, str_split(uniqueID, "-"))[, 2]) %>% 
+    mutate(site= do.call(rbind, str_split(sample, "_"))[, 1],
+           rep= do.call(rbind, str_split(sample, "_"))[, 2]) %>% 
+    select(uniqueID, waterbody, sample, site, rep, CI_field, ss665_field) 
+  
+  # Calc modified CI and pixel values
+  ci_df <- ci_df %>% 
+    mutate(CI_mod_field= CI_field * 15805.18,
+           CI_pix_field= (log10(CI_field)+4.2) / 0.012,
+           CIcyano_field= ifelse(ss665_field <= 0, 0, CI_field)) %>% 
+    mutate(CI_pix_field= ifelse(is.na(CI_pix_field), 0, CI_pix_field)) %>% 
+    mutate(pixel= str_replace(site, "S[0-9]", "")) %>% 
+    mutate(ss665_threshold= ifelse(ss665_field <= 0, "<0", ">0"))
+  
+  
+  # Write files
+  write_tsv(rrs_bands_df, path= file.path(out_path, "rrs_OLCI_band_values.tsv"))
+  write_tsv(ci_df, path= file.path(out_path, "CI_field.tsv"))
+  return(ci_df)
+}
 ############################################################################

@@ -115,7 +115,7 @@ ci_brks <- c(6.309573e-05, seq(0.001, 0.005, by= 0.001))
 ci_labels <- c("DL", "0.001", "0.002", "0.003", "0.004", "0.005")
 
 
-CIF_CIS.plot <- ggplot(data= ci_fs) +
+CIF_CIS.plot <- ggplot(data= ci_fs2) +
   geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
   geom_hline(yintercept = 6.309573e-05) +
   geom_vline(xintercept = 6.309573e-05) +
@@ -129,6 +129,21 @@ CIF_CIS.plot <- ggplot(data= ci_fs) +
 
 ggsave(CIF_CIS.plot, filename= "CIF_CIS.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output_NOAA_tiff")
+
+
+clr_2020 <- filter(ci_fs2, waterbody == "ClearLake_20200708")
+#ggplot(data= filter(clr_2020, pixel == "P3"))+
+  ggplot(data= clr_2020)+
+  geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
+  geom_hline(yintercept = 6.309573e-05) +
+  geom_vline(xintercept = 6.309573e-05) +
+  geom_point(aes(x= CI_sat, y= CI_field, fill= as.character(site)), size= 3, shape= 21) +
+  labs(x= "Satellite CI", y= "Field CI") +
+  #  scale_x_continuous(limits= ci_lims, breaks= ci_brks, labels= ci_labels, expand= c(0.01, 0)) +
+  #  scale_y_continuous(limits= ci_lims, breaks= ci_brks, labels= ci_labels, expand= c(0.02, 0)) +
+  scale_fill_discrete(name= "Waterbody_Date") +
+  coord_equal() +
+  theme_sat
 
 
 

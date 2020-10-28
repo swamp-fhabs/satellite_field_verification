@@ -136,13 +136,6 @@ plot_bounding_box(data_list= noaa.extract.map.list[7],
 ggsave(last_plot(), filename= "map_sampling_clr20200708.png", width= 8, height= 6, units= "in", dpi= 300,
        path= "Data/LakeMaps")
 
-P3_pixels <- filter(noaa.extract.map.list[[7]][["center"]], 
-       pix_FID == "3330" |
-       pix_FID == "3331" |
-       pix_FID == "3414" |
-       pix_FID == "3415")
-
-P3_CI <- calc_CI(P3_pixels)
 
 # Clear Lake 2020-07-24
 plot_bounding_box(data_list= noaa.extract.map.list[6],

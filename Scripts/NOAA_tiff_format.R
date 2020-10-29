@@ -41,11 +41,10 @@ clr_20200708_locations <- gpx_pix_site(gpx_file = "Data/20200708_ClearLake/2020-
          waterbody= "ClearLake_20200708",
          date= as.character(as.Date(date_time_PST)))# %>% 
   rename(date= date_time_PST)
-write_tsv(clr_20200708_locations, "Data/20200708_ClearLake/LatLong_ClearLake_20200708_2.txt")
+#write_tsv(clr_20200708_locations, "Data/20200708_ClearLake/LatLong_ClearLake_20200708_2.txt")
 
 
-ymd(clr_20200708_locations$date)
-  
+
 
 clr_20200724_locations <- read_table2("Data/20200724_ClearLake/GPS_avenza_map.txt") %>% 
   st_as_sf(., coords= c("long", "lat"),

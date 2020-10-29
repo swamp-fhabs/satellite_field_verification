@@ -120,7 +120,7 @@ map(noaa_file_dirs, function(x){write_batch_file(samp_dir = x,
 ## Move rrs files to a single folder to combine with other samples
 sample_dirs <- list.dirs(noaa_out_dir)[-1]
 
-map(sample_dirs[16], function(x) copy_rrs_files(in_dir = x, 
+map(sample_dirs, function(x) copy_rrs_files(in_dir = x, 
                                             out_dir= rrs_dir,
                                             sample_name= sampleName))
 

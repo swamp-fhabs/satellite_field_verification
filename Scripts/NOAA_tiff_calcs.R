@@ -12,12 +12,13 @@ source("Scripts/NOAA_tiff_format.R")
 noaa.tiff.list <- readRDS("Data/ss665_data/NOAA_tiffs.RDS")
 
 # Extract pixels for each sampled water body
-noaa.extract.list <- map2(noaa.tiff.list[-8], noaa.field.info$DFGWATERID, function(x, y) extract_lake_pixels(tif.matrix = x, lake.id= y, utm= 10))
+noaa.extract.list <- map2(noaa.tiff.list, noaa.field.info$DFGWATERID, function(x, y) extract_lake_pixels(tif.matrix = x, lake.id= y, utm= 10))
 
 # Identify the satellite pixels that were sampled in the field
-sampled.pixels.list <- map2(noaa.extract.list[-8], noaa.field.info$field.path, function(x, y) find_sampling_pixels(pix.center.sf = x, field.lat.long = y, utm= 10))
 
-clr07 <- sampled.pixels.list[[7]]
+sampled.pixels.list <-  map2(noaa.extract.list, noaa.field.info$field.path, function(x, y) find_sampling_pixels(pix.center.sf = x, field.lat.long = y, utm= 10))
+
+
 
 # Calculate CI values
 ci_sat_df <- map(sampled.pixels.list, calc_CI) %>% 
@@ -31,9 +32,7 @@ ci_sat_df <- map(sampled.pixels.list, calc_CI) %>%
 ## Unfortunately, you lose the pix_FID column down the road
 ci_sat_df2 <- ci_sat_df %>% 
   group_by(waterbody, site) %>% 
-  summarise(across("rhos_620":"CIcyano_sat", mean)) %>% 
-  ungroup()
-            
+  summarise(across("rhos_620":"CIcyano_sat", mean), .groups= "drop")
 
 
 #### MERGE WITH FIELD DATA

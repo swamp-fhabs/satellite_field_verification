@@ -74,7 +74,7 @@ find_sampling_pixels <- function(pix.center.sf, field.lat.long, utm){
   ## FIELD DATA
   
   ## Read lat long of radiometer sites
-  field.sf.utm <- read_tsv(field.lat.long[1]) %>% 
+  field.sf.utm <- read_tsv(field.lat.long) %>% 
     # Make spatial feature object
     st_as_sf(.,
              coords= c("long", "lat"),
@@ -336,8 +336,7 @@ calc_CI_values <- function(in_dir, out_path){
     spec_olci_means <- spec_olci_bands %>% 
       group_by(band) %>% 
       summarize(rrs_avg= mean(rrs, na.rm= TRUE),
-                sd= sd(rrs, na.rm= TRUE)) %>% 
-      ungroup() %>% 
+                sd= sd(rrs, na.rm= TRUE), .groups= "drop") %>% 
       rename(rrs= rrs_avg)
     return(spec_olci_means)
     

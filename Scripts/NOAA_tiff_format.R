@@ -2,6 +2,8 @@
 library(tidyverse)
 source("Scripts/NOAA_tiff_functions.R")
 
+
+
 ## NOAA files
 noaa.tiffs <- list.files("Data/ss665_data", pattern= "7521_1.tif$|20193_1.tif$") %>% 
   str_c("Data/ss665_data/", ., sep="")
@@ -18,10 +20,12 @@ noaa.field.info <- as_tibble(rbind(c("Data/20190801_LakeSanAntonio/LatLong_LakeS
                                    c("Data/20190815_LakeAlmanor/LatLong_LakeAlmanor_20190815.txt", noaa.tiffs[8], 1116, 10, "LakeAlmanor_20190815"),
                                    c("Data/20190816_ClearLake/LatLong_ClearLake_20190816.txt", noaa.tiffs[9], 2075, 10, "ClearLake_20190816"),
                                    c("Data/20191008_ClearLake/LatLong_ClearLake_20191008.txt", noaa.tiffs[12], 2075, 10, "ClearLake_20191008"),
-                                   c("Data/20200708_ClearLake/LatLong_ClearLake_20200708_2.txt", noaa.tiffs[13], 2075, 10, "ClearLake_20200708")),
+                                   c("Data/20200708_ClearLake/LatLong_ClearLake_20200708_2.txt", noaa.tiffs[13], 2075, 10, "ClearLake_20200708"),
+                                   c("Data/20200724_ClearLake/GPS_avenza_map.txt", noaa.tiffs[14], 2075, 10, "ClearLake_20200724")),
                              .name_repair = "minimal")#,
-                                  # c("Data/20200724_ClearLake/LatLong_ClearLake_20200724.txt", noaa.tiffs[14], 2075, 10, "ClearLake_20200724")))
+# c("Data/20200724_ClearLake/LatLong_ClearLake_20200724.txt", noaa.tiffs[14], 2075, 10, "ClearLake_20200724")))
 names(noaa.field.info) <- c("field.path", "NOAA.path", "DFGWATERID", "utm", "waterbody")
+
 
 
 # Field sampling locations
@@ -39,11 +43,8 @@ clr_20200708_locations <- gpx_pix_site(gpx_file = "Data/20200708_ClearLake/2020-
   mutate(long= round(st_coordinates(.)[, 1], 4),
          lat= round(st_coordinates(.)[, 2], 4),
          waterbody= "ClearLake_20200708",
-         date= as.character(as.Date(date_time_PST)))# %>% 
-  rename(date= date_time_PST)
+         date= as.character(as.Date(date_time_PST)))
 #write_tsv(clr_20200708_locations, "Data/20200708_ClearLake/LatLong_ClearLake_20200708_2.txt")
-
-
 
 
 clr_20200724_locations <- read_table2("Data/20200724_ClearLake/GPS_avenza_map.txt") %>% 
@@ -51,5 +52,8 @@ clr_20200724_locations <- read_table2("Data/20200724_ClearLake/GPS_avenza_map.tx
            crs= "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0") %>% 
   # Transform to from Lat/Long to UTM
   st_transform(., crs= "+proj=utm +zone=10 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0")
+
+
+
 
 

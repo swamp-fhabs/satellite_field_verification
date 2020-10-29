@@ -131,9 +131,9 @@ ggsave(CIF_CIS.plot, filename= "CIF_CIS.png", height= 4.875, width= 6.5, units= 
        path= "Data/Figures_output_NOAA_tiff")
 
 
-clr_2020 <- filter(ci_fs2, waterbody == "ClearLake_20200708")
+clr_20200724 <- filter(ci_fs2, waterbody == "ClearLake_20200724")
 #ggplot(data= filter(clr_2020, pixel == "P3"))+
-  ggplot(data= clr_2020)+
+  ggplot(data= clr_20200724)+
   geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
   geom_hline(yintercept = 6.309573e-05) +
   geom_vline(xintercept = 6.309573e-05) +

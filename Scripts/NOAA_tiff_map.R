@@ -44,7 +44,7 @@ noaa.tiff.list <- readRDS("Data/ss665_data/NOAA_tiffs.RDS")
 
 
 # Extract pixels for each sampled water body
-noaa.extract.map.list <- map2(noaa.tiff.list[8], noaa.field.info$DFGWATERID[8], function(x, y) extract_lake_map_pixels(tif.matrix = x, lake.id= y, utm= 10))
+noaa.extract.map.list <- map2(noaa.tiff.list, noaa.field.info$DFGWATERID, function(x, y) extract_lake_map_pixels(tif.matrix = x, lake.id= y, utm= 10))
 
 
 

@@ -151,9 +151,7 @@ calc_CI <- function(df){
 
 
 #### MAP FUNCTIONS #########################################################
-lakes_shapefile= ca_lakes_utm
-DFGWATER_ID= 6342
-utm= 10
+
 extract_lake_shapefile <- function(lakes_shapefile, DFGWATER_ID, utm= 10){
   ## UTM
   if(utm == 10){
@@ -163,9 +161,9 @@ extract_lake_shapefile <- function(lakes_shapefile, DFGWATER_ID, utm= 10){
     utm.crs <- "+proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"
   }
   
-  
-  
   lake_extract <- lakes_shapefile[lakes_shapefile$DFGWATERID == DFGWATER_ID, ]
+  
+  # Transform to SF object
   lake_extract_sf <- sf::st_as_sf(lake_extract, crs= utm.crs)
   return(lake_extract_sf)
     

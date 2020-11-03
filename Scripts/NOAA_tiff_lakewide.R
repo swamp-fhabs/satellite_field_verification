@@ -20,7 +20,33 @@ noaa.tiff.list <- readRDS("Data/ss665_data/NOAA_tiffs.RDS")
 # Extract pixels for each sampled water body
 noaa.extract.map.list <- map2(noaa.tiff.list, noaa.field.info$DFGWATERID, function(x, y) extract_lake_map_pixels(tif.matrix = x, lake.id= y, utm= 10))
 
+# Prepare list of arguments for lakewide_pixels() function
+# pixel centers, lake boundary polygon, DFGWATERID
+args_lakewide_pixels <- list(list(noaa.extract.map.list[1][[1]][["center"]], lsa_utm, 6342),
+                           list(noaa.extract.map.list[2][[1]][["center"]], clr_utm, 2075),
+                           list(noaa.extract.map.list[3][[1]][["center"]], spr_utm, 3884),
+                           list(noaa.extract.map.list[4][[1]][["center"]], alm_utm, 1116),
+                           list(noaa.extract.map.list[5][[1]][["center"]], clr_utm, 2075),
+                           list(noaa.extract.map.list[6][[1]][["center"]], clr_utm, 2075),
+                           list(noaa.extract.map.list[7][[1]][["center"]], clr_utm, 2075),
+                           list(noaa.extract.map.list[8][[1]][["center"]], clr_utm, 2075))
+names(args_lakewide_pixels) <-  c("lsa_20190801", "clr_20190807", "spr_20190812", "alm_20190815", "clr_20190816", "clr_20191008", "clr_20200708", "clr_20200724")
+
+
+## Extract lakewide pixels
+lakewide.pixels <- map(args_lakewide_pixels, function(x) lakewide_pixels(points.sf= x[[1]],
+                                                                       lake.polygon.sf = x[[2]],
+                                                                       lake_ID= x[[3]]))
+## Calculate CI values
+pix.df <- map(lakewide.pixels, calc_CI) %>% 
+  bind_rows(., .id= "waterbody") %>% 
+  select(waterbody, pix_FID, ss665_sat, CI_sat, CIcyano_sat, starts_with("rhos"), geometry)
+
+
+
+
 #### CALCULATE CI ###############################################
+
 
 # LSA PIXELS 
 lsa_20190801_points <- noaa.extract.map.list[1][[1]][["center"]]
@@ -84,10 +110,6 @@ clr_20200724_CI <- calc_CI(clr_20200724_pixels)
 
 ###############################################
 
-
-
-
-ci.list <- list(lsa_20190801_CI, clr_20190807_CI, spr_20190812_CI, alm_20190815_CI, clr_20190816_CI, clr_20191008_CI, clr_20200708_CI, clr_20200724_CI)
 
 
 #### GGPLOT THEMES ############################

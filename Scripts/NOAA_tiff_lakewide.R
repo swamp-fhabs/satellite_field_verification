@@ -12,7 +12,7 @@ spr_utm <- extract_lake_shapefile(ca_lakes_utm, DFGWATER_ID= 3884, utm= 10)
 clr_utm <- extract_lake_shapefile(ca_lakes_utm, DFGWATER_ID= 2075, utm= 10)
 alm_utm <- extract_lake_shapefile(ca_lakes_utm, DFGWATER_ID= 1116, utm= 10)
 
-# Import NOAA tif
+# Import NOAA tiffs
 #noaa.tiff.list <- map(noaa.field.info$NOAA.path, read_noaa_tiff)
 noaa.tiff.list <- readRDS("Data/ss665_data/NOAA_tiffs.RDS")
 
@@ -35,8 +35,8 @@ names(args_lakewide_pixels) <-  c("lsa_20190801", "clr_20190807", "spr_20190812"
 
 ## Extract lakewide pixels
 lakewide.pixels <- map(args_lakewide_pixels, function(x) lakewide_pixels(points.sf= x[[1]],
-                                                                       lake.polygon.sf = x[[2]],
-                                                                       lake_ID= x[[3]]))
+                                                                         lake.polygon.sf = x[[2]],
+                                                                         lake_ID= x[[3]]))
 ## Calculate CI values
 pix.df <- map(lakewide.pixels, calc_CI) %>% 
   bind_rows(., .id= "waterbody") %>% 

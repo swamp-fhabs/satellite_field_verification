@@ -151,15 +151,30 @@ calc_CI <- function(df){
 
 
 #### MAP FUNCTIONS #########################################################
-extract_lake_shapefile <- function(lakes_shapefile, DFGWATER_ID){
-  require(broom)
+lakes_shapefile= ca_lakes_utm
+DFGWATER_ID= 6342
+utm= 10
+extract_lake_shapefile <- function(lakes_shapefile, DFGWATER_ID, utm= 10){
+  ## UTM
+  if(utm == 10){
+    utm.crs <- "+proj=utm +zone=10 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"
+  }
+  if(utm == 11){
+    utm.crs <- "+proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"
+  }
+  
+  
+  
   lake_extract <- lakes_shapefile[lakes_shapefile$DFGWATERID == DFGWATER_ID, ]
-  lake_data <- lake_extract@data %>% 
-    as_tibble() %>%
-    mutate(id= rownames(lake_extract@data))
-  lake.df <- tidy(lake_extract)
-  lsa.df.merge <- left_join(lake.df, lake_data)
-  return(lsa.df.merge)
+  lake_extract_sf <- sf::st_as_sf(lake_extract, crs= utm.crs)
+  return(lake_extract_sf)
+    
+  # lake_data <- lake_extract@data %>% 
+  #   as_tibble() %>%
+  #   mutate(id= rownames(lake_extract@data))
+  # lake.df <- tidy(lake_extract)
+  # lsa.df.merge <- left_join(lake.df, lake_data)
+  # return(lsa.df.merge)
 }
 
 extract_lake_map_pixels <- function(tif.matrix, lake.id, utm){
@@ -199,6 +214,25 @@ extract_lake_map_pixels <- function(tif.matrix, lake.id, utm){
   
   
   return(list(center= pix.center.sf, border= pix.border.sf))
+}
+
+lakewide_pixels <- function(points.sf, lake.polygon.sf, lake_ID, dist_m= 300){
+  require(sf)
+  require(tidyverse)
+  
+  ## Select inner points
+  inner.points <- st_join(points.sf, lake.polygon.sf) %>% filter(DFGWATERID == lake_ID)
+  
+  ## Convert polygon to linestring
+  lake.border <- st_cast(lake.polygon.sf, to = "MULTILINESTRING")
+  
+  ## Select points <X meters from the line (default= 300 m)
+  buffer.points <- st_join(select(inner.points, pix_FID, geometry), lake.border, join= st_is_within_distance, dist= dist_m) %>% filter(DFGWATERID == lake_ID)
+  buffer.pix_FID <- unique(buffer.points$pix_FID)
+  
+  ## Filter by pix_FID
+  final.points <- inner.points[inner.points$pix_FID %in% buffer.pix_FID == FALSE, ]
+  return(final.points)
 }
 
 sampling_locations <- function(field.lat.long, utm){

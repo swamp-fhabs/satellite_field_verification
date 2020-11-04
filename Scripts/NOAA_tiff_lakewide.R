@@ -1,5 +1,10 @@
 library(tidyverse)
 library(ggplot2)
+library(ggplot2)
+library(lemon)
+library(cowplot)
+library(extrafont)
+
 source("Scripts/NOAA_tiff_functions.R")
 source("Scripts/NOAA_tiff_format.R")
 
@@ -23,93 +28,27 @@ noaa.extract.map.list <- map2(noaa.tiff.list, noaa.field.info$DFGWATERID, functi
 # Prepare list of arguments for lakewide_pixels() function
 # pixel centers, lake boundary polygon, DFGWATERID
 args_lakewide_pixels <- list(list(noaa.extract.map.list[1][[1]][["center"]], lsa_utm, 6342),
-                           list(noaa.extract.map.list[2][[1]][["center"]], clr_utm, 2075),
-                           list(noaa.extract.map.list[3][[1]][["center"]], spr_utm, 3884),
-                           list(noaa.extract.map.list[4][[1]][["center"]], alm_utm, 1116),
-                           list(noaa.extract.map.list[5][[1]][["center"]], clr_utm, 2075),
-                           list(noaa.extract.map.list[6][[1]][["center"]], clr_utm, 2075),
-                           list(noaa.extract.map.list[7][[1]][["center"]], clr_utm, 2075),
-                           list(noaa.extract.map.list[8][[1]][["center"]], clr_utm, 2075))
-names(args_lakewide_pixels) <-  c("lsa_20190801", "clr_20190807", "spr_20190812", "alm_20190815", "clr_20190816", "clr_20191008", "clr_20200708", "clr_20200724")
+                             list(noaa.extract.map.list[2][[1]][["center"]], clr_utm, 2075),
+                             list(noaa.extract.map.list[3][[1]][["center"]], spr_utm, 3884),
+                             list(noaa.extract.map.list[4][[1]][["center"]], alm_utm, 1116),
+                             list(noaa.extract.map.list[5][[1]][["center"]], clr_utm, 2075),
+                             list(noaa.extract.map.list[6][[1]][["center"]], clr_utm, 2075),
+                             list(noaa.extract.map.list[7][[1]][["center"]], clr_utm, 2075),
+                             list(noaa.extract.map.list[8][[1]][["center"]], clr_utm, 2075))
+names(args_lakewide_pixels) <-  c("LakeSanAntonio_20190801", "ClearLake_20190807", "SanPabloReservoir_20190812", "LakeAlmanor_20190815", 
+                                  "ClearLake_20190816", "ClearLake_20191008", "ClearLake_20200708", "ClearLake_20200724")
 
 
 ## Extract lakewide pixels
 lakewide.pixels <- map(args_lakewide_pixels, function(x) lakewide_pixels(points.sf= x[[1]],
                                                                          lake.polygon.sf = x[[2]],
-                                                                         lake_ID= x[[3]]))
+                                                                         lake_ID= x[[3]],
+                                                                         dist_m= 175))
+
 ## Calculate CI values
 pix.df <- map(lakewide.pixels, calc_CI) %>% 
   bind_rows(., .id= "waterbody") %>% 
   select(waterbody, pix_FID, ss665_sat, CI_sat, CIcyano_sat, starts_with("rhos"), geometry)
-
-
-
-
-#### CALCULATE CI ###############################################
-
-
-# LSA PIXELS 
-lsa_20190801_points <- noaa.extract.map.list[1][[1]][["center"]]
-lsa_20190801_pixels <- lakewide_pixels(points.sf= lsa_20190801_points,
-                              lake.polygon.sf= lsa_utm, 
-                              lake_ID= 6342)
-lsa_20190801_CI <- calc_CI(lsa_20190801_pixels)
-
-# CLR 2019-08-07
-clr_20190807_points <- noaa.extract.map.list[2][[1]][["center"]]
-clr_20190807_pixels <- lakewide_pixels(points.sf= clr_20190807_points,
-                                       lake.polygon.sf= clr_utm, 
-                                       lake_ID= 2075)
-clr_20190807_CI <- calc_CI(clr_20190807_pixels)
-
-# SPR 2019-08-07
-spr_20190812_points <- noaa.extract.map.list[3][[1]][["center"]]
-spr_20190812_pixels <- lakewide_pixels(points.sf= spr_20190812_points,
-                                       lake.polygon.sf= spr_utm, 
-                                       lake_ID= 3884)
-spr_20190812_CI <- calc_CI(spr_20190812_pixels)
-
-# AlM 2019-08-15
-alm_20190815_points <- noaa.extract.map.list[4][[1]][["center"]]
-alm_20190815_pixels <- lakewide_pixels(points.sf= alm_20190815_points,
-                                       lake.polygon.sf= alm_utm, 
-                                       lake_ID= 1116)
-alm_20190815_CI <- calc_CI(alm_20190815_pixels)
-
-# CLR 2019-08-16
-clr_20190816_points <- noaa.extract.map.list[5][[1]][["center"]]
-clr_20190816_pixels <- lakewide_pixels(points.sf= clr_20190816_points,
-                                       lake.polygon.sf= clr_utm, 
-                                       lake_ID= 2075)
-clr_20190816_CI <- calc_CI(clr_20190816_pixels)
-
-
-# CLR 2019-10-08
-clr_20191008_points <- noaa.extract.map.list[6][[1]][["center"]]
-clr_20191008_pixels <- lakewide_pixels(points.sf= clr_20191008_points,
-                                       lake.polygon.sf= clr_utm, 
-                                       lake_ID= 2075)
-clr_20191008_CI <- calc_CI(clr_20191008_pixels)
-
-
-
-# CLEAR LAKE 2020-07-08 PIXELS
-clr_20200708_points <- noaa.extract.map.list[7][[1]][["center"]]
-clr_20200708_pixels <- lakewide_pixels(points.sf= clr_20200708_points,
-                              lake.polygon.sf= clr_utm, 
-                              lake_ID= 2075)
-clr_20200708_CI <- calc_CI(clr_20200708_pixels)
-
-
-# CLEAR LAKE 2020-07-24 PIXELS
-clr_20200724_points <- noaa.extract.map.list[8][[1]][["center"]]
-clr_20200724_pixels <- lakewide_pixels(points.sf= clr_20200724_points,
-                                       lake.polygon.sf= clr_utm, 
-                                       lake_ID= 2075)
-clr_20200724_CI <- calc_CI(clr_20200724_pixels)
-
-###############################################
-
 
 
 #### GGPLOT THEMES ############################
@@ -133,27 +72,48 @@ theme_sat <- theme(panel.grid = element_blank(),
 waterbody_labeller <- c("ClearLake_20190807" = "Clear Lake\n2019-08-07",
                         "ClearLake_20190816" = "Clear Lake\n2019-08-16",
                         "ClearLake_20191008" = "Clear Lake\n2019-10-08",
+                        "ClearLake_20200708" = "Clear Lake\n2020-07-08",
+                        "ClearLake_20200724" = "Clear Lake\n2020-07-24",
                         "LakeAlmanor_20190815" ="Lake Almanor\n2019-08-15",
                         "LakeSanAntonio_20190801" = "L. San Antonio\n2019-08-01",
                         "SanPabloReservoir_20190812" = "San Pablo Res.\n2019-08-12")
 
-#### MAKE PLOTS ####
-
-ggplot(lsa.ci, aes(x= ss665_sat)) +
-  geom_histogram()
-
-ggplot(lsa.ci, aes(x= ss665_sat, y= CI_sat)) +
-  geom_point()
+#### MAKE PLOTS #######################################
 
 
-ggplot(clr.ci, aes(x= ss665_sat)) +
-  geom_histogram() +
+ggplot(pix.df, aes(x= ss665_sat)) +
+  geom_histogram(binwidth= 0.0001, boundary= 1, fill= "black") +
+  geom_vline(xintercept = 0, color= "gray70") +
+  labs(x= "SS(665) satellite", y= "Count") +
+  scale_y_continuous(expand= c(0, 0)) +
+  facet_rep_wrap(~waterbody, ncol= 2, scales= "free_y", labeller= as_labeller(waterbody_labeller)) +
   theme_sat
 
-ggplot(clr.ci, aes(x= ss665_sat, y= CI_sat)) +
+ggplot(pix.df, aes(x= CI_sat)) +
+  geom_histogram(binwidth= 0.0001, boundary= 1, fill= "black") +
+  geom_vline(xintercept = 0, color= "gray70") +
+  labs(x= "CI satellite", y= "Count") +
+  scale_y_continuous(expand= c(0, 0)) +
+  facet_rep_wrap(~waterbody, ncol= 2, scales= "free_y", labeller= as_labeller(waterbody_labeller)) +
+  theme_sat
+
+
+ggplot(pix.df, aes(x= ss665_sat, y= CI_sat)) +
   geom_vline(xintercept = 0) +
   geom_hline(yintercept = 0) +
-  geom_point() +
+  geom_point(aes(color= waterbody)) +
+  labs(x= "SS(665) satellite", y= "CI satellite") +
+  scale_color_discrete(guide= FALSE) +
+  facet_rep_wrap(~waterbody, ncol= 2, labeller= as_labeller(waterbody_labeller)) +
+  theme_sat
+
+ggplot(pix.df, aes(x= ss665_sat, y= CI_sat)) +
+  geom_vline(xintercept = 0) +
+  geom_hline(yintercept = 0) +
+  geom_point(aes(color= waterbody)) +
+  labs(x= "SS(665) satellite", y= "CI satellite") +
+  scale_color_discrete(guide= FALSE) +
+  facet_rep_wrap(~waterbody, ncol= 2, labeller= as_labeller(waterbody_labeller)) +
   theme_sat
 
 

@@ -16,7 +16,7 @@ noaa.extract.list <- map2(noaa.tiff.list, noaa.field.info$DFGWATERID, function(x
 
 # Identify the satellite pixels that were sampled in the field
 
-sampled.pixels.list <-  map2(noaa.extract.list, noaa.field.info$field.path, function(x, y) find_sampling_pixels(pix.center.sf = x, field.lat.long = y, utm= 10))
+sampled.pixels.list <-  map2(noaa.extract.list, noaa.field.info$field_path, function(x, y) find_sampling_pixels(pix.center.sf = x, field.lat.long = y, utm= 10))
 
 
 

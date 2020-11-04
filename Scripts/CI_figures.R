@@ -123,6 +123,8 @@ theme_sat <- theme(panel.grid = element_blank(),
 waterbody_labeller <- c("ClearLake_20190807" = "Clear Lake\n2019-08-07",
                         "ClearLake_20190816" = "Clear Lake\n2019-08-16",
                         "ClearLake_20191008" = "Clear Lake\n2019-10-08",
+                        "ClearLake_20200708" = "Clear Lake\n2020-07-08",
+                        "ClearLake_20200724" = "Clear Lake\n2020-07-24",
                         "LakeAlmanor_20190815" ="Lake Almanor\n2019-08-15",
                         "LakeSanAntonio_20190801" = "L. San Antonio\n2019-08-01",
                         "SanPabloReservoir_20190812" = "San Pablo Res.\n2019-08-12")
@@ -141,6 +143,7 @@ ggplot(data= ci_fs, aes(x= ss665_field)) +
                      breaks= seq(-0.003, 0, by= 0.0005),
                      labels= c("-0.003", "", "-0.002", "", "-0.001", "", "0"),
                      expand= c(0, 0)) +
+  facet_rep_wrap(~waterbody) + 
   theme_sat
 ggsave(last_plot(), filename= "ss665_hist.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output")

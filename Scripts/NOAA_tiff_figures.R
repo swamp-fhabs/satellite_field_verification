@@ -10,13 +10,16 @@ library(cowplot)
 library(extrafont)
 library(lemon)
 library(smatr)
+source("Scripts/ggplot_themes.R")
+source("Scripts/NOAA_tiff_functions.R")
 
 
 ## Read in CI and rrs data
-ci_fs <- read_tsv("Data/CI_field_sat_NOAA_tiff.tsv") 
+#ci_fs <- read_tsv("Data/CI_field_sat_NOAA_tiff.tsv") 
+ci_fs.avg <- read_tsv("Data/CI_field_sat_avg_NOAA_tiff.tsv") 
 
 ## Summarize over pixels
-ci_fs_pix.sum <- ci_fs %>% 
+ci_fs_pix.sum <- ci_fs.avg %>% 
   group_by(waterbody, pixel) %>% 
   summarize(n= length(pixel),
             across(c(contains("field")), list(mean= mean, sd= sd, se= ~sd(.x)/sqrt(n)), .names= "{col}.{fn}"),
@@ -28,43 +31,17 @@ ci_fs_pix.sum <- ci_fs %>%
          CI_sat.POS= ifelse(CI_sat < 0, 0, CI_sat))
 
 
+#map(rrs_bands$uniqueID, function(x) make_spectral_shape_plots(df= rrs_bands, sampID= x, out_dir= "Data/spectral_shape_plots"))
 
 
 
 
-
-#### GGPLOT THEMES ############################
-theme_sat <- theme(panel.grid = element_blank(),
-                   plot.margin = unit(c(0.2, 0.2, 0.2, 0.2), "cm"),
-                   text = element_text(size= 12),
-                   plot.background = element_rect(fill = "transparent", color= "transparent"), # bg of the plot
-                   panel.background = element_rect(fill= "transparent", color= "transparent"),
-                   panel.border= element_rect(fill= "transparent", color= "black", linetype= "solid", size= 0.5),
-                   panel.ontop = TRUE,
-                   axis.text = element_text(colour="black", size= 12),
-                   axis.title.x = element_text(vjust= -0.75),
-                   axis.title.y = element_text(vjust= 1.5),
-                   legend.background = element_rect(size= 0.25, color="black", fill= "transparent"),
-                   legend.key = element_blank(),
-                   strip.background=element_rect(fill="transparent", color="transparent"),
-                   #axis.text.x = element_text(angle= 45, hjust= 1),
-                   legend.position = "right")
-
-
-waterbody_labeller <- c("ClearLake_20190807" = "Clear Lake\n2019-08-07",
-                        "ClearLake_20190816" = "Clear Lake\n2019-08-16",
-                        "ClearLake_20191008" = "Clear Lake\n2019-10-08",
-                        "ClearLake_20200708" = "Clear Lake\n2020-07-08",
-                        "ClearLake_20200724" = "Clear Lake\n2020-07-24",
-                        "LakeAlmanor_20190815" ="Lake Almanor\n2019-08-15",
-                        "LakeSanAntonio_20190801" = "L. San Antonio\n2019-08-01",
-                        "SanPabloReservoir_20190812" = "San Pablo Res.\n2019-08-12")
 
 #### MAKE FIGURES ####
 
 
 ## ss(665) Histogram
-ggplot(data= ci_fs, aes(x= ss665_field)) +
+ggplot(data= ci_fs.avg, aes(x= ss665_field)) +
   geom_histogram(binwidth= 0.0001, 
                  boundary= 1,
                  fill= "black") +
@@ -81,7 +58,7 @@ ggplot(data= ci_fs, aes(x= ss665_field)) +
 ggsave(last_plot(), filename= "ss665_field_hist.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output_NOAA_tiff")
 
-ggplot(data= ci_fs, aes(x= ss665_sat)) +
+ggplot(data= ci_fs.avg, aes(x= ss665_sat)) +
   geom_histogram(binwidth= 0.0001, 
                  boundary= 1,
                  fill= "black") +
@@ -99,7 +76,7 @@ ggsave(last_plot(), filename= "ss665_sat_hist.png", height= 4.875, width= 6.5, u
 
 
 ## Field ss665 X Sat ss665
-ggplot(data= ci_fs) +
+ggplot(data= ci_fs.avg) +
   geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
   geom_hline(yintercept = 0) +
   geom_vline(xintercept = 0) +
@@ -125,10 +102,10 @@ ci_brks <- c(6.309573e-05, seq(0.001, 0.005, by= 0.001))
 ci_labels <- c("DL", "0.001", "0.002", "0.003", "0.004", "0.005")
 
 
-CIF_CIS.plot <- ggplot(data= ci_fs2) +
+CIF_CIS.plot <- ggplot(data= ci_fs.avg) +
   geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
-  geom_hline(yintercept = 6.309573e-05) +
-  geom_vline(xintercept = 6.309573e-05) +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
   geom_point(aes(x= CI_sat, y= CI_field, fill= waterbody), size= 3, shape= 21) +
   labs(x= "Satellite CI", y= "Field CI") +
 #  scale_x_continuous(limits= ci_lims, breaks= ci_brks, labels= ci_labels, expand= c(0.01, 0)) +
@@ -136,6 +113,7 @@ CIF_CIS.plot <- ggplot(data= ci_fs2) +
   scale_fill_discrete(name= "Waterbody_Date") +
   coord_equal() +
   theme_sat
+CIF_CIS.plot
 
 ggsave(CIF_CIS.plot, filename= "CIF_CIS.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
        path= "Data/Figures_output_NOAA_tiff")
@@ -169,18 +147,37 @@ clr_20200724 <- filter(ci_fs2, waterbody == "ClearLake_20200724")
     geom_errorbar(aes(x= CI_sat.POS*10^8, 
                       ymin= (CI_field.mean.POS - 1*CI_field.se)*10^8, 
                       ymax= (CI_field.mean.POS + 1*CI_field.se)*10^8)) +
-    labs(x= "Satellite CI", y= "Field CI (\u00B1 SE)") +
+    labs(x= "Satellite CI cells/mL", y= "Field CI cells/mL (\u00B1 SE)") +
     scale_fill_discrete(name= "Waterbody") +
     #scale_y_log10() +
     #scale_x_log10() +
     #annotation_logticks() +
-    scale_color_discrete(name= "Waterbody_Date") +
+    #scale_color_discrete(name= "Waterbody_Date") +
+    scale_color_discrete(guide=FALSE) +
     coord_equal() +
     theme_sat
   
   
-  ggsave(last_plot(), filename= "CIF_CIS_cellsmL.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
+  ggsave(last_plot(), filename= "CIF_CIS_cellsmL.png", height= 6.5, width= 8, units= "in", dpi= 300,
          path= "Data/Figures_output_NOAA_tiff")
+  
+  ## CELLS PER Ml DENSITY
+  ggplot(data= ci_fs_pix.sum) +
+    geom_vline(xintercept = 0) +
+    geom_density(aes(x= CI_sat.POS*10^8), color= "red", size= 1.5)+
+    geom_density(aes(x= CI_field.mean.POS*10^8), color= "blue", size= 1.5)+
+    annotate("text", x= 300000, y= 2e-06, label= "Satellite CI", color= "red", hjust= 0) +
+    annotate("text", x= 300000, y= 1.8e-06, label= "Field CI", color= "blue", hjust= 0) +
+    labs(x= "CI cells / mL", y= "Density") +
+    #scale_fill_discrete(name= "Waterbody") +
+    scale_y_continuous(expand= c(0, 0), labels= NULL) +
+    scale_x_continuous(limits= c(-500000, 3250000), expand= c(0, 0)) +
+    theme_sat
+  
+  
+  ggsave(last_plot(), filename= "cells_mL_density.png", height= 4, width= 6, units= "in", dpi= 300,
+         path= "Data/Figures_output_NOAA_tiff")
+  
   
   
   
@@ -188,6 +185,7 @@ clr_20200724 <- filter(ci_fs2, waterbody == "ClearLake_20200724")
   ## Standardized major axis regression library(smatr)
   ## And OLS regression
   sma.fit1 <- sma(CI_field.mean ~ CI_sat, ci_fs_pix.sum)
+  sma.fit2 <- sma(CI_field.mean.POS ~ CI_sat.POS, ci_fs_pix.sum)
   #summary(sma.fit1)
   
   lm.fit1 <- lm(CI_field.mean ~ CI_sat, ci_fs_pix.sum)
@@ -196,16 +194,20 @@ clr_20200724 <- filter(ci_fs2, waterbody == "ClearLake_20200724")
   lm.fit2 <- lm(CI_sat ~ CI_field.mean, ci_fs_pix.sum)
   #summary(lm.fit2)
   
+  lm.fit3 <- lm(CI_sat.POS ~ CI_field.mean.POS, ci_fs_pix.sum)
+  #summary(lm.fit2)
+  
+  
   sma_annotation <- "Standardized major axis regression\ny = 1.18*x - 0.0007\nr2= 0.63"
   
   CIF_CIS_sma.plot <- ggplot(data= ci_fs_pix.sum) +
     geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
     geom_hline(yintercept = 0) +
     geom_vline(xintercept = 0) +
-        geom_point(aes(x= CI_sat*10^8, y= CI_field.mean*10^8, color= waterbody), size= 3) +
-    geom_errorbar(aes(x= CI_sat*10^8, 
-                      ymin= (CI_field.mean - 1*CI_field.se)*10^8, 
-                      ymax= (CI_field.mean + 1*CI_field.se)*10^8)) +
+        geom_point(aes(x= CI_sat, y= CI_field.mean, color= waterbody), size= 3) +
+    geom_errorbar(aes(x= CI_sat, 
+                      ymin= CI_field.mean - 1*CI_field.se, 
+                      ymax= CI_field.mean + 1*CI_field.se)) +
     geom_abline(intercept= sma.fit1$coef[[1]][1, 1],
                 slope= sma.fit1$coef[[1]][2, 1],
                 size= 1) +
@@ -215,8 +217,8 @@ clr_20200724 <- filter(ci_fs2, waterbody == "ClearLake_20200724")
     #             size= 1, color= "red") +
     labs(x= "Satellite CI", y= "Field CI (\u00B1 SE)") +
     scale_fill_discrete(name= "Waterbody") +
-    #scale_x_continuous(limits= ci_lims, breaks= ci_brks, labels= ci_labels, expand= c(0.01, 0)) +
-    #scale_y_continuous(limits= ci_lims, breaks= ci_brks, labels= ci_labels, expand= c(0.02, 0)) +
+    scale_x_continuous(limits= c(-0.006, 0.018), breaks= seq(-0.005, 0.015, by= 0.005), expand= c(0, 0)) +
+    scale_y_continuous(limits= c(-0.002, 0.033), breaks= seq(0, 0.03, by= 0.005), expand= c(0, 0)) +
     scale_color_discrete(name= "Waterbody_Date") +
     coord_equal() +
     theme_sat
@@ -253,7 +255,57 @@ CIF_CIS.sum.plot <-   ggplot(data= ci_fs_pix.sum) +
   ggsave(CIF_CIS.sum.plot, filename= "CIF_CIS_sum.png", height= 6, width= 7, units= "in", dpi= 300,
          path= "Data/Figures_output_NOAA_tiff")
   
+  CIF_CIS.sum.facet.plot <-   ggplot(data= ci_fs_pix.sum) +
+    geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
+    geom_hline(yintercept = 0) +
+    geom_vline(xintercept = 0) +
+    # geom_abline(intercept= sma.fit1$coef[[1]][1, 1],
+    #             slope= sma.fit1$coef[[1]][2, 1],
+    #             size= 1) +
+    geom_point(aes(x= CI_sat, y= CI_field.mean, color= waterbody), size= 3) +
+    geom_errorbar(aes(x= CI_sat, 
+                      ymin= CI_field.mean - 1.96*CI_field.se, 
+                      ymax= CI_field.mean + 1.96*CI_field.se)) +
+    # annotate("text", x= 0.0001, y= 0.0045, label= sma_annotation, hjust= 0, size= 3) +
+    # geom_abline(intercept= lm.fit1$coefficients[1],
+    #             slope= lm.fit1$coefficients[2],
+    #             size= 1, color= "red") +
+    labs(x= "Satellite CI", y= "Field CI (\u00B1 1.96*SE)") +
+    scale_fill_discrete(name= "Waterbody") +
+    #scale_x_continuous(limits= ci_lims, breaks= ci_brks, labels= ci_labels, expand= c(0.01, 0)) +
+    #scale_y_continuous(limits= ci_lims, breaks= ci_brks, labels= ci_labels, expand= c(0.02, 0)) +
+    scale_color_discrete(name= "Waterbody_Date") +
+    facet_wrap(~waterbody, ncol= 2, scales= "free_y", labeller= as_labeller(waterbody_labeller)) +
+    #coord_equal() +
+    theme_sat
+  CIF_CIS.sum.facet.plot
+  ggsave(CIF_CIS.sum.facet.plot, filename= "CIF_CIS_sum_facet.png", height= 6, width= 8, units= "in", dpi= 300,
+         path= "Data/Figures_output_NOAA_tiff")
   
+  
+  
+  CIcyanoF_CIcyanoS.sum.plot <-  ggplot(data= ci_fs_pix.sum) +
+    geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
+    geom_hline(yintercept = 0) +
+    geom_vline(xintercept = 0) +
+    # geom_abline(intercept= sma.fit1$coef[[1]][1, 1],
+    #             slope= sma.fit1$coef[[1]][2, 1],
+    #             size= 1) +
+    geom_point(aes(x= CIcyano_sat, y= CIcyano_field.mean, color= waterbody), size= 3) +
+    geom_errorbar(aes(x= CIcyano_sat, 
+                      ymin= CI_field.mean - CI_field.se, 
+                      ymax= CI_field.mean + CI_field.se)) +
+    labs(x= "Satellite CIcyano", y= "Field CIcyano (\u00B1 SE)") +
+    scale_x_continuous(limits= c(-0.006, 0.018), breaks= seq(-0.005, 0.015, by= 0.005), expand= c(0, 0)) +
+    scale_y_continuous(limits= c(-0.002, 0.033), breaks= seq(0, 0.03, by= 0.005), expand= c(0, 0)) +
+    scale_fill_discrete(name= "Waterbody") +
+    scale_color_discrete(name= "Waterbody_Date") +
+    coord_equal() +
+    theme_sat
+  CIcyanoF_CIcyanoS.sum.plot
+  
+  ggsave(CIcyanoF_CIcyanoS.sum.plot, filename= "CIcyanoF_CIcyanoS_sum.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
+         path= "Data/Figures_output_NOAA_tiff")
   
   
   ## Root mean square error
@@ -264,5 +316,8 @@ CIF_CIS.sum.plot <-   ggplot(data= ci_fs_pix.sum) +
   rmse.fit2/mean(ci_fs_pix.sum$CI_sat) # return % estimate error.
   
 
+  rmse.fit3 <- Metrics::rmse(ci_fs_pix.sum$CI_sat.POS, predict(lm.fit3))
+  rmse.fit3/mean(ci_fs_pix.sum$CI_sat.POS) # return % estimate error.
+  
 
 

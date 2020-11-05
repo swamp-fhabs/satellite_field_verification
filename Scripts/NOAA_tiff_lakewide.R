@@ -1,12 +1,13 @@
 library(tidyverse)
 library(ggplot2)
-library(ggplot2)
 library(lemon)
 library(cowplot)
 library(extrafont)
+library(scales)
 
 source("Scripts/NOAA_tiff_functions.R")
 source("Scripts/NOAA_tiff_format.R")
+source("Scripts/ggplot_themes.R")
 
 # Open UTM lakes shapefile R object
 ca_lakes_utm <- readRDS("Data/Shapefiles/ca_lakes_shapefile_utm.rds")
@@ -48,35 +49,43 @@ lakewide.pixels <- map(args_lakewide_pixels, function(x) lakewide_pixels(points.
 ## Calculate CI values
 pix.df <- map(lakewide.pixels, calc_CI) %>% 
   bind_rows(., .id= "waterbody") %>% 
-  select(waterbody, pix_FID, ss665_sat, CI_sat, CIcyano_sat, starts_with("rhos"), geometry)
+  select(waterbody, pix_FID, ss665_sat, CI_sat, CIcyano_sat, starts_with("rhos"), geometry) %>% 
+  mutate(CI_sat.POS= ifelse(CI_sat < 0, 0, CI_sat),
+         false_neg= ifelse(CIcyano_sat == 0 & CI_sat > 0, "Y", "N"))
 
 
-#### GGPLOT THEMES ############################
-theme_sat <- theme(panel.grid = element_blank(),
-                   plot.margin = unit(c(0.2, 0.2, 0.2, 0.2), "cm"),
-                   text = element_text(size= 12),
-                   plot.background = element_rect(fill = "transparent", color= "transparent"), # bg of the plot
-                   panel.background = element_rect(fill= "transparent", color= "transparent"),
-                   panel.border= element_rect(fill= "transparent", color= "black", linetype= "solid", size= 0.5),
-                   panel.ontop = TRUE,
-                   axis.text = element_text(colour="black", size= 12),
-                   axis.title.x = element_text(vjust= -0.75),
-                   axis.title.y = element_text(vjust= 1.5),
-                   legend.background = element_rect(size= 0.25, color="black", fill= "transparent"),
-                   legend.key = element_blank(),
-                   strip.background=element_rect(fill="transparent", color="transparent"),
-                   #axis.text.x = element_text(angle= 45, hjust= 1),
-                   legend.position = "right")
+pix.df %>% 
+  group_by(waterbody) %>% 
+  #count(false_neg)
+  mutate(prop= prop.table())
 
 
-waterbody_labeller <- c("ClearLake_20190807" = "Clear Lake\n2019-08-07",
-                        "ClearLake_20190816" = "Clear Lake\n2019-08-16",
-                        "ClearLake_20191008" = "Clear Lake\n2019-10-08",
-                        "ClearLake_20200708" = "Clear Lake\n2020-07-08",
-                        "ClearLake_20200724" = "Clear Lake\n2020-07-24",
-                        "LakeAlmanor_20190815" ="Lake Almanor\n2019-08-15",
-                        "LakeSanAntonio_20190801" = "L. San Antonio\n2019-08-01",
-                        "SanPabloReservoir_20190812" = "San Pablo Res.\n2019-08-12")
+false.negs <- pix.df %>% 
+  count(waterbody, false_neg) %>% 
+  group_by(waterbody) %>% 
+  mutate(prop= prop.table(n)) %>% 
+  st_set_geometry(NULL)
+
+
+pix.df2 <- st_set_geometry(pix.df, NULL) %>% 
+  select(waterbody, CI_sat, CIcyano_sat, ss665_sat) %>% 
+  mutate(CI_sat_r= round(CI_sat, 4),
+         ss665_sat_b= ifelse(ss665_sat > 0, 1, 0))
+
+pix.counts <- pix.df2 %>% 
+  count(CI_sat_r, ss665_sat > 0) %>% 
+  rename(ss665_binary= `ss665_sat > 0`)
+
+ggplot(pix.df2, aes(x= CI_sat, y= ss665_sat_b)) +
+  geom_point() +
+  geom_smooth(method= "gam")
+
+
+fit.1 <- glm(ss665_sat_b ~ CI_sat, 
+             family= "binomial",
+             data= pix.df2)
+summary(fit.1)
+
 
 #### MAKE PLOTS #######################################
 
@@ -111,10 +120,70 @@ ggplot(pix.df, aes(x= ss665_sat, y= CI_sat)) +
   geom_vline(xintercept = 0) +
   geom_hline(yintercept = 0) +
   geom_point(aes(color= waterbody)) +
-  labs(x= "SS(665) satellite", y= "CI satellite") +
+  labs(x= "Satellite SS(665)", y= "Satellite CI") +
   scale_color_discrete(guide= FALSE) +
   facet_rep_wrap(~waterbody, ncol= 2, labeller= as_labeller(waterbody_labeller)) +
   theme_sat
+ggsave(last_plot(), filename= "Lakewide_CI_SS665.png", height= 7, width= 7, units= "in", dpi= 300,
+       path= "Data/Figures_output_NOAA_tiff")
 
+
+
+
+
+pixel_plots <- function(df, wb_name, lk_shp, out_name){
+
+  df_buffer <- df %>% 
+  filter(waterbody == wb_name) %>% 
+  st_buffer(., dist= 150, endCapStyle= "SQUARE") 
+
+
+ci.plot <- ggplot() +
+  geom_sf(data= lk_shp, fill= "lightsteelblue1") +
+  geom_sf(data= df_buffer, aes(fill= CI_sat.POS), color= "transparent") +
+  scale_fill_gradientn(colors= c("gray60", viridis_pal(begin= 0.4, option= "magma")(50)), 
+                       limits= c(0, 0.06), name= "CI") +
+  coord_sf() +
+  theme_sat
+message("Saving CI plot")
+ggsave(ci.plot, filename= str_c(out_name, "_CI.png", sep= ""), height= 6, width= 8, units= "in", dpi= 300,
+       path= "Data/Figures_output_NOAA_tiff")
+
+
+cicyano.plot <- ggplot() +
+  geom_sf(data= lk_shp, fill= "lightsteelblue1") +
+  geom_sf(data= df_buffer, aes(fill= CIcyano_sat), color= "transparent") +
+  scale_fill_gradientn(colors= c("gray60", viridis_pal(begin= 0.4, option= "magma")(50)), 
+                       limits= c(0, 0.06), name= "CI_cyano") +
+  coord_sf() +
+  theme_sat
+message("Saving CI_cyano plot")
+ggsave(cicyano.plot, filename= str_c(out_name, "_CIcyano.png", sep= ""), height= 6, width= 8, units= "in", dpi= 300,
+       path= "Data/Figures_output_NOAA_tiff")
+
+fn.hist <- ggplot(df_buffer, aes(x= CI_sat.POS)) +
+  geom_histogram(binwidth= 0.0001, boundary=1, color= "gray50") +
+  facet_wrap(~false_neg, nrow= 2, labeller= as_labeller(c("Y" = "Potential CI_cyano false negative",
+                                                          "N" = "CI and CI_cyano agree"))) +
+  labs(x= "Satellite CI", y= "Count") +
+  scale_x_continuous(expand= c(0, 0)) +
+  scale_y_continuous(expand= c(0, 0)) +
+  theme_sat
+message("Saving histogram")
+ggsave(fn.hist, filename= str_c(out_name, "_FalseNegs_hist.png", sep= ""), height= 6, width= 8, units= "in", dpi= 300,
+       path= "Data/Figures_output_NOAA_tiff")
+
+
+}
+
+
+pixel_plots(df= pix.df, wb_name= "LakeSanAntonio_20190801", lk_shp= lsa_utm, out_name= "LakeSanAntonio_20190801")
+pixel_plots(df= pix.df, wb_name= "ClearLake_20190807", lk_shp= clr_utm, out_name= "ClearLake_20190807")
+pixel_plots(df= pix.df, wb_name= "ClearLake_20190816", lk_shp= clr_utm, out_name= "ClearLake_20190816")
+pixel_plots(df= pix.df, wb_name= "ClearLake_20191008", lk_shp= clr_utm, out_name= "ClearLake20191008")
+pixel_plots(df= pix.df, wb_name= "ClearLake_20200708", lk_shp= clr_utm, out_name= "ClearLake_20200708")
+pixel_plots(df= pix.df, wb_name= "ClearLake_20200724", lk_shp= clr_utm, out_name= "ClearLake_20200724")
+pixel_plots(df= pix.df, wb_name= "LakeAlmanor_20190815", lk_shp= alm_utm, out_name= "LakeAlmanor_20190815")
+pixel_plots(df= pix.df, wb_name= "SanPabloReservoir_20190812", lk_shp= spr_utm, out_name= "SanPabloReservoir_20190812")
 
 

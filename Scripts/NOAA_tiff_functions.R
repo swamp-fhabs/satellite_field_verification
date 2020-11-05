@@ -452,3 +452,50 @@ calc_CI_values <- function(in_dir, out_path){
   return(ci_df)
 }
 ############################################################################
+
+
+#### PLOTTING FUNCTIONS ####
+
+make_spectral_shape_plots <- function(df, sampID, out_dir){
+  
+  ## SS(681) CI
+  
+  # Filter data by band type
+  point_df_681 <- filter(df, df$uniqueID == sampID, band != "b07_620")
+  line_df_681 <- filter(df, uniqueID == sampID, band == "b08_665" | band == "b11_709")
+  
+  plot681 <- ggplot() +
+    geom_line(data= line_df_681,
+              aes(x= nm, y= rrs, group= sampID), linetype= "dashed", size= 0.25) +
+    geom_point(data= point_df_681, 
+               aes(x= nm, y= rrs), size= 3) +
+    labs(x= "OLCI bands (nm)", y= "Remote sensed reflectance (rrs)") +
+    scale_x_continuous(breaks= c(665, 681, 709)) +
+    scale_y_continuous(limits= c(min(df$rrs), max(df$rrs))) +
+    ggtitle(sampID, subtitle= "SS(681)") +
+    theme_bw(base_size= 16)
+  
+  ggsave(plot681, filename= str_c(sampID, "_ss681", ".jpg"), path=out_dir, dpi= 300, height= 5.5, width= 5, units= "in")
+  
+  
+  
+  ## SS(665) CIcyano
+  point_df_665 <- filter(df, df$uniqueID == sampID, band != "b11_709" )
+  line_df_665 <- filter(df, uniqueID == sampID, band == "b07_620" | band == "b10_681")
+  
+  
+  plot665 <- ggplot() +
+    geom_line(data= line_df_665,
+              aes(x= nm, y= rrs, group= sampID), linetype= "dashed", size= 0.25) +
+    geom_point(data= point_df_665, 
+               aes(x= nm, y= rrs), size= 3) +
+    labs(x= "OLCI bands (nm)", y= "Remote sensed reflectance (rrs)") +
+    scale_x_continuous(breaks= c(620, 665, 681)) +
+    scale_y_continuous(limits= c(min(df$rrs), max(df$rrs))) +
+    ggtitle(sampID,  subtitle= "SS(665)") +
+    theme_bw(base_size= 16)
+  
+  ggsave(plot665, filename= str_c(sampID, "_ss665", ".jpg"), path=out_dir, dpi= 300, height= 5.5, width= 5, units= "in")
+  
+}
+############################################################################

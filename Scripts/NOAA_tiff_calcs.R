@@ -30,7 +30,7 @@ ci_sat_df <- map(sampled.pixels.list, calc_CI) %>%
 ## But I think this is no good, because then you couldn't average over the whole site, and you'd be 
 ## Estimating a whole pixel with a single Radiometer reading
 ## Unfortunately, you lose the pix_FID column down the road
-ci_sat_df2 <- ci_sat_df %>% 
+ci_sat_df.avg <- ci_sat_df %>% 
   group_by(waterbody, site) %>% 
   summarise(across("rhos_620":"CIcyano_sat", mean), .groups= "drop")
 
@@ -43,10 +43,11 @@ ci_sat_df2 <- ci_sat_df %>%
 field_CI_values <- read_tsv("Data/CI_field.tsv")
 
 CI_field_sat <- left_join(ci_sat_df, field_CI_values, by= c("waterbody", "site"))
-CI_field_sat2 <- left_join(ci_sat_df2, field_CI_values, by= c("waterbody", "site"))
+CI_field_sat.avg <- left_join(ci_sat_df.avg, field_CI_values, by= c("waterbody", "site"))
 #write_tsv(CI_field_sat, path= "Data/CI_field_sat_NOAA_tiff.tsv")
+#write_tsv(CI_field_sat.avg, path= "Data/CI_field_sat_avg_NOAA_tiff.tsv")
 
-ci_fs2 <- CI_field_sat2
+#ci_fs2 <- CI_field_sat2
 # library(ggplot2)
 # ggplot(CI_field_sat) +
 #   geom_vline(xintercept = 0) +

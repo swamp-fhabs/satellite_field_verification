@@ -19,7 +19,8 @@ clr_utm <- extract_lake_shapefile(ca_lakes_utm, DFGWATER_ID= 2075, utm= 10)
 alm_utm <- extract_lake_shapefile(ca_lakes_utm, DFGWATER_ID= 1116, utm= 10)
 
 # Import NOAA tiffs
-#noaa.tiff.list <- map(noaa.field.info$NOAA.path, read_noaa_tiff)
+#noaa.tiff.list <- map(noaa.field.info$NOAA_path, read_noaa_tiff)
+#saveRDS(noaa.tiff.list, "Data/ss665_data/NOAA_tiffs.RDS")
 noaa.tiff.list <- readRDS("Data/ss665_data/NOAA_tiffs.RDS")
 
 
@@ -49,7 +50,7 @@ lakewide.pixels <- map(args_lakewide_pixels, function(x) lakewide_pixels(points.
 ## Calculate CI values
 pix.df <- map(lakewide.pixels, calc_CI) %>% 
   bind_rows(., .id= "waterbody") %>% 
-  select(waterbody, pix_FID, ss665_sat, CI_sat, CIcyano_sat, starts_with("rhos"), geometry) %>% 
+  select(waterbody, pix_FID, ss665_sat, mci_sat, CI_sat, CIcyano_sat, starts_with("rhos"), geometry) %>% 
   mutate(CI_sat.POS= ifelse(CI_sat < 0, 0, CI_sat),
          false_neg= ifelse(CIcyano_sat == 0 & CI_sat > 0, "Y", "N"))
 
@@ -98,6 +99,16 @@ ggplot(pix.df, aes(x= ss665_sat)) +
   facet_rep_wrap(~waterbody, ncol= 2, scales= "free_y", labeller= as_labeller(waterbody_labeller)) +
   theme_sat
 
+ggplot(pix.df, aes(x= mci_sat)) +
+  geom_histogram(binwidth= 0.001, boundary= 1, fill= "black") +
+  #geom_histogram(boundary= 1, fill= "black") +
+  geom_vline(xintercept = 0, color= "gray70") +
+  labs(x= "Satellite MCI", y= "Count") +
+  scale_y_continuous(expand= c(0, 0)) +
+  facet_rep_wrap(~waterbody, ncol= 2, scales= "free_y", labeller= as_labeller(waterbody_labeller)) +
+  theme_sat
+
+
 ggplot(pix.df, aes(x= CI_sat)) +
   geom_histogram(binwidth= 0.0001, boundary= 1, fill= "black") +
   geom_vline(xintercept = 0, color= "gray70") +
@@ -107,14 +118,6 @@ ggplot(pix.df, aes(x= CI_sat)) +
   theme_sat
 
 
-ggplot(pix.df, aes(x= ss665_sat, y= CI_sat)) +
-  geom_vline(xintercept = 0) +
-  geom_hline(yintercept = 0) +
-  geom_point(aes(color= waterbody)) +
-  labs(x= "SS(665) satellite", y= "CI satellite") +
-  scale_color_discrete(guide= FALSE) +
-  facet_rep_wrap(~waterbody, ncol= 2, labeller= as_labeller(waterbody_labeller)) +
-  theme_sat
 
 ggplot(pix.df, aes(x= ss665_sat, y= CI_sat)) +
   geom_vline(xintercept = 0) +
@@ -126,6 +129,30 @@ ggplot(pix.df, aes(x= ss665_sat, y= CI_sat)) +
   theme_sat
 ggsave(last_plot(), filename= "Lakewide_CI_SS665.png", height= 7, width= 7, units= "in", dpi= 300,
        path= "Data/Figures_output_NOAA_tiff")
+
+ggplot(pix.df, aes(x= mci_sat, y= CI_sat)) +
+  geom_vline(xintercept = 0) +
+  geom_hline(yintercept = 0) +
+  geom_point(aes(color= waterbody)) +
+  labs(x= "Satellite MCI", y= "Satellite CI") +
+  scale_color_discrete(guide= FALSE) +
+  facet_rep_wrap(~waterbody, ncol= 2, labeller= as_labeller(waterbody_labeller)) +
+  theme_sat
+ggsave(last_plot(), filename= "Lakewide_CI_MCI.png", height= 7, width= 7, units= "in", dpi= 300,
+       path= "Data/Figures_output_NOAA_tiff")
+
+
+ggplot(pix.df, aes(x= mci_sat, y= ss665_sat)) +
+  geom_vline(xintercept = 0) +
+  geom_hline(yintercept = 0) +
+  geom_point(aes(color= waterbody)) +
+  labs(x= "Satellite MCI", y= "Satellite SS(665)") +
+  scale_color_discrete(guide= FALSE) +
+  facet_rep_wrap(~waterbody, ncol= 2, labeller= as_labeller(waterbody_labeller)) +
+  theme_sat
+ggsave(last_plot(), filename= "Lakewide_ss665_MCI.png", height= 7, width= 7, units= "in", dpi= 300,
+       path= "Data/Figures_output_NOAA_tiff")
+
 
 
 
@@ -183,7 +210,7 @@ pixel_plots(df= pix.df, wb_name= "ClearLake_20190816", lk_shp= clr_utm, out_name
 pixel_plots(df= pix.df, wb_name= "ClearLake_20191008", lk_shp= clr_utm, out_name= "ClearLake20191008")
 pixel_plots(df= pix.df, wb_name= "ClearLake_20200708", lk_shp= clr_utm, out_name= "ClearLake_20200708")
 pixel_plots(df= pix.df, wb_name= "ClearLake_20200724", lk_shp= clr_utm, out_name= "ClearLake_20200724")
-pixel_plots(df= pix.df, wb_name= "LakeAlmanor_20190815", lk_shp= alm_utm, out_name= "LakeAlmanor_20190815")
+pixel_plots(df= pix.df, wb_name= "LakeAlmanor_20190815", lk_shp= alm_utm, out_name= "LakeAlmanor_20190815_MCI")
 pixel_plots(df= pix.df, wb_name= "SanPabloReservoir_20190812", lk_shp= spr_utm, out_name= "SanPabloReservoir_20190812")
 
 

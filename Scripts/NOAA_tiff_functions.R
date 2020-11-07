@@ -13,9 +13,9 @@ read_noaa_tiff <- function(tif.file){
   
   ## Read in raster file
   tif <- raster::stack(tif.file,
-                       bands= c(28, 29, 31, 32))
+                       bands= c(28, 29, 31, 32, 33, 44))
   #names(tif) <- str_c(tiff.tags[c(28, 29, 31, 32)], names(tif), sep= ".")
-  names(tif) <- tiff.tags[c(28, 29, 31, 32)]
+  names(tif) <- tiff.tags[c(28, 29, 31, 32, 33, 44)]
   
   ## Transform multi-band raster stack into a matrix
   tif.mat <- raster::rasterToPoints(tif)
@@ -116,8 +116,14 @@ calc_CI <- function(df){
   
   # Wynne et al. 2008 equation #1
   CI_sat <-  with(df,
-                  -1*(rhos_681 - rhos_665 - (rhos_709 - rhos_665) * ((681-665) / (709-665)))
+                  -1*(rhos_681 - rhos_665 + (rhos_665 - rhos_709) * ((681-665) / (709-665)))
   )
+  
+  
+  # CI_sat <-  with(df,
+  #                 -1*(rhos_681 - rhos_665 - (rhos_709 - rhos_665) * ((681-665) / (709-665)))
+  # )
+  # 
   
   # From Lunetta et al. 2015
   ss665_sat <-  with(df,
@@ -125,12 +131,23 @@ calc_CI <- function(df){
                      #rhos_665 - rhos_620 - (rhos_681 - rhos_620) * ((665-620) / (681-620))
   )
   
-  # From Lunetta et al. 2015
-  CIcyano_sat <- ifelse(ss665_sat > 0 & CI_sat > 0, CI_sat, 0)
+  # MCI From Wynne et al. 2018 (20202 version, section 3.2)
+  # This equation is incorrect in the technical manual. I've coded the correct version
+  # using rho_s 681, 709, 754
+  mci_sat <-  with(df,
+                     rhos_709 - rhos_681 + (rhos_681 - rhos_754) * ((709-681) / (754-681)) # I prefer this equation because it uses a + like in Wynne et al. 2008
+                     #rhos_665 - rhos_620 - (rhos_681 - rhos_620) * ((665-620) / (681-620))
+  )
+  
+  # MCI From Wynne et al. 2018 (20202 version, section 3.2)
+  # The ss665 exclusion criteria is from Lunetta et al. 2015 and Matthews et al 2012.
+  CI_sat <- ifelse(mci_sat > 0, CI_sat == 0, CI_sat)
+  CIcyano_sat <- ifelse(ss665_sat > 0 & mci_sat > 0 & CI_sat > 0, CI_sat, 0)
   
   ## Add parameters to data frame
   df <- mutate(df,
                ss665_sat= ss665_sat,
+               mci_sat= mci_sat,
                CI_sat= CI_sat,
                CIcyano_sat= CIcyano_sat)
   

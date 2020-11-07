@@ -25,7 +25,7 @@ ci_fs_pix.sum <- ci_fs.avg %>%
             across(c(contains("field")), list(mean= mean, sd= sd, se= ~sd(.x)/sqrt(n)), .names= "{col}.{fn}"),
             .groups= "keep") %>% 
   #ungroup() %>% 
-  left_join(., select(ci_fs, waterbody, pixel, contains("sat")), by= c("waterbody", "pixel")) %>% 
+  left_join(., select(ci_fs.avg, waterbody, pixel, contains("sat")), by= c("waterbody", "pixel")) %>% 
   distinct() %>% 
   mutate(CI_field.mean.POS= ifelse(CI_field.mean < 0, 0, CI_field.mean),
          CI_sat.POS= ifelse(CI_sat < 0, 0, CI_sat))
@@ -92,14 +92,28 @@ ggsave(last_plot(), filename= "ss665_field_sat.png", height= 5, width= 12, units
        path= "Data/Figures_output_NOAA_tiff")
 
 
+## CI X WATERBODY
+ggplot(data= filter(ci_fs.avg, waterbody == "ClearLake_20200708" | waterbody == "ClearLake_20200724")) +
+  geom_hline(yintercept = 0) +
+  geom_hline(yintercept = 0.004, linetype= "dashed") +
+  geom_boxplot(aes(x= site, y= CI_field), fill= "gray75") +
+  labs(x= "Measurement location", y= "Field CI") +
+  scale_fill_discrete(name= "Waterbody") +
+  #scale_y_continuous(limits= c(-0.001, 0.0041), expand= c(0.02, 0)) +
+  facet_wrap(.~waterbody, ncol= 2, scales= "free_y", labeller= as_labeller(waterbody_labeller)) +
+  theme_sat +
+  theme(axis.text.x= element_text(angle= 90, size= 14, vjust= 0.5),
+        strip.text = element_text(size= 14))
+
+ggsave(last_plot(), filename= "CIF_wbd_2020.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
+       path= "Data/Figures_output_NOAA_tiff")
+
+
 
 
 
 ## Field CI X SAT CI
 
-ci_lims <- c(-.0005, 0.005)
-ci_brks <- c(6.309573e-05, seq(0.001, 0.005, by= 0.001))
-ci_labels <- c("DL", "0.001", "0.002", "0.003", "0.004", "0.005")
 
 
 CIF_CIS.plot <- ggplot(data= ci_fs.avg) +
@@ -307,6 +321,30 @@ CIF_CIS.sum.plot <-   ggplot(data= ci_fs_pix.sum) +
   ggsave(CIcyanoF_CIcyanoS.sum.plot, filename= "CIcyanoF_CIcyanoS_sum.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
          path= "Data/Figures_output_NOAA_tiff")
   
+  
+  CIF_CIcyanoS.sum.plot <-  ggplot(data= ci_fs_pix.sum) +
+    geom_abline(aes(slope= 1, intercept= 0), linetype= "dashed", color= "gray50") +
+    geom_hline(yintercept = 0) +
+    geom_vline(xintercept = 0) +
+    # geom_abline(intercept= sma.fit1$coef[[1]][1, 1],
+    #             slope= sma.fit1$coef[[1]][2, 1],
+    #             size= 1) +
+    geom_point(aes(x= CIcyano_sat, y= CI_field.mean, color= waterbody), size= 3) +
+    geom_errorbar(aes(x= CIcyano_sat, 
+                      ymin= CI_field.mean - CI_field.se, 
+                      ymax= CI_field.mean + CI_field.se)) +
+    labs(x= "Satellite CIcyano", y= "Field CI (\u00B1 SE)") +
+    scale_x_continuous(limits= c(-0.006, 0.018), breaks= seq(-0.005, 0.015, by= 0.005), expand= c(0, 0)) +
+    scale_y_continuous(limits= c(-0.002, 0.033), breaks= seq(0, 0.03, by= 0.005), expand= c(0, 0)) +
+    scale_fill_discrete(name= "Waterbody") +
+    scale_color_discrete(name= "Waterbody_Date") +
+    coord_equal() +
+    theme_sat
+CIF_CIcyanoS.sum.plot
+
+ggsave(CIcyanoF_CIcyanoS.sum.plot, filename= "CIF_CIcyanoS_sum.png", height= 4.875, width= 6.5, units= "in", dpi= 300,
+       path= "Data/Figures_output_NOAA_tiff")
+
   
   ## Root mean square error
   rmse.fit1 <- Metrics::rmse(ci_fs_pix.sum$CI_field.mean, predict(lm.fit1))
